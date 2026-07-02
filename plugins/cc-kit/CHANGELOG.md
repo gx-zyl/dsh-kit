@@ -2,6 +2,13 @@
 
 All notable changes to cc-kit will be documented in this file.
 
+## [3.0.12] - 2026-07-02
+
+### Fixed
+- **`plugins/cc-kit/settings.json`**: 清除旧 `instructions` 分发机制残留文件（v3.0.1 产物）
+- **`plugins/cc-kit/.claude/settings.json`**: 移除 `instructions` 数组中残留的 `./rules/*.md` 条目
+- **`README.md`**: 修正架构章节和 `--plugin-dir` 描述中的过时表述
+
 ## [3.0.11] - 2026-06-30
 
 ### Added

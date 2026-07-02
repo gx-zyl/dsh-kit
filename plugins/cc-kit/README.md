@@ -1,6 +1,6 @@
 # cc-kit
 
-Claude Code 精选技能合集。**v3.0.11**
+Claude Code 精选技能合集。**v3.0.12**
 
 ## 技能清单
 
@@ -88,7 +88,7 @@ bash ~/.claude/skills/cc-kit/tools/rules.sh uninstall      # WSL
 & "$env:USERPROFILE\.claude\skills\cc-kit\tools\rules.ps1" uninstall  # PowerShell
 ```
 
-> **方式四 `--plugin-dir` 无需注册**：项目级 `.claude/settings.json` 已包含 `./rules/*.md` 条目，规则自动可用。
+> **方式四 `--plugin-dir` 无需注册**：运行 `claude --plugin-dir plugins/cc-kit` 时，插件内 `rules/` 通过 `CLAUDE.md` @import 机制加载，无需额外注册步骤。
 
 ## 架构与规则分发
 
@@ -103,7 +103,7 @@ bash ~/.claude/skills/cc-kit/tools/rules.sh uninstall      # WSL
 
 | 配置 | 路径 | 说明 |
 |------|------|------|
-| 项目设置 | `.claude/settings.json` | 加载 CLAUDE.md + references + rules（仅 `--plugin-dir` 模式下有效） |
+| 项目设置 | `.claude/settings.json` | 加载 CLAUDE.md + references（仅 `--plugin-dir` 模式下有效） |
 | 规则 | `rules/` | WSL 工具链、代理、mise 等规则 |
 | 参考 | `.claude/references/` | skill-structure、grow-dream-types |
 
