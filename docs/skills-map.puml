@@ -1,0 +1,41 @@
+@startuml
+title cc-kit v4.0.0 - 35 技能全景
+skinparam backgroundColor #FFFFFF
+top to bottom direction
+
+package "A. 思维与沟通(10)" {
+  component "diagnose" as a1
+  component "grill-me" as a2
+  component "handoff" as a3
+  component "grow-dream" as a4
+  component "write-a-skill" as a5
+  component "karpathy" as a6
+  component "prototype" as a7
+  component "grill-with-docs" as a8
+  component "github-repo" as a9
+  component "improve-cba" as a10
+}
+package "B. 开发与架构(4)" {
+  component "api-design" as b1
+  component "docker-patterns" as b2
+  component "architecture-adr" as b3
+  component "cc-kit(元技能)" as b4
+}
+package "C. WSL 环境(2)" {
+  component "chrome-devtools-wsl" as c1
+  component "wsl-network" as c2
+}
+package "D. Anthropic 官方(19)" {
+  component "docx/pptx/xlsx/pdf" as d1
+  component "mcp-builder/skill-creator" as d2
+  component "webapp-testing/claude-api" as d3
+  component "canvas/theme/art/brand" as d4
+  component "discernment/internal-comms/doc-cowriting/academy" as d5
+}
+a1 -[hidden]r- b1
+b4 -[hidden]r- c1
+c2 -[hidden]r- d1
+note bottom of d1
+  文档四件套 + MCP/技能创作 + 测试/API + 设计类 + 沟通类
+end note
+@enduml

@@ -1,0 +1,33 @@
+@startuml
+title cc-kit 统一技能包 - 结构与分发(v4.0.0)
+left to right direction
+skinparam backgroundColor #FFFFFF
+
+package "cc-kit 仓库(发布源)" {
+  component "marketplace.json" as MKT
+  package "plugins/cc-kit" {
+    component "plugin.json v4.0.0" as PJ
+    component "skills/ - 35 技能" as SKS
+    component "rules/ - 2 条" as RLS
+    component "CLAUDE.md" as CLA
+  }
+}
+
+package "DSH 插件面(vendor/cc-kit-dsh)" {
+  component "skills/ - 36 技能(包内隔离)" as DSK
+  component "cordis.patch.yml" as DCP
+}
+
+component "Claude Code" as CC
+component "DeepSeek Harness" as DSH
+
+MKT --> PJ : 市场入口
+PJ --> SKS : 技能(16)
+PJ --> RLS : 规则
+PJ --> CLA : 指令
+SKS --> CC : marketplace 安装
+DCP --> DSK : skill-filesystem
+DCP --> DSH : bundle patch 聚合
+note bottom of DSK : 与 canonical 零重叠
+(35 个旧副本已备份回滚)
+@enduml
