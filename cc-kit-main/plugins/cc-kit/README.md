@@ -30,7 +30,7 @@
 
 ## 工作原理
 
-![架构与分发](./docs/arch.png)
+![cc-kit 结构与分发](./docs/cc-kit-arch.png)
 
 | 目标 | 形态 | 技能数 | 隔离 |
 |---|---|---|---|
@@ -83,7 +83,7 @@ cd plugins/cc-kit && claude --plugin-dir .
 
 ## 技能清单
 
-![技能全景](./docs/skills-map.png)
+![技能全景](./docs/cc-kit-skills.png)
 
 ### A. 思维与沟通(10)
 
