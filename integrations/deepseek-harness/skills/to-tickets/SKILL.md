@@ -1,6 +1,6 @@
 ---
 name: to-tickets
-description: "把计划、规格或对话拆成 tracer-bullet 票据，标明阻塞边并发布到 tracker。用户要\"拆票\"时触发。"
+description: "把计划、规格或对话拆成 tracer-bullet 票据，标明阻塞边并发布到 tracker。仅用户经 /to-tickets 调用（不进模型可见目录）。"
 metadata:
   origin: mp-skills
   upstream: mattpocock/skills

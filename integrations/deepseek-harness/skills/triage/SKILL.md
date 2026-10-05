@@ -1,6 +1,6 @@
 ---
 name: triage
-description: "让 issue 与外部 PR 走分诊状态机：分类、验证、必要时拷问，并写出可供 agent 直接执行的 brief。用户要分诊时触发。"
+description: "让 issue 与外部 PR 走分诊状态机：分类、验证、必要时拷问，并写出可供 agent 直接执行的 brief。仅用户经 /triage 调用（不进模型可见目录）。"
 metadata:
   origin: mp-skills
   upstream: mattpocock/skills

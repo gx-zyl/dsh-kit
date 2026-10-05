@@ -16,4 +16,5 @@
 | **DSH 认可键** | `name`、`description`（必填）+ `whenToUse`、`metadata`、`disable-model-invocation`、`user-invocable`（可选）；legacy 键 `disableModelInvocation`/`modelInvocable`/`userInvocable` 会**抛错** | ≠ 上游杂键（`license`/`tools`/`allowed-tools`/`argument-hint`…） |
 | **拍平（flatten）** | 技能必须是 `skills/<name>/SKILL.md` 一层；DSH **不发现嵌套 `**/SKILL.md`** | ≠ mp 的 `skills/<cat>/<name>/` 两层 |
 | **机制型技能** | 依赖 Claude Code 专有机制的技能（`tools`/`allowed-tools`/`argument-hint`/hooks/slash-command 串联 `Skill` 工具），需**逐个判定**改写或排除 | ≠ 纯 prompt 型技能 |
+| **模型可调用性（D8）** | `disable-model-invocation: true` 决定技能是否进入**模型可见目录**（不进则只能由用户经 `/` 调用）。本包**只对新增技能保留**该键（`retro`、`triage`、`to-spec`、`to-tickets`）；v5.0.0 已存在且模型可调用的 4 个（`grill-me`、`grill-with-docs`、`handoff`、`improve-codebase-architecture`）**不沿用**上游该键 | ≠ 全保留（会造成既有能力静默降级）；≠ 全摘掉（偏离上游"用户发起"意图） |
 

@@ -5,6 +5,5 @@ metadata:
   origin: mp-skills
   upstream: mattpocock/skills
   snapshot: 24fe0ef7737e
-disable-model-invocation: true
 ---
 Call the skill tool twice, for "grilling" and "domain-modeling".

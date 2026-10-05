@@ -1,6 +1,6 @@
 ---
 name: retro
-description: "对一段编码会话做复盘，提炼可复用经验与下一步改进。用户说\"复盘一下\"时触发。"
+description: "对一段编码会话做复盘，提炼可复用经验与下一步改进。仅用户经 /retro 调用（不进模型可见目录）。"
 metadata:
   origin: mp-skills
   upstream: mattpocock/skills
