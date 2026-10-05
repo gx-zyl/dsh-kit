@@ -1,7 +1,9 @@
 ---
 name: karpathy-guidelines
 description: Karpathy LLM 编码行为指南，减少常见 AI 编程错误。用户说"按 Karpathy 来"、"谨慎点写"、"不要过度设计"时触发。
-license: MIT
+metadata:
+  origin: dsh-kit
+  license: MIT
 ---
 
 # Karpathy 指南
