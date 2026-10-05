@@ -1,14 +1,13 @@
 ---
 name: grow-dream
-description: 回顾本次对话，分析对 skill / rule / agent / hook / CLAUDE.md / AGENTS.md / memory 是否有改进空间，输出改进建议并可选择直接产出改进文件。识别有规律或频繁提醒的提示并建议写入 memory。通过结构化追问验收每个改进候选。最后将采纳的改进沉淀到知识图谱 (w-ocean)。用户说"改进"、"沉淀"、"提炼规则"、"这个经历能沉淀什么"、"有没有可以提炼成规则的模式"、"造梦"、"总结对话"、"提炼经验"、"固化模式"、"make dream"时触发。
-compatibility: claude
+description: 回顾本次对话，分析对 skill / rule / agent / hook / AGENTS.md / memory 是否有改进空间，输出改进建议并可选择直接产出改进文件。识别有规律或频繁提醒的提示并建议写入 memory。通过结构化追问验收每个改进候选。最后将采纳的改进沉淀到知识图谱 (w-ocean)。用户说"改进"、"沉淀"、"提炼规则"、"这个经历能沉淀什么"、"有没有可以提炼成规则的模式"、"造梦"、"总结对话"、"提炼经验"、"固化模式"、"make dream"时触发。
 ---
 
 # grow-dream — 对话回顾与能力成长
 
 回顾当前对话，识别可沉淀的模式，输出改进建议。
 
-:```ascii
+```ascii
 
                                     grow-dream 管道 (Pipeline)
                                          ──── 9 步流程 ────
@@ -18,14 +17,14 @@ compatibility: claude
   │  输入源    │──→│  识别模式   │──→│  文件对照   │──→│  检查矛盾   │──→│  提炼归类   │──→│  输出建议   │──→│  执行产出   │──→│  追问验收     │──→│  沉淀入库     │
   └────────────┘   └────────────┘   └────────────┘   └────────────┘   └────────────┘   └────────────┘   └────────────┘   └──────────────┘   └──────────────┘
        │                 │                │                 │                │                 │               │               │               │
-       │ 对话记录        │ 重复操作       │ CLAUDE.md       │ 术语一致性     │ skill (场景)    │ 分级建议      │ 按模板写入    │ 频次够不够?   │ 节点格式化    │
+       │ 对话记录        │ 重复操作       │ AGENTS.md       │ 术语一致性     │ skill (场景)    │ 分级建议      │ 按模板写入    │ 频次够不够?   │ 节点格式化    │
        │ 对话日志        │ 显式纠正       │ AGENTS.md       │ 用户纠正跟踪   │ command(确定)   │ 可选方案      │ 格式校验      │ 已有覆盖?     │ 边关联识别    │
        │ git log         │ 隐性模式       │ rules/          │ AI反馈一致性   │ rule (通用)     │               │ 写入 memory   │ 触发明确?     │ Workflow 调用 │
        │ memory/         │ 频次反馈       │ agents/         │ user 纠正回顾  │ agent/hook/doc  │               │               │ 维护成本?     │ 图谱更新确认  │
        └─ 修改历史       └─ 频次统计      └─                └─              └─ memory (规律)  └─              └─              └─              └─
-:```
+```
 
-:```ascii
+```ascii
 
                                 grow-dream 关联链路 (Link Diagram)
                                     输入源 ←→ 分析器 ←→ 产出目标
@@ -35,14 +34,14 @@ compatibility: claude
               │                                                                                     │
               │  ┌─────────────────┐  ┌─────────────────┐  ┌──────────────────────────┐             │
               │  │  skill 定义      │  │  rule 约束       │  │  memory 持久化记忆        │             │
-              │  │ .claude/skills/  │  │ .claude/rules/  │  │  projects/*/memory/      │             │
+              │  │ .dsh/skills/      │  │ AGENTS.md       │  │  projects/*/memory/      │             │
               │  └────────┬────────┘  └────────┬────────┘  └───────────┬──────────────┘             │
               │           │                    │                      │                            │
               │           └──────┬─────────────┴───────────┬──────────┘                            │
               │                  │                         │                                       │
               │          ┌───────▼───────────┐    ┌────────▼──────────┐     ┌─────────────────┐    │
-              │          │  hook 自动化      │    │  CLAUDE.md /      │     │  知识图谱        │    │
-              │          │  .claude/hooks/   │    │  AGENTS.md        │     │  有向图谱        │    │
+              │          │  hook 自动化      │    │  AGENTS.md        │     │  知识图谱        │    │
+              │          │  hooks.json       │    │  (项目/全局)      │     │  有向图谱        │    │
               │          └───────────────────┘    └───────────────────┘     │  w-ocean/        │    │
               └─────────────────────────────────────────────────────────────└───────────────────┘──┘
                                                                                        ▲
@@ -82,9 +81,9 @@ compatibility: claude
                                                           │   输入源（下次）  │
                                                           │  w-ocean/ 加入   │
                                                           └─────────────────┘
-:```
+```
 
-:```ascii
+```ascii
 
                         grow-dream 矩阵式流程图 (Matrix Flow)
                识别 → 判断 → 产出 三阶段 × 七维度，附每个节点的约束条件
@@ -95,13 +94,13 @@ compatibility: claude
                 │  维度    │  skill   │  cmd     │  rule    │  agent   │  hook    │  doc     │  memory  │
                 ├──────────┼──────────┼──────────┼──────────┼──────────┼──────────┼──────────┼──────────┤
                 │  信号    │ 对话暴露 │ 重复 ≥2  │ 用户显式 │ 独立决策 │ git/     │ 路径/    │ 频次 ≥2  │
-                │  识别    │ 技能缺失 │ 固定操作 │ 纠正的行为│ 场景重复  │ claude   │ 命令与   │ 规律提醒  │
+                │  识别    │ 技能缺失 │ 固定操作 │ 纠正的行为│ 场景重复  │ DSH      │ 命令与   │ 规律提醒  │
                 │          │          │          │          │          │ 事件触发  │ 实际不符 │ 偏好模式  │
                 ├──────────┼──────────┼──────────┼──────────┼──────────┼──────────┼──────────┼──────────┤
                 │                        ② 对照判断（查已存在文件是否覆盖）                                        │
                 ├──────────┬──────────┬──────────┬──────────┬──────────┬──────────┬──────────┬──────────┤
-                │  对照    │ plugin/  │ plugin/  │ .claude/ │ .claude/ │ .claude/ │ 项目根   │ 项目    │
-                │  对象    │ skills/  │ skills/  │ rules/   │ agents/  │ hooks/   │ 目录文件  │ memory/  │
+                │  对照    │ .dsh/    │ .dsh/    │ AGENTS   │ .agent-  │ hooks.   │ 项目根   │ 项目    │
+                │  对象    │ skills/  │ skills/  │ .md      │ presets/ │ json     │ 目录文件  │ memory/  │
                 │          │ <name>   │ <name>   │ <name>   │ <name>   │ <name>   │          │ MEMORY.md│
                 ├──────────┼──────────┼──────────┼──────────┼──────────┼──────────┼──────────┼──────────┤
                 │                        ③ 分类产出（判定条件 → 目标路径）                                        │
@@ -123,7 +122,7 @@ compatibility: claude
                 │  memory  │ 频次 ≥2 的规律提醒写入；跨会话可复用的模式优先；先检查已有       │
                 │          │ memory 是否覆盖；产出后更新 MEMORY.md 索引                       │
                 └──────────┴────────────────────────────────────────────────────────────────┘
-:```
+```
 
 > 管道图 ⑨ 阶段 ↔ 执行步骤映射：①=0 ②=1 ③=2 ④=3 ⑤=4 ⑥=5-6 ⑦=7-8 ⑧=9 ⑨=10
 
@@ -134,12 +133,12 @@ compatibility: claude
 | **skill** | 对话中暴露了哪些 skill 的缺失、错误或不足？触发关键词是否需要更新？ |
 | **command** | 是否有重复 ≥2 次的确定性操作序列？能否用一条命令替代手工步骤？触发关键词是否需要更新？ |
 | **rule** | 对话中暴露出哪些新的规则需要？现有规则是否有错误或需要增强？ |
-| **agent** | 是否有适合做成专用 agent 的重复操作模式？注：指 Claude Code CLI subagent，格式为 `.claude/agents/<name>.md`（YAML frontmatter + Markdown 体）。产出后需考虑如何调用编排（skill 中引用、workflow 中编排、手动调用）。 |
-| **hook** | 是否有适合做成 hook 的自动化行为？需评估：**判定条件**（何时触发、什么状态变化触发）、**时机**（git 事件 / claude 事件 / 定时）、**效率**（执行耗时、是否阻塞主流程、失败影响）。 |
-| **CLAUDE.md** | 是否存在？内容与项目实际架构是否一致？是否有过期路径/命令/约定？与 `rules/` 文件有无重复或冲突？是否需要补充环境、命令、目录约定？ |
+| **agent** | 是否有适合做成专用 agent 的重复操作模式？注：指 DSH agent preset，格式为 `$DSH_HOME/.agent-presets/<name>/`（`preset.yml` + `agent.cordis.yml`）。产出后需考虑如何调用编排（skill 中引用、workflow 中编排、手动调用）。 |
+| **hook** | 是否有适合做成 hook 的自动化行为？需评估：**判定条件**（何时触发、什么状态变化触发）、**时机**（git 事件 / DSH 事件 / 定时）、**效率**（执行耗时、是否阻塞主流程、失败影响）。 |
+| **AGENTS.md** | 是否存在？内容与项目实际架构是否一致？是否有过期路径/命令/约定？与 `rules/` 文件有无重复或冲突？是否需要补充环境、命令、目录约定？ |
 | **AGENTS.md / agents/** | 是否存在？定义的 agent 角色是否匹配项目需求？有定义无对应文件？是否记录了使用场景与边界？ |
 | **memory** | 对话中是否有频次 ≥2 的规律提醒或跨会话可复用的用户偏好？现有 memory 文件是否已覆盖？是否需要新建或更新条目？MEMORY.md 是否同步更新？ |
-| **[交叉检查] 冲突与矛盾** | CLAUDE.md / AGENTS.md / skill 定义 / rule 文件 / agent 角色 / hook 脚本 / memory 条目之间是否存在相互矛盾的描述？同一概念在不同文件中的用语是否统一？AI 的反馈是否与项目文件记录的一致？用户纠正过的行为是否在对应文件中已更新？ |
+| **[交叉检查] 冲突与矛盾** | AGENTS.md / skill 定义 / rule 条目 / agent preset / hook 脚本 / memory 条目之间是否存在相互矛盾的描述？同一概念在不同文件中的用语是否统一？AI 的反馈是否与项目文件记录的一致？用户纠正过的行为是否在对应文件中已更新？ |
 
 ## 执行步骤
 
@@ -155,8 +154,8 @@ compatibility: claude
    - 已有相似节点 → 扩展该节点（更新 tags/refs/edges）而非新建
    - 全新模式 → 正常新增节点
 
-2. 扫描项目 CLAUDE.md、AGENTS.md、`.claude/agents/`、memory/ **及 w-ocean/** 文件，与发现的实际行为对照：
-   - **CLAUDE.md**：记录的路径/命令/约定是否与实际使用一致？是否有遗漏的关键约定？
+2. 扫描项目 AGENTS.md、`.dsh/skills/`、`$DSH_HOME/.agent-presets/`、memory/ **及 w-ocean/** 文件，与发现的实际行为对照：
+   - **AGENTS.md**：记录的路径/命令/约定是否与实际使用一致？是否有遗漏的关键约定？
    - **AGENTS.md/agents/**：定义的 agent 是否被实际使用？实际使用的 agent 是否被记录？
    - **memory/**：已有 memory 条目是否覆盖了对话中发现的规律提醒？是否有条目需要更新或废弃？
    - **w-ocean/graph.json**：图谱中已有节点是否覆盖了本次识别的模式？已有边关系是否能复用到新候选？
@@ -164,13 +163,13 @@ compatibility: claude
 
 3. **交叉检查**：逐对比对各文件对同一概念的描述是否一致；检查用户曾纠正过的行为是否已在对应文件中更新；确认 AI 的反馈与项目文件无矛盾
 
-4. **提炼分类** — 按频次和性质归类。类型定义见 `.claude/references/grow-dream-types.md`。
+4. **提炼分类** — 按频次和性质归类。类型定义见 `../../references/grow-dream-types.md`。
    - 重复 ≥2 次的确定性操作 → command
-   - 特定场景的解题套路（需判断分支）→ skill（产出前查阅 `.claude/references/skill-structure.md` 确认结构合规）
+   - 特定场景的解题套路（需判断分支）→ skill（产出前按 `write-a-skill` 技能的结构要求执行）
    - 跨项目的通用行为约束 → rule
    - 需独立判断、持续运行的有限角色 → agent（格式：`agents/<name>.md`，YAML frontmatter + Markdown 体）
-   - 特定 git/claude 事件触发的自动化 → hook
-   - 项目根文档缺失或不一致 → CLAUDE.md / AGENTS.md
+   - 特定 git/DSH 事件触发的自动化 → hook
+   - 项目根文档缺失或不一致 → AGENTS.md
    - **频次 ≥2 的规律提醒、反复纠正、跨会话偏好的持续化** → **memory**
 
    图谱感知：按步骤①的 w-ocean 对照结果执行——已有变体则扩展，全新模式则新建。
@@ -190,13 +189,13 @@ compatibility: claude
    > 不是"你觉得呢"，而是"我的判断是建议采纳/建议放弃，理由是……"。展示你做了功课，降低用户决策成本。
    >
    > **③ 如果可以通过检查项目文件回答，就先查文件再问。**
-   > 不问"这个 skill 是否已有文件覆盖"这种可以自己查 `.claude/skills/` 目录的问题。查完文件，带着证据去问。
+   > 不问"这个 skill 是否已有文件覆盖"这种可以自己查 `.dsh/skills/` 目录的问题。查完文件，带着证据去问。
 
    验收时查阅 w-ocean 图谱中与候选相关的已有节点和边，带着图谱证据提问（如"w-ocean 中已有同类节点 skill-xxx，本次候选与它是否有扩展/依赖关系？"）。
 
    验收维度：
 
-   类型定义见 `.claude/references/grow-dream-types.md`。验收维度如下：
+   类型定义见 `../../references/grow-dream-types.md`。验收维度如下：
 
    | 候选类型 | 验收维度 | 判定标准 |
    |---------|---------|---------|
@@ -216,17 +215,17 @@ compatibility: claude
 
     a. **检测与初始化** — 检查当前项目根目录是否存在 `w-ocean/graph.json`：
        - **存在** → 跳过（后续步骤会读取）
-       - **不存在** → 从 cc-kit 插件模板复制初始图谱：
+       - **不存在** → 从 dsh-kit 技能包模板复制初始图谱：
          ```
-         # 定位 .claude/skills/ 目录
-         CCKIT_PATH=".claude/skills"
-         if [ ! -d "$CCKIT_PATH/grow-dream/templates/w-ocean" ]; then
-           echo "错误：找不到 grow-dream 模板，请确认 .claude/skills/ 存在"
+         # 定位 .dsh/skills/ 目录
+         DSHKIT_PATH=".dsh/skills"
+         if [ ! -d "$DSHKIT_PATH/grow-dream/templates/w-ocean" ]; then
+           echo "错误：找不到 grow-dream 模板，请确认 .dsh/skills/ 存在"
            exit 1
          fi
-         WOCEAN_TPL="$CCKIT_PATH/grow-dream/templates/w-ocean"
+         WOCEAN_TPL="$DSHKIT_PATH/grow-dream/templates/w-ocean"
          ```
-         复制 `.claude/skills/grow-dream/templates/w-ocean/` 下所有内容到项目根目录的 `w-ocean/`：
+         复制 `.dsh/skills/grow-dream/templates/w-ocean/` 下所有内容到项目根目录的 `w-ocean/`：
          - `graph.json`（图谱数据，替换 `__TEMPLATE_DATE__` 为当前日期）
          - `config.yaml`（配置）
          - `README.md`（文档）
@@ -291,11 +290,8 @@ compatibility: claude
 ### hook
 - [hook-description]: 建议 + 原因
 
-### CLAUDE.md
-- [CLAUDE.md / 缺失]: 建议 + 原因
-
 ### AGENTS.md
-- [AGENTS.md / agents/ 目录]: 建议 + 原因
+- [AGENTS.md / 缺失 / agent preset]: 建议 + 原因
 
 ### memory
 - [memory/<file>.md]: 规律提醒 + 建议写入内容 + 是否更新 MEMORY.md
@@ -341,11 +337,11 @@ compatibility: claude
 
 | 产出类型 | 目标路径 | 适用条件 |
 |---------|---------|---------|
-| **skill** | `.claude/skills/<name>/` 目录（含 `SKILL.md` + `references/` + `scripts/`） | 有判断分支、需要上下文理解的场景化能力。结构参考 `.claude/references/skill-structure.md` |
-| **command** | `.claude/skills/<name>/SKILL.md` | 步骤固定、无需 AI 判断的确定性操作 |
-| **rule** | `.claude/rules/<name>.md` | 跨项目的通用行为约束 |
-| **agent** | `.claude/agents/<name>.md`（YAML frontmatter + Markdown 体） | 持续运行、有决策自主权、面向特定领域；Claude Code CLI subagent 格式 |
-| **hook** | `.claude/hook.<event>.sh` | 特定 git/claude 事件触发、无交互的自动化 |
+| **skill** | 项目级 `<项目>/.dsh/skills/<name>/`、用户级 `$DSH_HOME/skills/<name>/`（含 `SKILL.md` + `references/` + `scripts/`） | 有判断分支、需要上下文理解的场景化能力。结构参见 `write-a-skill` 技能 |
+| **command** | `<项目>/.dsh/skills/<name>/SKILL.md` | 步骤固定、无需 AI 判断的确定性操作 |
+| **rule** | 项目级 `<项目>/AGENTS.md`；跨项目 `$DSH_HOME/AGENTS.md` | 跨项目的通用行为约束 |
+| **agent** | `$DSH_HOME/.agent-presets/<name>/`（`preset.yml` + `agent.cordis.yml`） | 持续运行、有决策自主权、面向特定领域；DSH agent preset 格式 |
+| **hook** | `hooks.json`（由 profile 的 hook 桥接 bundle 读取；仅 command 钩子生效） | 特定 git/DSH 事件触发、无交互的自动化 |
 | **memory** | `memory/<name>.md` + 更新 `MEMORY.md` 索引 | 频次 ≥2 的规律提醒、反复纠正、跨会话偏好的持久化 |
 | **图谱节点** | `w-ocean/graph.json`（内联入库） | 每轮 grow-dream 总结完成后自动调用 |
 
@@ -373,5 +369,5 @@ compatibility: claude
 - [ ] 术语与项目现有保持统一
 - [ ] **memory 完整性**：频次 ≥2 的规律提醒已写入 memory？已有 memory 条目是否因本次发现需要补充或废弃？MEMORY.md 索引是否同步更新？
 - [ ] **追问验收**：每个改进候选已过追问验收，输出明确判定（采纳/放弃/需补充）
-- [ ] **skill 结构合规**（有 skill 产出时）：检查 `.claude/references/skill-structure.md`，确认 SKILL.md 职责清晰、references/ 和 scripts/ 已分离、description 为触发场景而非宣传语
+- [ ] **skill 结构合规**（有 skill 产出时）：按 `write-a-skill` 技能核验，确认 SKILL.md 职责清晰、references/ 和 scripts/ 已分离、description 为触发场景而非宣传语
 - [ ] **图谱沉淀完整性**：已将所有采纳候选格式化为节点并追加到图谱？节点 ID 格式正确？边关联已识别？入库操作已执行并确认？

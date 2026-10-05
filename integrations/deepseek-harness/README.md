@@ -1,20 +1,45 @@
-# ⚡ cc-kit-dsh — DeepSeek Harness 插件面
+# dsh-kit — DeepSeek Harness 技能包
 
-cc-kit v4.0.0 的 **DSH 插件形态**:36 技能(cc-kit 16 + Anthropic 官方 19 + 元技能)**隔离在包内**,经 dsh bundle patch 聚合加载,`~/.agents/skills` 零污染。
+dsh-kit 的 **DSH bundle 形态**：**16 个 DSH 原生技能**隔离在包内，经 bundle patch 聚合加载，`~/.agents/skills` 零污染。
 
-![架构](D:/project/dsh1/cc-kit-expanded/docs/arch.png)
+## 安装
 
-## 安装(profile)
+```powershell
+dsh plugin --profile <profile> add "<本仓库>/integrations/deepseek-harness"
+```
+
+等价的手工写法（写进 `$DSH_HOME/profiles/<profile>/package.json`）：
 
 ```jsonc
-"dependencies": { "cc-kit-dsh": "link:D:/project/dsh1/vendor/cc-kit-dsh" },
-"dsh.profile.bundles": [ ..., "cc-kit-dsh" ]
+"dependencies": { "dsh-kit": "link:<本仓库>/integrations/deepseek-harness" },
+"dsh.profile.bundles": [ ..., "dsh-kit" ]
 ```
 
-```bash
-cd ~/.dsh/profiles/web && pnpm install --offline && dsh --profile web --dump-config
+包清单变化后由 DSH 重载生效；HMR 未接管时重启 DSH。
+
+## 加载方式
+
+`cordis.patch.yml` 插入一行 `dsh-kit-skill-filesystem`，使用 `@deepseek-ai/dsh-skill-filesystem`：
+
+- `providerName: dsh-kit`
+- `includeDefaultRoots: false` —— 项目根、用户根、`$DSH_BUNDLED_SKILL_DIR` 均不参与，只加载本包 `skills/`
+- `bundledSkillDir` 经 `createRequire(baseUrl).resolve('dsh-kit/package.json')` 解析，不写死路径
+
+| 项 | 值 |
+|----|----|
+| 包名 | `dsh-kit` |
+| 版本 | 5.0.0 |
+| 技能 | 16（15 个能力技能 + 元技能 `dsh-kit`） |
+| 参考文件 | `rules/`（2）、`references/`（1） |
+| 运行期服务 | 无（`lib/index.js` 为空实现） |
+| 来源 | DSH 原生 |
+
+## 校验
+
+```powershell
+dsh plugin --profile <profile> list --depth 0
 ```
 
-重启 DSH 后生效。插件的 cordis.patch.yml 注册 `cc-kit-skill-filesystem` 加载器,技能由 provider 提供。
+应看到 `dsh-kit@link:<本仓库>/integrations/deepseek-harness`；会话技能目录中出现 `dsh-kit`、`diagnose`、`grow-dream` 等即加载成功。
 
-> 版本:4.0.0 | 技能:36 | 来源:gx-zyl/cc-kit + anthropics/skills
+> 版本:5.0.0 | 技能:16 | 来源:DSH 原生

@@ -1,6 +1,0 @@
-{
-  "instructions": [
-    "CLAUDE.md",
-    ".claude/references/*.md"
-  ]
-}

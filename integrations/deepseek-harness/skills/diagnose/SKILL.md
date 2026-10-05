@@ -1,7 +1,6 @@
 ---
 name: diagnose
 description: 系统性调试法，用于复现→假设→验证→修复→回归的 bug 排查流程。用户说"诊断一下"、"查 bug"、"调试"、"崩了"、"性能下降"时触发。
-compatibility: claude
 ---
 
 # Diagnose — 调试六步法

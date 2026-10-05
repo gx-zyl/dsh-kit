@@ -1,7 +1,6 @@
 ---
 name: github-repo
 description: 创建 GitHub 私有/公开仓库、推送已有代码、配置 CI。用户说"创建仓库"、"新建 repo"、"push 到 GitHub"、"初始化仓库"时触发。
-compatibility: claude
 ---
 
 # github-repo — GitHub 仓库创建 & 初始化

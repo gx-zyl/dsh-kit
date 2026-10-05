@@ -1,7 +1,6 @@
 ---
 name: chrome-devtools-wsl
 description: 操控 Windows Chrome — 导航/截图/JS/CDP/API 桥接，替代 web-access CDP Proxy。用户说操控 Chrome、浏览器自动化、CDP、devtools 时触发。
-compatibility: claude
 ---
 
 # Chrome DevTools for WSL
@@ -23,8 +22,8 @@ PowerShell → Windows Python → CDP 操控 Chrome。无需中继，不依赖�
 ## 命令
 
 ```bash
-# 项目根路径（skills 位于 .claude/skills/）
-cd .claude/skills/chrome-devtools-wsl
+# 技能目录 = DSH 报告的 base directory（…/skills/chrome-devtools-wsl）
+cd <技能目录>
 
 just start          启动 Chrome（带 remote-debugging）
 just stop           关闭 Chrome
@@ -50,7 +49,7 @@ PowerShell ───────────────►     Windows Python �
 
 ## 参考文件
 
-插件根目录 `rules/` 包含以下规则文件（全局安装后需运行 `tools/rules.sh install` 注册，或在 `--plugin-dir` 模式下自动加载）：
+包根目录 `rules/` 随包分发以下规则文件，按相对路径直接查阅即可（DSH 无注册步骤）：
 
 - `../../rules/wsl-cli-tools.md` — WSL 现代 CLI 工具链映射表
 

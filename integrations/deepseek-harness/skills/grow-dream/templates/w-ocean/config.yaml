@@ -22,7 +22,7 @@ nodeTypes:
     icon: 🤖
   - id: hook
     label: Hook
-    description: git/claude 事件触发的自动化
+    description: git/DSH 事件触发的自动化
     icon: 🔗
   - id: memory
     label: Memory

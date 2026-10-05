@@ -1,9 +1,9 @@
-# cc-kit-dsh: 从包内 skills/ 提供技能(隔离加载,不复制进 canonical)
+# dsh-kit: 从包内 skills/ 提供技能(隔离加载,不复制进 canonical)
 # 仿 @tt-a1i/archify-dsh 的模式:经 dsh-skill-filesystem 按 npm 包身份定位 bundledSkillDir
 - insert:
-    - id: cc-kit-skill-filesystem
+    - id: dsh-kit-skill-filesystem
       name: '@deepseek-ai/dsh-skill-filesystem'
       config:
-        providerName: cc-kit
+        providerName: dsh-kit
         includeDefaultRoots: false
-        bundledSkillDir: !!js process.getBuiltinModule('node:path').join(process.getBuiltinModule('node:path').dirname(process.getBuiltinModule('node:module').createRequire(baseUrl).resolve('cc-kit-dsh/package.json')), 'skills')
+        bundledSkillDir: !!js process.getBuiltinModule('node:path').join(process.getBuiltinModule('node:path').dirname(process.getBuiltinModule('node:module').createRequire(baseUrl).resolve('dsh-kit/package.json')), 'skills')

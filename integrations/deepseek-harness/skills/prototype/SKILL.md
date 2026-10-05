@@ -1,7 +1,6 @@
 ---
 name: prototype
 description: 快速原型：搭可运行终端原型验证设计，或 UI 多方案对比。用户说搭原型、验证设计时触发。
-compatibility: claude
 ---
 
 # 快速原型

@@ -1,7 +1,7 @@
 {
-  "name": "cc-kit-dsh",
-  "version": "4.0.0",
-  "description": "cc-kit 统一技能包(DSH 插件形态):cc-kit 16 技能 + Anthropic 官方 19 技能,隔离加载,不污染 canonical",
+  "name": "dsh-kit",
+  "version": "5.0.0",
+  "description": "dsh-kit 技能包(DSH bundle 形态):16 个 DSH 原生技能,包内隔离加载,不写入 canonical 技能目录",
   "license": "MIT",
   "type": "module",
   "main": "./lib/index.js",
@@ -12,6 +12,8 @@
   "files": [
     "lib",
     "skills",
+    "rules",
+    "references",
     "cordis.patch.yml",
     "README.md"
   ],
@@ -19,7 +21,7 @@
     "dsh-plugin",
     "deepseek-harness",
     "agent-skill",
-    "cc-kit"
+    "dsh-kit"
   ],
   "engines": {
     "node": ">=20"

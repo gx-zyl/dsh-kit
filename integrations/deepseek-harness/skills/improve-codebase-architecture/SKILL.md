@@ -1,7 +1,6 @@
 ---
 name: improve-codebase-architecture
 description: 代码架构改进：找重构机会、紧耦合模块解耦、提升可测试性。用户说改进架构、重构时触发。
-compatibility: claude
 ---
 
 # 改进代码架构

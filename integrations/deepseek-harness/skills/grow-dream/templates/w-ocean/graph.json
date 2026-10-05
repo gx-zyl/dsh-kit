@@ -1,5 +1,4 @@
 {
-  "$schema": "https://anthropic.com/claude-code/w-ocean-schema.json",
   "meta": {
     "name": "w-ocean",
     "description": "持续积累的有向图知识图谱 — 每次 grow-dream 总结后新增节点与边",

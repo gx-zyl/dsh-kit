@@ -42,7 +42,7 @@ description: 浏览/查询/遍历项目知识图谱（w-ocean/）
 
 ## 注意
 
-- 此命令操作的是**当前项目**的 `w-ocean/`，不是 cc-kit 插件的模板
+- 此命令操作的是**当前项目**的 `w-ocean/`，不是 dsh-kit 技能包的模板
 - 若 `w-ocean/graph.json` 损坏（JSON 格式错误），提示修复命令
 - `graph.json` 应提交到版本控制
 

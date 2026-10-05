@@ -1,7 +1,6 @@
 ---
 name: grill-with-docs
 description: 用项目文档和领域术语拷打你的设计方案，逐层深入，精炼术语，更新 CONTEXT.md 和 ADR。用户说"用文档审方案"、"给我过一遍设计"时触发。
-compatibility: claude
 ---
 
 <what-to-do>

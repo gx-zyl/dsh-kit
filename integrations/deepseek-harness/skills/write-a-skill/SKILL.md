@@ -1,7 +1,6 @@
 ---
 name: write-a-skill
 description: 创建新的 AI skill，有标准结构和渐进式信息呈现。用户说"写个 skill"、"创建 skill"、"新建技能"时触发。
-compatibility: claude
 ---
 
 # 写 Skill
