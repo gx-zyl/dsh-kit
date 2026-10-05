@@ -1,9 +1,12 @@
 ---
 name: architecture-decision-records
-description: 架构决策记录（ADR）格式和流程。用户说写 ADR、记录架构决策、设计文档时触发。
+description: "把架构决策沉淀为编号 ADR（docs/adr/）：上下文、备选方案、后果与索引 README。用户要求记录架构决策时触发。"
+metadata:
+  origin: ecc
+  upstream: affaan-m/ECC
+  snapshot: ef648e01899b
 ---
-
-# 架构决策记录（ADR）
+# Architecture Decision Records
 
 Capture architectural decisions as they happen during coding sessions. Instead of decisions living only in Slack threads, PR comments, or someone's memory, this skill produces structured ADR documents that live alongside the code.
 
@@ -105,7 +108,7 @@ docs/
 ### ADR Index Format
 
 ```markdown
-# 架构决策记录（ADR）
+# Architecture Decision Records
 
 | ADR | Title | Status | Date |
 |-----|-------|--------|------|

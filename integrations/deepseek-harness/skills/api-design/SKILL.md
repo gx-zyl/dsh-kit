@@ -1,9 +1,12 @@
 ---
 name: api-design
-description: REST API 设计模式：资源命名、状态码、分页、过滤、错误响应、版本控制、限流。用户说设计 API、REST 接口规范时触发。
+description: "REST API 设计模式：资源命名、状态码、分页、过滤、错误响应、版本控制与限流。设计或评审 REST 端点时触发。"
+metadata:
+  origin: ecc
+  upstream: affaan-m/ECC
+  snapshot: ef648e01899b
 ---
-
-# API 设计模式
+# API Design Patterns
 
 Conventions and best practices for designing consistent, developer-friendly REST APIs.
 
@@ -302,7 +305,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIs...
 
 # API key (for server-to-server)
 GET /api/v1/data
-X-API-Key: sk_live_abc123
+X-API-Key: sk_live_...
 ```
 
 ### Authorization Patterns

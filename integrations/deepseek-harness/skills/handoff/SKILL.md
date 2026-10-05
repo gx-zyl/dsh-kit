@@ -1,14 +1,18 @@
 ---
 name: handoff
-description: 把当前对话压缩成交接文档，方便另一个 AI agent 接力。带"推荐技能"章节。用户说交接、接力、handoff、总结对话、传给另一个 AI 时触发。
+description: "把当前对话压缩成交接文档，供另一个 agent 接手继续。会话过长或要换手时触发。"
+metadata:
+  origin: mp-skills
+  upstream: mattpocock/skills
+  snapshot: 24fe0ef7737e
+disable-model-invocation: true
 ---
+Write a handoff document summarising the current conversation so a fresh agent can continue the work. Save to the temporary directory of the user's OS - not the current workspace.
 
-把当前对话总结成交接文档，让一个全新的 AI 能继续工作。保存到系统的临时目录，不要放到项目目录里。
+Include a "suggested skills" section in the document, naming which skills the next agent should call the skill tool for.
 
-文档中包含"推荐技能"章节，建议接力 agent 需要调用的 skills。
+Do not duplicate content already captured in other artifacts (specs, plans, ADRs, issues, commits, diffs). Reference them by path or URL instead.
 
-不要重复已有产物（PRD、计划、ADR、issue、commit、diff）中的内容，用路径或 URL 引用即可。
+Redact any sensitive information, such as API keys, passwords, or personally identifiable information.
 
-脱敏敏感信息（API 密钥、密码、个人身份信息）。
-
-如果用户传了参数，按参数描述的用途重点写文档。
+If the user passed arguments, treat them as a description of what the next session will focus on and tailor the doc accordingly.
