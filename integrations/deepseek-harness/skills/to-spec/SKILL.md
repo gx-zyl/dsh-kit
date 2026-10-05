@@ -1,6 +1,6 @@
 ---
 name: to-spec
-description: "把当前对话直接综合成规格文档并发布到项目 issue tracker，不做额外访谈。仅用户经 /to-spec 调用（不进模型可见目录）。"
+description: "把当前对话直接综合成规格文档并发布到项目 issue tracker，不做额外访谈。用户调用型技能：仅经 /to-spec 触发，不进模型可见目录。"
 metadata:
   origin: mp-skills
   upstream: mattpocock/skills

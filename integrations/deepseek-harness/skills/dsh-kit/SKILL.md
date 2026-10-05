@@ -39,8 +39,8 @@ dsh-kit 是一个 **DeepSeek Harness bundle 形式**的技能包，提供 **92 �
 - 技能描述（`description`）决定 DSH 何时加载该技能；正文多为上游原文
 - 84 个上游技能的正文保持上游原样，可能残留 **Claude Code 语境的路径或机制说明**（如 `~/.claude/...`、hooks 配置、`allowed-tools`）；本包只改写了指向技能目录的死链，其余以 `../../references/upstream-*.md` 的处置说明为准
 - `grill-with-docs` 是 8 行委托式技能，会串联 `grilling` 与 `domain-modeling`
-- 只有 4 个技能带 `disable-model-invocation: true`（`retro`、`triage`、`to-spec`、`to-tickets`），它们**只能由用户经 `/` 调用**、不进入模型可见目录，其 `description` 已标注这一点
-- `grill-me`、`grill-with-docs`、`handoff`、`improve-codebase-architecture` 在 v5.0.0 即为模型可调用；v6.0.2 起摘掉上游的该键，**维持既有可调用性、不制造静默回归**
+- 有 8 个技能是上游定义的**用户调用型**（`disable-model-invocation: true`）：`grill-me`、`grill-with-docs`、`handoff`、`improve-codebase-architecture`、`retro`、`triage`、`to-spec`、`to-tickets`。它们**只能由用户经 `/` 调用**，不进模型可见目录；其 `description` 按上游规范写成**给人看的一行摘要**（不含触发语）
+- 该调用性是上游成文策略（`.agents/invocation.md`）：判据是"模型能否自主、有益地调用它"，而非包内历史有无该技能
 
 ## 参考文档
 

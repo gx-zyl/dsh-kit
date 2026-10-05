@@ -1,10 +1,11 @@
 ---
 name: improve-codebase-architecture
-description: "扫描代码库找出\"加深模块\"的机会，输出可视化 HTML 报告，再就选中的一项逐层拷问。用户要求改进架构时触发。"
+description: "扫描代码库找出加深模块的机会并输出可视化 HTML 报告，再就选中的一项逐层拷问。用户调用型技能：仅经 /improve-codebase-architecture 触发。"
 metadata:
   origin: mp-skills
   upstream: mattpocock/skills
   snapshot: 24fe0ef7737e
+disable-model-invocation: true
 ---
 # Improve Codebase Architecture
 

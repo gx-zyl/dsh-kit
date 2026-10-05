@@ -1,9 +1,10 @@
 ---
 name: grill-me
-description: "对方案或设计进行不留情面的追问，用来打磨思路。用户说\"拷问我\"\"质疑我这个方案\"时触发。"
+description: "对方案或设计做不留情面的追问，用来打磨思路。用户调用型技能：仅经 /grill-me 触发，不进模型可见目录。"
 metadata:
   origin: mp-skills
   upstream: mattpocock/skills
   snapshot: 24fe0ef7737e
+disable-model-invocation: true
 ---
 Call the skill tool with "grilling".
