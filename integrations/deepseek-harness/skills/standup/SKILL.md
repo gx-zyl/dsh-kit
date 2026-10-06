@@ -26,15 +26,15 @@ Two ways, mixable:
 
 - **By recency** (common) — worktrees active in a window:
   ```bash
-  node "${CLAUDE_SKILL_DIR}/standup.mjs" worktrees --since <1h|4h|24h|7d|all> --json
+  node "<skill-dir>/standup.ts" worktrees --since <1h|4h|24h|7d|all> --json
   ```
   Active = a commit *or* an uncommitted/staged/untracked edit in the window. If
   the user didn't name a window, offer 1h / 4h / 24h / 7d / all.
 
 - **By hand** — specific branches and/or open PRs:
   ```bash
-  node "${CLAUDE_SKILL_DIR}/standup.mjs" worktrees --json   # local branches
-  node "${CLAUDE_SKILL_DIR}/standup.mjs" prs --json         # open PRs (via gh)
+  node "<skill-dir>/standup.ts" worktrees --json   # local branches
+  node "<skill-dir>/standup.ts" prs --json         # open PRs (via gh)
   ```
   Show one numbered list (worktrees + PRs, with age/title); their reply is the
   "checkbox." If `prs` errors (no `gh` / not GitHub), carry on worktrees-only.
@@ -47,7 +47,7 @@ echo the roster to confirm before you start.
 Set a goal + prompt that invite a conversation, not one-shot status reports:
 
 ```bash
-node "${CLAUDE_SKILL_DIR}/standup.mjs" open --force --agent facilitator \
+node "<skill-dir>/standup.ts" open --force --agent facilitator \
   --goal "Collapse these branches/PRs into ONE consolidated worktree: what each changed, where they overlap, which becomes the target, and the merge order." \
   --prompt "Facilitated rounds. Round 1: introduce your branch and its state. Then resolve the conflicts the facilitator surfaces, round by round, until the room lands on one concrete plan (target worktree + merge order + conflict resolutions). Read-only: decide, don't merge. Register AGREE when you back the plan."
 ```
@@ -61,7 +61,7 @@ read between rounds and bring back whoever's still needed.
 Spawned agents don't inherit `CLAUDE_SKILL_DIR`, so resolve it once and paste the
 real path into each brief:
 ```bash
-echo "${CLAUDE_SKILL_DIR}"
+echo "<skill-dir>"
 ```
 
 **Round 1 — intros (everyone, one Task message so they run together).** Brief
@@ -69,7 +69,7 @@ each:
 
 > You're **`<branch>`** (a PR is **`pr-<number>`**) in a standup group chat. Read
 > `<skill-dir>/agent-brief.md` and play your part by it. The room is
-> `~/.claude-mem/STANDUP.md`; speak with `node "<skill-dir>/standup.mjs" post …`,
+> `~/.claude-mem/STANDUP.md`; speak with `node "<skill-dir>/standup.ts" post …`,
 > catch up with `… read`. Get your bearings (`cd "<path>"`,
 > `git log --oneline origin/main..HEAD`, `git status --short`,
 > `git diff --stat origin/main...HEAD`; a PR uses `gh pr view/diff <number>`),
@@ -91,7 +91,7 @@ yourself — don't wait for an agent to volunteer. Write it as plain prose a hum
 can skim, not a field dump: which worktree is the target and why, the merge order
 in a sentence, and what's left for the human:
 ```bash
-node "${CLAUDE_SKILL_DIR}/standup.mjs" summation --agent facilitator \
+node "<skill-dir>/standup.ts" summation --agent facilitator \
   --text "Build on <worktree> — it's the only one with real code. Layer <branch>'s changes on top, then drop in the doc-only branches; skip <empty branch>. Your call before it's safe: <the one or two real decisions>. Done when it all sits in <target> and builds clean."
 ```
 
@@ -116,7 +116,7 @@ outside `/do`.
 ## CLI
 
 ```bash
-node "${CLAUDE_SKILL_DIR}/standup.mjs" <command> [--flags]
+node "<skill-dir>/standup.ts" <command> [--flags]
 ```
 Defaults: agent = git branch, file = `~/.claude-mem/STANDUP.md`. Every write is
 atomically locked.

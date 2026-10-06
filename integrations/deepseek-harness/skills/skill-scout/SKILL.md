@@ -6,6 +6,12 @@ metadata:
   upstream: affaan-m/ECC
   snapshot: ef648e01899b
 ---
+
+> ⚠ **DSH 语境（dsh-kit 适配 · 2026-10-06）**：本技能正文来自上游（mattpocock/skills），其中
+> `~/.claude/…` / `.claude/…` / `hooks/hooks.json`（Claude Code 形态）是**上游的落点与机制**，
+> DSH 侧**没有同名落点**（实测 `~/.dsh/settings.json` 不存在）。DSH 的两处真实等价物：技能目录
+> `~/.agents/skills`、钩子 `hooks.json`（由 profile 的 hook 桥接 bundle 读取，**仅 command 钩子生效**）。
+> ⇒ **本节示例请勿直接套用**；要落地请按上面两处改写，或改用 DSH 自身的插件配置。
 # Skill Scout
 
 Use this skill before creating a new skill. The goal is to avoid duplicating
@@ -43,14 +49,14 @@ Search installed and marketplace skill names first. Local sources are preferred
 because they are already part of the user's environment.
 
 ```bash
-find ~/.claude/skills -maxdepth 2 -name SKILL.md 2>/dev/null | grep -iE "keyword|synonym"
+find ~/.agents/skills -maxdepth 2 -name SKILL.md 2>/dev/null | grep -iE "keyword|synonym"
 find ~/.claude/plugins/marketplaces -path '*/skills/*/SKILL.md' 2>/dev/null | grep -iE "keyword|synonym"
 ```
 
 Then search frontmatter descriptions:
 
 ```bash
-grep -RilE "keyword|synonym" ~/.claude/skills ~/.claude/plugins/marketplaces 2>/dev/null
+grep -RilE "keyword|synonym" ~/.agents/skills ~/.claude/plugins/marketplaces 2>/dev/null
 ```
 
 ### Step 3 - Search Remote Sources
