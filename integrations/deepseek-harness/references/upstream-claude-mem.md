@@ -11,7 +11,7 @@
 - **载体**：GitHub 开源仓库（agent 技能集）
 - **快照（本包取用版本）**：`main` @ `3b3baaa55ebb`，提交时间 `2026-10-05T01:55:32-07:00`
 - **获取方式/时间**：`git clone --depth 1`，2026-10-05（本机经代理 `http://127.0.0.1:9910`）
-- **许可**：Apache-2.0（详见上游 `LICENSE`）
+- **许可**：Apache-2.0（上游 `LICENSE` + `NOTICE`，版权行 `Copyright 2026 Alex Newman`；本包随附：`../LICENSES/Apache-2.0.txt`、`../LICENSES/NOTICE-claude-mem.txt`）
 - **URL**：https://github.com/thedotmack/claude-mem
 - **引用键**：`cmem-3b3baaa`
 
@@ -30,7 +30,7 @@
 
 - 上游规范技能目录共 **22** 个（上游 `plugin/skills/` 22 个；`claude-mem-cursor`、`cowork`、`openclaw` 等变体目录为其镜像）。
 - 本包取用 **6** 个，其余未取用。
-- 未取用的 **16** 个技能依赖 claude-mem 自身的 npm 服务与本地记忆库（`mem-search`、`timeline-report`、`weekly-digests`、`knowledge-agent`、`how-it-works`、`mode-creator`、`oh-my-issues`、`cloud-sync`、`ccs-align`、`agent-cost-report`、`pathfinder`、`smart-explore`、`version-bump`、`timeline-report` 等），进包会形成隐性外部依赖。
+- 未取用的 **16** 个（下列 13 个为实例、非全量）依赖 claude-mem 自身的 npm 服务与本地记忆库（`mem-search`、`timeline-report`、`weekly-digests`、`knowledge-agent`、`how-it-works`、`mode-creator`、`oh-my-issues`、`cloud-sync`、`ccs-align`、`agent-cost-report`、`pathfinder`、`smart-explore`、`version-bump`），进包会形成隐性外部依赖。
 - 取用的 6 个均为**可脱离该服务独立运行**的纯文档型技能；`handoff` 因与 mattpocock 版同名不同物，改名为 `session-handoff`。
 
 ## 署名与合规
@@ -38,3 +38,4 @@
 - 本包对这些技能的**翻译（description）与结构适配**（目录拍平、frontmatter 规整、路径改写）由 dsh-kit 完成；
 - 技能**正文、参考文件与脚本保持上游原文**，版权归上游作者；
 - 再分发遵循上游 Apache-2.0 许可；若上游许可变更或要求撤回，删除对应 `skills/<name>/` 即可，不影响其余技能。
+- 许可正文与**变更声明**（含 §4(b)/§4(d) 履行情况）见 `../THIRD-PARTY-NOTICES.md`。

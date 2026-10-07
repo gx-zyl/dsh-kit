@@ -1,7 +1,7 @@
 # 代理管理
 
-- 默认不启用 `HTTP_PROXY` / `HTTPS_PROXY`
-- 需要访问外网时临时启用：
+- 本机默认**已启用** `HTTP_PROXY` / `HTTPS_PROXY`（指向 `http://127.0.0.1:9910`，见 `~/.dsh/AGENTS.md` §7「网络与代理」）
+- 若某个环境未启用，需要访问外网时临时启用：
   ```pwsh
   $env:HTTP_PROXY = 'http://127.0.0.1:9910'
   $env:HTTPS_PROXY = 'http://127.0.0.1:9910'

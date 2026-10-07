@@ -6,6 +6,11 @@ metadata:
   upstream: thedotmack/claude-mem
   snapshot: 3b3baaa55ebb
 ---
+> ⚠ **DSH 语境（dsh-kit 适配 · 2026-10-07）**：本技能正文来自上游（`thedotmack/claude-mem`）。其中
+> `/make-plan`、`/do`、`/review` 都是**上游 Claude Code / claude-mem 的 slash command**，DSH 与本包
+> **都没有这些命令**。本技能产出的 `04-handoff-prompt.md` 请直接交回用户（或经 `ask_user_question`
+> 确认后进入 plan 模式），**不要假定 `/make-plan` 存在**。
+
 # Design Is
 
 ## Do not use for

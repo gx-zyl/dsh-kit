@@ -37,10 +37,10 @@ dsh-kit 是一个 **DeepSeek Harness bundle 形式**的技能包，提供 **92 �
 
 - 项目使用 PowerShell（`pwsh`），非 bash
 - 技能描述（`description`）决定 DSH 何时加载该技能；正文多为上游原文
-- 84 个上游技能的正文保持上游原样，可能残留 **Claude Code 语境的路径或机制说明**（如 `~/.claude/...`、hooks 配置、`allowed-tools`）；本包只改写了指向技能目录的死链，其余以 `../../references/upstream-*.md` 的处置说明为准
-- `grill-with-docs` 是 8 行委托式技能，会串联 `grilling` 与 `domain-modeling`
-- 有 8 个技能是上游定义的**用户调用型**（`disable-model-invocation: true`）：`grill-me`、`grill-with-docs`、`handoff`、`improve-codebase-architecture`、`retro`、`triage`、`to-spec`、`to-tickets`。它们**只能由用户经 `/` 调用**，不进模型可见目录；其 `description` 按上游规范写成**给人看的一行摘要**（不含触发语）
-- 该调用性是上游成文策略（`.agents/invocation.md`）：判据是"模型能否自主、有益地调用它"，而非包内历史有无该技能
+- 84 个上游技能的正文保持上游原样，可能残留 **Claude Code 语境的路径或机制说明**（如 `~/.claude/...`、hooks 配置、`allowed-tools`）：有 DSH 等价物的已改写（如 `~/.claude/skills` → `~/.agents/skills`），无等价物的加**横幅标注**（当前 11 个文件带横幅）；指向包外的死链一律改为纯文本并注「上游参考，未随包分发」，不再留下点不开的链接。逐条处置见 `../../references/upstream-*.md` 与 `../../THIRD-PARTY-NOTICES.md`
+- `grill-with-docs` 是**委托式技能**（正文 1 行、全文 10 行），会串联 `grilling` 与 `domain-modeling`
+- 有 8 个技能是上游定义的**用户调用型**（`disable-model-invocation: true`）：`grill-me`、`grill-with-docs`、`handoff`、`improve-codebase-architecture`、`retro`、`triage`、`to-spec`、`to-tickets`。它们**只能由用户经 `/` 调用**，不进模型可见目录；其 `description` 写成「**给人看的一行摘要 + 一句机制尾注**」（尾注只给人看，不是给模型的触发语）
+- 该调用性是上游成文策略（上游仓库的 `.agents/invocation.md`，**未随本包分发**；取用判据与 8 条名单见 `../../references/upstream-mp-skills.md`）：判据是"模型能否自主、有益地调用它"，而非包内历史有无该技能
 
 ## 参考文档
 

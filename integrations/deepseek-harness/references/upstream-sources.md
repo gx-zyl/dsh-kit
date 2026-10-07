@@ -27,6 +27,7 @@
 | 选中技能 | 目录拍平为 `skills/<name>/SKILL.md`（DSH 只发现这一层） |
 | frontmatter | 只保留 DSH 认可键：`name`、`description`（+ 可选 `metadata`、`disable-model-invocation`、`user-invocable`）；上游杂键在此登记，不再随技能保留 |
 | `description` | 中文触发语（召回用）；正文保持上游原文 |
-| 署名 | 每个技能的 `metadata.origin` / `metadata.upstream` / `metadata.snapshot` 指向本表条目 |
+| 署名 | **84 个上游技能**的 `metadata.origin` / `metadata.upstream` / `metadata.snapshot` 指向本表条目（8 个包内自有技能无上游来源：`karpathy-guidelines` 只有 `origin: dsh-kit`，其余 7 个不设 `metadata`） |
+| 许可正文 | 随包分发于 `../LICENSES/`（MIT×2、Apache-2.0、claude-mem 的 `NOTICE`）；**变更声明**见 `../THIRD-PARTY-NOTICES.md` |
 | 未选中技能 | 不复制进包；原因见各分册「未取用说明」 |
 | 工具本体 | 上游的可执行服务/CLI/hooks 不进技能面（见 `upstream-ocr.md`） |

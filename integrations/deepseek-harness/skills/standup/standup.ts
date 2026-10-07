@@ -7,7 +7,9 @@
 // must converge on; the body is the chat log. Agents `watch` the file to listen,
 // `post` to speak, `agree` to register consensus, and `summation` to close it.
 //
-// Zero deps. Node 20+ (top-level await, fs/promises). No network.
+// Zero deps. Node >=22.18 (native TypeScript/ESM type-stripping for this .ts
+// entry, top-level await, fs/promises). No network. On older Node, copy this
+// file to standup.mjs and invoke that instead.
 //
 // Concurrency: every write takes an atomic lock (mkdir <file>.lock) so two
 // agents posting at the same instant can't clobber each other — the exact

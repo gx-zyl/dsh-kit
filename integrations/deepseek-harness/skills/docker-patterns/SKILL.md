@@ -6,6 +6,10 @@ metadata:
   upstream: affaan-m/ECC
   snapshot: ef648e01899b
 ---
+> ⚠ **DSH 语境（dsh-kit 适配 · 2026-10-07）**：本技能正文来自上游（`affaan-m/ECC`），其中
+> `/workspace/project/.claude`（Claude Code 工程目录）与 ECC 自研安装器的 `claude-project` 判定是
+> **上游的落点与机制**，DSH 侧没有同名落点。⇒ 本节示例请勿直接套用，落地请按 DSH 自身配置改写。
+
 # Docker Patterns
 
 Docker and Docker Compose best practices for containerized development.

@@ -8,9 +8,12 @@ Thumbs.db
 *~
 .idea/
 
+# Node
+node_modules/
+
 # Python venv
 .venv/
 uv.lock
 
-# 本地环境变量（从 .env.example 复制）
+# 本地环境变量（模板见 integrations/deepseek-harness/skills/chrome-devtools-wsl/.env.example）
 .env

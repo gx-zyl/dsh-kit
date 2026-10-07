@@ -11,7 +11,7 @@
 - **载体**：GitHub 开源仓库（agent 技能集）
 - **快照（本包取用版本）**：`main` @ `24fe0ef7737e`，提交时间 `2026-10-04T13:48:05+01:00`
 - **获取方式/时间**：`git clone --depth 1`，2026-10-05（本机经代理 `http://127.0.0.1:9910`）
-- **许可**：MIT（详见上游 `LICENSE`）
+- **许可**：MIT（上游 `LICENSE`，版权行 `Copyright (c) 2026 Matt Pocock`；本包随附许可正文：`../LICENSES/MIT-mattpocock-skills.txt`）
 - **URL**：https://github.com/mattpocock/skills
 - **引用键**：`mp-24fe0ef`
 

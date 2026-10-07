@@ -6,6 +6,11 @@ metadata:
   upstream: thedotmack/claude-mem
   snapshot: 3b3baaa55ebb
 ---
+> ⚠ **DSH 语境（dsh-kit 适配 · 2026-10-07）**：本技能正文来自上游（`thedotmack/claude-mem`）。下列机制名
+> 在 DSH 下须替换：`${CLAUDE_SKILL_DIR}` → 写技能目录的真实路径；`AskUserQuestion` → `ask_user_question`；
+> `Task` 并行派发 → `subagent` / `spawn_teammate`；`/do` → 上游命令，本包无此技能，需人工执行或改用本包技能。
+> 共享文件默认落点 `~/.claude-mem/STANDUP.md` 是上游路径，DSH 侧请用 `--file` 自定。
+
 # standup — facilitate a group chat between branch-agents
 
 You're the **facilitator**. Each of the user's git worktrees (and any PRs they
@@ -58,7 +63,7 @@ You drive the turns — if agents watch-loop on their own the room can stall wit
 nothing decided. Each agent speaks once per round (read → post → return); you
 read between rounds and bring back whoever's still needed.
 
-Spawned agents don't inherit `CLAUDE_SKILL_DIR`, so resolve it once and paste the
+Spawned agents don't inherit the skill directory, so resolve it once and paste the
 real path into each brief:
 ```bash
 echo "<skill-dir>"

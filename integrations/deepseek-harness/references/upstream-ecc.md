@@ -11,7 +11,7 @@
 - **载体**：GitHub 开源仓库（agent 技能集）
 - **快照（本包取用版本）**：`main` @ `ef648e01899b`，提交时间 `2026-10-01T21:01:14-05:00`
 - **获取方式/时间**：`git clone --depth 1`，2026-10-05（本机经代理 `http://127.0.0.1:9910`）
-- **许可**：MIT（详见上游 `LICENSE`）
+- **许可**：MIT（上游 `LICENSE`，版权行 `Copyright (c) 2026 Affaan Mustafa`；本包随附许可正文：`../LICENSES/MIT-ECC.txt`）
 - **URL**：https://github.com/affaan-m/ECC
 - **引用键**：`ecc-ef648e0`
 

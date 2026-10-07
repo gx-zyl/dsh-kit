@@ -1,14 +1,15 @@
 # dsh-kit（DeepSeek Harness 版）
 
-DeepSeek Harness **bundle 形式**的技能包：**92 个技能**（8 个 DSH 原生 + 84 个上游合并），包内隔离加载（provider `dsh-kit`，`includeDefaultRoots: false`），不写入 `~/.agents/skills` 等 canonical 技能目录。
+DeepSeek Harness **bundle 形式**的技能包：**92 个技能**（8 个包内自有 + 84 个上游合并），包内隔离加载（provider `dsh-kit`，`includeDefaultRoots: false`），不写入 `~/.agents/skills` / `~/.dsh/skills` 等 canonical 技能目录。
 
 | 项 | 值 |
 |---|---|
 | 包位置 | `integrations/deepseek-harness/`（包名 **`dsh-kit`**） |
-| 版本 | **6.0.4** |
+| 版本 | **6.0.5** |
 | 技能 | **92** = 8 个包内自有 + 84 个上游合并（`affaan-m/ECC` 59 / `mattpocock/skills` 19 / `thedotmack/claude-mem` 6 / `alibaba/open-code-review` 0） |
 | 随包参考 | `rules/`（WSL CLI 工具链、代理管理）、`references/`（grow-dream 类型定义 + 上游来源登记） |
-| 上游来源登记 | `references/upstream-sources.md` 与四份分册（论文引用格式：作者/载体/快照 SHA/许可/URL/取用范围） |
+| 上游来源登记 | `references/upstream-sources.md` 与四份分册（论文引用格式：作者/载体/快照 SHA/许可/URL/取用范围/**引用键**） |
+| 许可 | `LICENSE`（自有部分 MIT）+ `integrations/deepseek-harness/LICENSES/`（上游许可正文：MIT×2、Apache-2.0、claude-mem 的 `NOTICE`）+ `integrations/deepseek-harness/THIRD-PARTY-NOTICES.md`（第三方声明与**变更声明**） |
 
 ## 安装（本地 link）
 
@@ -35,6 +36,8 @@ dsh plugin --profile <profile> remove dsh-kit
 ## 技能清单
 
 完整逐条清单（含上游路径与处置）见 [`integrations/deepseek-harness/references/upstream-sources.md`](integrations/deepseek-harness/references/upstream-sources.md) 与四份分册。这里按来源分组列出全部 92 个：
+
+> **计数口径**：**92** 指 DSH 会发现的一层技能（`skills/<name>/SKILL.md`）。用 `**/SKILL.md` 递归计数会得到 **93**——多出的 1 个是 `skills/grow-dream/templates/w-ocean/skills/w-ocean-agent/SKILL.md`（grow-dream 的技能载荷模板，DSH 不发现、不计入技能面）。
 
 ### 包内自有（8）
 
@@ -93,7 +96,7 @@ dsh plugin --profile <profile> remove dsh-kit
 | `cmem-3b3baaa` | `thedotmack/claude-mem` | `3b3baaa55ebb` | Apache-2.0 | 6 / 上游规范目录 |
 | `ocr-182898c` | `alibaba/open-code-review` | `182898cf522d` | Apache-2.0 | 0 / 上游规范目录 |
 
-每个技能的 `metadata` 里带有 `origin` / `upstream` / `snapshot`，与上表一一对应。
+**84 个上游技能**的 `metadata` 里带有 `origin` / `upstream` / `snapshot`，与上表一一对应（`tools/validate-package.ts` 会逐条校验三元组与本表一致）。8 个包内自有技能没有上游来源：`karpathy-guidelines` 只有 `origin: dsh-kit`，其余 7 个不设 `metadata`。
 
 ## 结构与合并约定
 
@@ -101,10 +104,14 @@ dsh plugin --profile <profile> remove dsh-kit
 dsh-kit/
 ├── CONTEXT.md                        # 术语表（只放规范词）
 ├── README.md
+├── LICENSE                           # 自有部分 MIT（仓根副本）
 └── integrations/deepseek-harness/
     ├── package.json                  # dsh-kit
     ├── cordis.patch.yml              # 注册 dsh-kit-skill-filesystem（技能从包内 skills/ 提供）
     ├── lib/index.js                  # skill-only bundle，无运行期服务
+    ├── LICENSE                       # 同文 MIT（npm 只随包分发包目录内文件，故此处另存一份）
+    ├── LICENSES/                     # 上游许可正文：MIT-ECC.txt、MIT-mattpocock-skills.txt、Apache-2.0.txt、NOTICE-claude-mem.txt
+    ├── THIRD-PARTY-NOTICES.md        # 第三方声明 + 变更声明（Apache-2.0 §4 履行情况）
     ├── skills/                       # 92 个技能，每个含 SKILL.md
     ├── rules/                        # wsl-cli-tools.md、proxy-management.md
     └── references/                   # grow-dream-types.md + upstream-*.md（上游来源登记）
@@ -113,10 +120,37 @@ dsh-kit/
 | 约定 | 内容 |
 |---|---|
 | 目录 | 技能必须是 `skills/<name>/SKILL.md` **一层**（DSH 不发现嵌套的深层 `SKILL.md`） |
-| frontmatter | 只用 DSH 认可键：`name`、`description`（必填）+ `metadata`、`disable-model-invocation`、`user-invocable` |
-| 语言 | `description` 写中文触发语（召回用）；**正文保持上游原文** |
-| 署名 | 上游正文/参考文件/脚本版权归上游作者，`metadata` 与 `references/upstream-*.md` 双重登记 |
+| frontmatter | 只用 DSH 认可键：`name`、`description`（必填）+ `metadata`、`disable-model-invocation`、`user-invocable`；未认可的上游杂键被静默忽略，legacy 键会让该技能**被整体丢弃**（详见 CONTEXT「DSH 认可键」） |
+| 语言 | `description` 写中文触发语（召回用）；**正文保持上游原文**；无法改写且无 DSH 等价物的 Claude Code / 其他 runner 语境，按 CONTEXT「最小适配」加**显式横幅标注**（当前 11 个文件带横幅） |
+| 署名 | 上游正文/参考文件/脚本版权归上游作者：`metadata`（84 个上游技能）与 `references/upstream-*.md` 双重登记；第三方许可正文与**变更声明**见 `integrations/deepseek-harness/THIRD-PARTY-NOTICES.md` |
+| 附带载荷 | `skills/<name>/` 下除 `SKILL.md` 外还有 56 个附带文件（`agents/openai.yaml`×19、`.py`×3、`.sh`×4、`.vbs`×1、`justfile`、`pyproject.toml`、`standup.ts`、其余为模板与参考 `.md`）。其中 `skills/standup/standup.ts` 是**可执行载荷**，用 `node` 直接跑，需 Node ≥22.18（原生 type-stripping） |
+| `rules/` | 随包分发但**不经任何注册**：没有任何插件加载它，靠模型按相对路径自取（`skills/dsh-kit/SKILL.md` 与 `skills/chrome-devtools-wsl/SKILL.md` 各有一处指引） |
+
+## 验收与可复现
+
+本仓**唯一**可运行的自查器是 `tools/validate-package.ts`。在**仓库根**执行：
+
+```powershell
+node tools/validate-package.ts
+```
+
+它检查：技能数 = 92、只有 `skills/<name>/SKILL.md` 一层、无 legacy 键、`name`/`description` 必填且 `name` 与目录名一致、`description` 含中文、D8 的 8 个用户调用型名单完全一致（多一个少一个都算失败）、84 个上游技能的 `metadata` 三元组与引用总表一致、正文内包内相对路径**无死链**；嵌套载荷必须恰为 grow-dream 那 1 个。退出码非 0 即有问题（未认可的上游杂键只报告、不计入失败，因为 DSH 会静默忽略它们）。
+
+**不覆盖**：上游正文的字节级保真（需要上游快照，本仓不含）、`description` 的措辞质量、技能行为正确性。
+
+> 历史说明：v6.0.1–v6.0.4 的 commit message 里引用的 `merge-manifest.ts`、`import-upstream-skills.ts`、`.docs/fix/2026-10-05/review-audit.ts` **从未进入本仓历史**（`git log --all --name-only` 可复现），故那些 commit 声称的"保真 44/44、正文 66 原样"等结论无法在本仓重跑。可复现的验证边界以上面的脚本为准。
 
 ## 许可
 
-MIT（本仓库自有部分）。随包合并的上游技能各自沿用其许可：`affaan-m/ECC` MIT、`mattpocock/skills` MIT、`thedotmack/claude-mem` Apache-2.0、`alibaba/open-code-review` Apache-2.0。
+本仓**自有部分**为 MIT，见 [`LICENSE`](LICENSE)（`integrations/deepseek-harness/LICENSE` 是同文的包内副本，因为 npm 只随包分发**包目录内**的文件）。
+
+随包合并的上游技能各自沿用其许可，正文与变更声明随包分发：
+
+| 上游 | 许可 | 版权行 | 随包许可正文 |
+|---|---|---|---|
+| `affaan-m/ECC`（59） | MIT | `Copyright (c) 2026 Affaan Mustafa` | `integrations/deepseek-harness/LICENSES/MIT-ECC.txt` |
+| `mattpocock/skills`（19） | MIT | `Copyright (c) 2026 Matt Pocock` | `integrations/deepseek-harness/LICENSES/MIT-mattpocock-skills.txt` |
+| `thedotmack/claude-mem`（6） | Apache-2.0 | `Copyright 2026 Alex Newman` | `.../LICENSES/Apache-2.0.txt` + `.../LICENSES/NOTICE-claude-mem.txt` |
+| `alibaba/open-code-review`（0，未取用） | Apache-2.0 | `Copyright 2026 alibaba/open-code-review Contributors` | 未分发该上游任何内容，故不单列 |
+
+许可正文逐字节取自各上游快照 commit 处的 `LICENSE` / `NOTICE`；**变更声明**（哪些文件被改过、Apache-2.0 §4(b)/§4(d) 的履行情况与已知残留）见 [`integrations/deepseek-harness/THIRD-PARTY-NOTICES.md`](integrations/deepseek-harness/THIRD-PARTY-NOTICES.md)。
