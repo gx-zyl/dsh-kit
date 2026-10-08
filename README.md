@@ -5,7 +5,7 @@ DeepSeek Harness **bundle 形式**的技能包：**92 个技能**（8 个包内�
 | 项 | 值 |
 |---|---|
 | 包位置 | `integrations/deepseek-harness/`（包名 **`dsh-kit`**） |
-| 版本 | **6.0.6** |
+| 版本 | **6.0.7** |
 | 技能 | **92** = 8 个包内自有 + 84 个上游合并（`affaan-m/ECC` 59 / `mattpocock/skills` 19 / `thedotmack/claude-mem` 6 / `alibaba/open-code-review` 0） |
 | 随包参考 | `rules/`（WSL CLI 工具链、代理管理）、`references/`（grow-dream 类型定义 + 上游来源登记） |
 | 上游来源登记 | `references/upstream-sources.md` 与四份分册（论文引用格式：作者/载体/快照 SHA/许可/URL/取用范围/**引用键**） |
@@ -96,7 +96,7 @@ dsh plugin --profile <profile> remove dsh-kit
 | `cmem-3b3baaa` | `thedotmack/claude-mem` | `3b3baaa55ebb` | Apache-2.0 | 6 / 上游规范目录 |
 | `ocr-182898c` | `alibaba/open-code-review` | `182898cf522d` | Apache-2.0 | 0 / 上游规范目录 |
 
-**84 个上游技能**的 `metadata` 里带有 `origin` / `upstream` / `snapshot`，与上表一一对应（`tools/validate-package.ts` 会逐条校验三元组与本表一致）。8 个包内自有技能没有上游来源：`karpathy-guidelines` 只有 `origin: dsh-kit`，其余 7 个不设 `metadata`。
+**84 个上游技能**的 `metadata` 里带有 `origin` / `upstream` / `snapshot`，与上表一一对应（`tools/validate-package.ts` 会逐条校验三元组与本表一致）。8 个包内自有技能没有上游来源：`karpathy-guidelines` 为 `origin: dsh-kit`（**另带 `metadata.license: MIT`**），其余 7 个不设 `metadata`——**以门的 ⑪ 读数为准**（它会把超出 `origin`/`upstream`/`snapshot` 的子键逐个打印，别照抄本行）。
 
 ## 结构与合并约定
 
@@ -121,9 +121,9 @@ dsh-kit/
 |---|---|
 | 目录 | 技能必须是 `skills/<name>/SKILL.md` **一层**（DSH 不发现嵌套的深层 `SKILL.md`） |
 | frontmatter | 只用 DSH 认可键：`name`、`description`（必填）+ `metadata`、`disable-model-invocation`、`user-invocable`；未认可的上游杂键被静默忽略，legacy 键会让该技能**被整体丢弃**（详见 CONTEXT「DSH 认可键」） |
-| 语言 | **正文英文**（= 上游逐字为底，仅叠加 CONTEXT「最小适配（A）」的 6 项）；**`description` 英中双语**（英文一句 + 中文触发语，召回用）；无 DSH 等价物的 Claude Code / 其他 runner 语境加**英文横幅标注**（不再改写正文） |
+| 语言 | **正文英文**（= 上游逐字为底，仅叠加 CONTEXT「最小适配（A）」的 7 项）；**`description` 英中双语**（英文侧 = 上游 description 折叠成一行 + 中文触发语，召回用）；无 DSH 等价物的 Claude Code / 其他 runner 语境加**英文横幅标注**（不再改写正文）；`claude-mem` 源本轮被改的 4 个文件另有 **§4(b) 变更标注**（见 `THIRD-PARTY-NOTICES.md`） |
 | 署名 | 上游正文/参考文件/脚本版权归上游作者：`metadata`（84 个上游技能）与 `references/upstream-*.md` 双重登记；第三方许可正文与**变更声明**见 `integrations/deepseek-harness/THIRD-PARTY-NOTICES.md` |
-| 附带载荷 | `skills/<name>/` 下除 `SKILL.md` 外还有 56 个附带文件（`agents/openai.yaml`×19、`.py`×3、`.sh`×4、`.vbs`×1、`justfile`、`pyproject.toml`、`standup.ts`、其余为模板与参考 `.md`）。其中 `skills/standup/standup.ts` 是**可执行载荷**，用 `node` 直接跑，需 Node ≥22.18（原生 type-stripping） |
+| 附带载荷 | `skills/<name>/` 下的**非技能文件**（除 92 个技能 `SKILL.md` 与 1 个载荷 `SKILL.md` 之外）——**个数口径见下**，别照抄：「除 92 个技能 SKILL.md 外的全部文件」与「除全部 93 个 `SKILL.md` 外的文件」相差 1（差别是 `skills/grow-dream/templates/w-ocean/skills/w-ocean-agent/SKILL.md`，DSH 不发现它）。复现：<br>`(Get-ChildItem integrations/deepseek-harness/skills -Recurse -File).Count` 与 `(git ls-files integrations/deepseek-harness/skills).Count`（两者相等 = 148）。其中值得单列的：`agents/openai.yaml`（每个上游来源技能一个，见 `skills/<name>/agents/`）、`skills/standup/standup.ts`（**可执行载荷**，`node` 直接跑，需 Node ≥22.18 原生 type-stripping）、`chrome-devtools-wsl/` 的 `.py`/`.sh`/`.vbs`/`justfile`/`.env.example`/`pyproject.toml`、`grow-dream/templates/w-ocean/` 的 `README.md`/`commands/`/`config.yaml`/`graph.json` |
 | `rules/` | 随包分发但**不经任何注册**：没有任何插件加载它，靠模型按相对路径自取（`skills/dsh-kit/SKILL.md` 与 `skills/chrome-devtools-wsl/SKILL.md` 各有一处指引） |
 
 ## 验收与可复现

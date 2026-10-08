@@ -7,6 +7,12 @@ metadata:
   snapshot: 3b3baaa55ebb
 ---
 
+> [!NOTE]
+> **Modified for DSH (dsh-kit)** — this file was changed from upstream `thedotmack/claude-mem@3b3baaa55ebb`: the
+> `description` was rewritten to bilingual (English + Chinese trigger) and upstream-only frontmatter keys were
+> removed; the body is upstream text verbatim plus the minimal adaptations listed in
+> `../../THIRD-PARTY-NOTICES.md`. Copyright remains with the upstream authors (Apache-2.0).
+
 # Handoff
 
 Generate a structured `HANDOFF.md` file that gives a fresh Claude session everything it needs to continue this work without dragging the current degraded context forward.

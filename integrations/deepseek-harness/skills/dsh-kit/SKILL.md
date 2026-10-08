@@ -19,6 +19,10 @@ dsh-kit is a **DeepSeek Harness bundle-shaped** skill bundle shipping **92 skill
 
 The per-skill list, snapshot SHAs and usage scope are in `../../references/upstream-sources.md` and its four fascicles.
 
+The counts above are this bundle's headline numbers — **recompute, do not trust a copy**:
+`node tools/validate-package.ts` (total, D8 list, language/metadata readings) and
+`Select-String -Path integrations/deepseek-harness/skills/*/SKILL.md -Pattern '^\s+origin:\s*(\S+)'` grouped by the captured `origin` (per-source counts).
+
 ## Find a skill by purpose (excerpt)
 
 | Purpose | Skills |
@@ -36,9 +40,9 @@ The authoritative list of all 92 is the bundle's own `skills/` directory; each s
 ## Global rules
 
 - The project uses PowerShell (`pwsh`), not bash.
-- A skill's `description` decides when DSH loads it. **Bodies are English**: the upstream text verbatim as the base, with only the "minimal adaptation" set applied (`CONTEXT.md` -> "Minimal adaptation (A)"). The one exception is upstream bodies whose Chinese content *is* the skill's function (currently `prompt-optimizer`); those are kept and registered as explicit whitelist entries.
+- A skill's `description` decides when DSH loads it. **Bodies are English**: the upstream text verbatim as the base, with only the "minimal adaptation" set applied (`CONTEXT.md` -> "Minimal adaptation (A)"). Bodies whose Chinese content *is* the skill's function are kept and registered as explicit whitelist entries in `tools/validate-package.ts` (the table is the authority — this file does not copy its list or count). Every Apache-2.0 (`claude-mem`) file this bundle modified also carries an in-file §4(b) change notice (see `../../THIRD-PARTY-NOTICES.md`).
 - The 84 upstream skill bodies may still describe **Claude Code context mechanics** (e.g. `~/.claude/...`, hooks configuration, `allowed-tools`). Where DSH has an equivalent, the text was rewritten (e.g. `~/.claude/skills` -> `~/.agents/skills`); where there is no equivalent, an **English banner** marks it. Links pointing outside the bundle were neutralized into plain text labelled "upstream reference, not distributed with this bundle" so no unclickable link remains. Per-file disposition is in `../../references/upstream-*.md` and `../../THIRD-PARTY-NOTICES.md`.
-- `grill-with-docs` is a **delegating skill** (1-line body, 10 lines total) that chains `grilling` and `domain-modeling`.
+- `grill-with-docs` is a **delegating skill**: its whole body is one instruction line (`Call the skill tool twice, for "grilling" and "domain-modeling".`) that chains `grilling` and `domain-modeling`.
 - 8 skills are upstream-defined **user-invoked** skills (`disable-model-invocation: true`): `grill-me`, `grill-with-docs`, `handoff`, `improve-codebase-architecture`, `retro`, `triage`, `to-spec`, `to-tickets`. They can **only** be invoked by the user via `/` and do not appear in the model-visible directory; their `description` is written as "a one-line human-readable summary + a mechanics footnote" (the footnote is for humans, not a model trigger phrase).
 - That invocation split is upstream's written policy (the upstream repo's `.agents/invocation.md`, **not distributed with this bundle**; the criterion and the list of 8 are in `../../references/upstream-mp-skills.md`). The criterion is "can the model invoke it autonomously and beneficially", not whether the skill historically existed in this bundle.
 

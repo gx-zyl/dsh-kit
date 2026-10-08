@@ -35,7 +35,7 @@
 
 ## 署名与合规
 
-- 本包对这些技能的**结构适配与语言处置**由 dsh-kit 完成：目录拍平、frontmatter 规整、Claude Code 专有路径与工具名 → DSH 等价物、死链中性化、**英文** CC 语境横幅、`description` 英中双语（英文一句 + 中文触发语）；
-- 技能**正文以英文呈现**（英文= 上游逐字为底，仅叠加上述最小适配）；参考文件与脚本保持上游原文；版权归上游作者；
+- 本包对这些技能的**结构适配与语言处置**由 dsh-kit 完成：目录拍平、frontmatter 规整、Claude Code 专有路径与工具名 → DSH 等价物（**例外**：主语是 Claude Code 本身或跨 harness 并列时保留原名）、死链中性化、**英文** CC 语境横幅、`description` 英中双语（英文侧 = 上游折叠成一行 + 中文触发语）、**Apache-2.0 §4(b) 变更标注**（被改文件的正文各一个英文引用块）；
+- 技能**正文以英文呈现**（英文= 上游逐字为底，仅叠加上述最小适配）；**参考文件与脚本按上游保留，逐条例外登记在 `../THIRD-PARTY-NOTICES.md`**（如 `agent-self-evaluation/references/hook-integration.md` 的英文横幅、`standup/standup.ts` 的 Node 版本注释、`babysit`/`learn-codebase`/`session-handoff`/`what-the` 的 §4(b) 标注）；版权归上游作者；
 - 再分发遵循上游 Apache-2.0 许可；若上游许可变更或要求撤回，删除对应 `skills/<name>/` 即可，不影响其余技能。
 - 许可正文与**变更声明**（含 §4(b)/§4(d) 履行情况）见 `../THIRD-PARTY-NOTICES.md`。

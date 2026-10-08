@@ -16,19 +16,20 @@
 
 ## 变更声明
 
-本包对上游内容只做 CONTEXT.md「最小适配（A）」约定的 **6 条**（该词条是判据与实测计数的**唯一出处**；本节只回答「改了什么」，不复制它的判据）：
+本包对上游内容只做 CONTEXT.md「最小适配（A）」约定的 **7 条**（该词条是判据的唯一出处；本节只回答「改了什么」，不复制它的判据）：
 
 1. **目录拍平**：`skills/<name>/SKILL.md` 一层（DSH 只发现这一层；上游 `mattpocock/skills` 为 `skills/<cat>/<name>/` 两层）。
 2. **frontmatter 收敛**：只保留 DSH 认可键 `name` / `description`（+ 可选 `metadata`、`disable-model-invocation`、`user-invocable`）；上游的 `license` / `tools` / `allowed-tools` / `argument-hint` 等杂键被删除。**注意**：被删的杂键原始值不随包保留，需要时应回上游快照取。
-3. **语言处置**：`description` 改写为**英中双语**（英文一句触发语 + 中文触发语，供召回）；**正文英文** —— 以上游为底逐字保留，仅叠加本节其余各项。上游正文**自带中文且中文是其职能数据**时**保留**（当前 1 个：`prompt-optimizer` 的中文触发词表与中文 prompt 实例），并在 `tools/validate-package.ts` 的 `LANGUAGE_ALLOWED` 里**带理由**登记；该白名单命中不算违规，文件不再含中文时会提示撤销。
-4. **正文内 Claude Code 专有路径 / 文件名 / 工具名 → DSH 等价物**：有等价物时改写（如 `~/.claude/skills` → `~/.agents/skills`、`CLAUDE.md` → `AGENTS.md`、`Skill tool` → `skill tool`）。
-5. **包外死链中性化**：指向包内不存在的相对链接改为**纯文本**并注明「上游参考，未随包分发」（逐文件见下方「修复轮补充改写」表）。
+3. **语言处置**：`description` 改写为**英中双语**（英文侧 = 上游 description 折叠成一行 + 中文触发语，供召回）；**正文英文** —— 以上游为底逐字保留，仅叠加本节其余各项。上游正文**自带 CJK 区字符**时**保留并在 `tools/validate-package.ts` 的 `LANGUAGE_ALLOWED` 里带理由登记**（可登记的理由只有两类：① 中文是职能数据；② 上游英文正文自带的 CJK 排版字符）。**以该表为唯一权威**（本节不抄名单或计数；门逐条打印，命中与腐化都可见，**腐化计入失败**）。
+4. **正文内 Claude Code 专有路径 / 文件名 / 工具名 → DSH 等价物**：有等价物时改写（如 `~/.claude/skills` → `~/.agents/skills`、`Skill tool` → `skill tool`）。**例外（本轮立，逐处可核；此处只引原句、不写行号 —— 行号会腐烂）**：当句子的**主语就是 Claude Code 本身**、或该句是**跨 harness 的并列清单**时，`CLAUDE.md` 是**被谈论的对象**、不是本机路径 ⇒ **保留原名**。正文 4 处：`living-docs-governance` 的 “harness instructions such as `AGENTS.md`, `CLAUDE.md`, `.cursor/rules`…” 与 “Claude Code projects commonly use `CLAUDE.md`.”、`retro` 的 “`AGENTS.md`/`CLAUDE.md` (the Claude Code form)”、`writing-for-agents` 的 “a skill, an `AGENTS.md` / `CLAUDE.md`”；`description` 2 处：`codebase-onboarding` 的 “a starter CLAUDE.md”、`writing-for-agents` 的 “modifying AGENTS.md or CLAUDE.md”。**不要写成「全量映射 X→0」**，那会把合法保留说成遗漏。
+5. **包内相对死链中性化**：指向**包内不存在**的相对链接（**含不带 `./` / `../` 的裸相对目标**）改为**纯文本**并注明「上游参考，未随包分发」（逐文件见下方「修复轮补充改写」表）。
 6. **CC 语境横幅**：无 DSH 等价物的 Claude Code / 其他 runner 机制，加**英文**横幅说明「勿直接套用」（清单见末节「正文内的行内标注」）。
+7. **Apache-2.0 §4(b) 变更标注**（**仅** `claude-mem` 源、本轮被改的 4 个文件）：`babysit` / `learn-codebase` / `session-handoff` / `what-the` 的 `SKILL.md` 各插入**一个英文引用块**（正文开头、frontmatter 之后），逐字文本见下方「Apache-2.0 §4(b) 逐文件变更标注」节。§4(b) 要求**每个被修改的文件自身**携带「你改过它」的显著标注 ⇒ 这 4 行是**许可履行**，不是内容改写（不碰技能语义）。
 
 下列两类补丁**不属于**「最小适配」，单列以便复核：
 
-7. **同源同名技能取上游为准**（CONTEXT「融合」）：例如 `api-design`、`architecture-decision-records`、`docker-patterns` 的包内旧版被上游版覆盖。
-8. **改名**：`claude-mem` 源的 `handoff` 与本包 `mattpocock/skills` 源的 `handoff` 同名不同物，前者改名为 `session-handoff`。
+8. **同源同名技能取上游为准**（CONTEXT「融合」）：例如 `api-design`、`architecture-decision-records`、`docker-patterns` 的包内旧版被上游版覆盖。
+9. **改名**：`claude-mem` 源的 `handoff` 与本包 `mattpocock/skills` 源的 `handoff` 同名不同物，前者改名为 `session-handoff`。
 
 ### 被改写过正文或元数据的技能（git 历史可复现）
 
@@ -67,6 +68,31 @@ done
 
 ### 正文内的行内标注
 
-带横幅的文件**当时 11 个**（2026-10-08 读数；**以清单为准** —— 横幅仍可能随上游适配增删，故这个数不带门）：`council`、`design-is`、`docker-patterns`、`eval-harness`、`safety-guard`、`search-first`、`skill-scout`、`standup`、`strategic-compact`、`verification-loop` 的 `SKILL.md`，以及 `agent-self-evaluation/references/hook-integration.md`。属 Apache-2.0（`claude-mem`）源的是 `standup` 与 `design-is` 两个 `SKILL.md`——对它们而言，横幅同时充当 §4(b) 要求的「被修改」显著标注。
+带横幅的文件（v6.0.6 修复轮读数；**以清单为准**，不写死个数 —— 横幅会随上游适配增删。复现：`Select-String -Path integrations/deepseek-harness/skills/*/SKILL.md,integrations/deepseek-harness/skills/*/references/*.md -Pattern '\[!NOTE\]'`）：`council`、`design-is`、`docker-patterns`、`eval-harness`、`intent-driven-development`、`safety-guard`、`search-first`、`skill-scout`、`standup`、`strategic-compact`、`verification-loop` 的 `SKILL.md`，`babysit` / `learn-codebase` / `session-handoff` / `what-the` 的 `SKILL.md`（**新增：§4(b) 变更标注**，见下节），以及 `agent-self-evaluation/references/hook-integration.md`。⚠ 修复轮修正：旧版写「当时 11 个」并漏列 `intent-driven-development`（其横幅正是本版新增）——**这个数已改为不带门**。属 Apache-2.0（`claude-mem`）源的 **6 个 `SKILL.md` 现在全部带 banner**：`standup` / `design-is` 的机制横幅，与 `babysit` / `learn-codebase` / `session-handoff` / `what-the` 的 §4(b) 标注。
 
-**已知残留**：`claude-mem` 源另有 4 个技能（`session-handoff`、`what-the`、`learn-codebase`、`babysit`）在**入库时**即被改了 frontmatter（`description` 改写为英中双语、杂键删除），文件内没有逐文件标注，其改动只登记在本文件的表中。若需严格按 §4(b) 做到「每个被修改文件自身带标注」，需对这 4 个文件补行——**待裁决**，未擅自改动上游正文。
+### Apache-2.0 §4(b) 逐文件变更标注（`claude-mem` 源，6 个技能）
+
+§4(b) 要求**每个被修改的文件自身**携带显著变更标注。本包对 `claude-mem` 全部 6 个技能的处置如下（三栏分开写清：**改了什么** / **文件内标注** / **插入位置**）：
+
+| 技能（`thedotmack/claude-mem`） | 改了什么 | 文件内 §4(b) 标注 | 位置 |
+|---|---|---|---|
+| `standup` | 机制名横幅（`${CLAUDE_SKILL_DIR}` / `AskUserQuestion` / `Task` / `/do` 的 DSH 替代）、删掉 DSH 不存在的环境变量名、`description` 英中双语、`standup.ts` 头注释 | **已履行**（英文机制横幅，兼作 §4(b) 标注） | 正文开头 |
+| `design-is` | Phase 4 指向的上游 slash command `/make-plan` 在本包与 DSH 都不存在 ⇒ 补横幅；`description` 英中双语 | **已履行**（英文机制横幅，兼作 §4(b) 标注） | 正文开头 |
+| `babysit` | `description` 改写为英中双语、上游杂键删除；正文按上游逐字（仅叠加最小适配） | **已履行**（下方逐字文本，已插入） | 正文开头（frontmatter 之后、H1 之前） |
+| `learn-codebase` | 同上 | **已履行**（下方逐字文本，已插入） | 同上 |
+| `session-handoff` | 同上（该技能系 `handoff` 改名而来，改名登记见上节第 9 条） | **已履行**（下方逐字文本，已插入） | 同上 |
+| `what-the` | 同上 | **已履行**（下方逐字文本，已插入） | 同上（该文件无 H1，正文首行即原第一句） |
+
+**插入的逐字文本**（`babysit` / `learn-codebase` / `session-handoff` / `what-the` 四份 `SKILL.md` 一字不差，均为 5 行英文引用块；复现：`Select-String -Path integrations/deepseek-harness/skills/*/SKILL.md -Pattern 'Modified for DSH \(dsh-kit\)'`）：
+
+```
+> [!NOTE]
+> **Modified for DSH (dsh-kit)** — this file was changed from upstream `thedotmack/claude-mem@3b3baaa55ebb`: the
+> `description` was rewritten to bilingual (English + Chinese trigger) and upstream-only frontmatter keys were
+> removed; the body is upstream text verbatim plus the minimal adaptations listed in
+> `../../THIRD-PARTY-NOTICES.md`. Copyright remains with the upstream authors (Apache-2.0).
+```
+
+**状态**：`claude-mem` 6 个技能的 §4(b) 逐文件标注**已全部履行**（登记面：上表；文件内：机制横幅 ×2 + 变更标注 ×4）。
+插入方式与可复核性：4 份文件的 diff 均为 **+6 行 / −0 行**（5 行引用块 + 1 行分隔空行）⇒ 上游正文**逐字未动**；`git diff` 可逐文件核。
+⚠ 该标注**不改技能语义**，只是许可声明；它属 CONTEXT「最小适配（A）」的**第 ⑦ 条**。
