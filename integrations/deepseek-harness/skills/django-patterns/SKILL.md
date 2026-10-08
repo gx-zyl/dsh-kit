@@ -1,11 +1,12 @@
 ---
 name: django-patterns
-description: "Django 架构模式：DRF 的 REST API 设计、ORM 实践、缓存、信号、中间件与生产级配置。"
+description: "Django architecture patterns, REST API design with DRF, ORM best practices, caching, signals, middleware, and production-grade Django apps. Use when building or reviewing Django apps, DRF APIs, ORM queries, or caching. Django 架构模式：DRF 的 REST API 设计、ORM 实践、缓存、信号、中间件与生产级配置。"
 metadata:
   origin: ecc
   upstream: affaan-m/ECC
   snapshot: ef648e01899b
 ---
+
 # Django Development Patterns
 
 Production-grade Django architecture patterns for scalable, maintainable applications.

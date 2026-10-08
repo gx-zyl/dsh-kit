@@ -1,11 +1,12 @@
 ---
 name: rust-testing
-description: "Rust 测试模式：单元/集成/异步测试、属性测试、mock 与覆盖率，遵循 TDD。"
+description: "Rust testing patterns including unit tests, integration tests, async testing, property-based testing, mocking, and coverage. Use when writing Rust tests — unit, integration, async, property-based, or coverage. Rust 测试模式：单元/集成/异步测试、属性测试、mock 与覆盖率，遵循 TDD。"
 metadata:
   origin: ecc
   upstream: affaan-m/ECC
   snapshot: ef648e01899b
 ---
+
 # Rust Testing Patterns
 
 Comprehensive Rust testing patterns for writing reliable, maintainable tests following TDD methodology.

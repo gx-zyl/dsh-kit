@@ -1,11 +1,12 @@
 ---
 name: golang-testing
-description: "Go 测试模式：表驱动测试、子测试、基准测试、模糊测试与覆盖率，遵循 TDD。"
+description: "Go testing patterns including table-driven tests, subtests, benchmarks, fuzzing, and test coverage. Use when writing Go tests — table-driven cases, subtests, benchmarks, fuzzing, or coverage. Go 测试模式：表驱动测试、子测试、基准测试、模糊测试与覆盖率，遵循 TDD。"
 metadata:
   origin: ecc
   upstream: affaan-m/ECC
   snapshot: ef648e01899b
 ---
+
 # Go Testing Patterns
 
 Comprehensive Go testing patterns for writing reliable, maintainable tests following TDD methodology.

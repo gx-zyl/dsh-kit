@@ -1,11 +1,12 @@
 ---
 name: coding-standards
-description: "跨项目通用编码规范：命名、可读性、不可变性与代码质量评审基线。写或评审各类代码时触发。"
+description: "Baseline cross-project coding conventions for naming, readability, immutability, and code-quality review. Use when reviewing code quality or naming with no framework-specific skill that applies. 跨项目通用编码规范：命名、可读性、不可变性与代码质量评审基线。写或评审各类代码时触发。"
 metadata:
   origin: ecc
   upstream: affaan-m/ECC
   snapshot: ef648e01899b
 ---
+
 # Coding Standards & Best Practices
 
 Baseline coding conventions applicable across projects.

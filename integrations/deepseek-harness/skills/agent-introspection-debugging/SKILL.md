@@ -1,11 +1,12 @@
 ---
 name: agent-introspection-debugging
-description: "agent 失败的结构化自调试：捕获、诊断、受控恢复与内省报告。"
+description: "Structured self-debugging workflow for AI agent failures using capture, diagnosis, contained recovery, and introspection reports. Use when an agent run fails and you need a reproducible diagnosis instead of a retry. agent 失败的结构化自调试：捕获、诊断、受控恢复与内省报告。"
 metadata:
   origin: ecc
   upstream: affaan-m/ECC
   snapshot: ef648e01899b
 ---
+
 # Agent Introspection Debugging
 
 Use this skill when an agent run is failing repeatedly, consuming tokens without progress, looping on the same tools, or drifting away from the intended task.

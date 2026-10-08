@@ -1,11 +1,12 @@
 ---
 name: e2e-testing
-description: "Playwright 端到端测试模式：Page Object、配置、CI 集成、产物管理与不稳定用例治理。"
+description: "Playwright E2E testing patterns, Page Object Model, configuration, CI/CD integration, artifact management, and flaky test strategies. Use when writing Playwright tests, structuring page objects, or fixing flaky E2E runs in CI. Playwright 端到端测试模式：Page Object、配置、CI 集成、产物管理与不稳定用例治理。"
 metadata:
   origin: ecc
   upstream: affaan-m/ECC
   snapshot: ef648e01899b
 ---
+
 # E2E Testing Patterns
 
 Comprehensive Playwright patterns for building stable, fast, and maintainable E2E test suites.

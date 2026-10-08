@@ -1,45 +1,45 @@
 ---
 name: github-repo
-description: 创建 GitHub 私有/公开仓库、推送已有代码、配置 CI。用户说"创建仓库"、"新建 repo"、"push 到 GitHub"、"初始化仓库"时触发。
+description: Create a private/public GitHub repository, push existing code, and configure CI. Triggers when the user says "create a repo", "new repo", "push to GitHub", or "initialize a repository". 创建 GitHub 私有/公开仓库、推送已有代码、配置 CI。用户说"创建仓库"、"新建 repo"、"push 到 GitHub"、"初始化仓库"时触发。
 ---
 
-# github-repo — GitHub 仓库创建 & 初始化
+# github-repo — GitHub repository creation & initialization
 
-## 前置条件
+## Prerequisites
 
-需要 `gh` CLI 已登录：
+The `gh` CLI must be logged in:
 
 ```pwsh
 gh auth status
-# 未登录则：gh auth login
+# if not logged in: gh auth login
 ```
 
 ## Workflow
 
-### Step 1 — 创建仓库
+### Step 1 — Create the repository
 
 ```pwsh
-# 私有仓库（默认）
+# private repository (default)
 gh repo create <name> --private --source=. --push --remote origin
 
-# 公开仓库
+# public repository
 gh repo create <name> --public --source=. --push --remote origin
 
-# 仅创建（不推代码）
+# create only (do not push code)
 gh repo create <name> --private
 ```
 
-参数说明：
+Parameter reference:
 
-| 参数 | 作用 |
+| Parameter | Effect |
 |------|------|
-| `--private` / `--public` | 仓库可见性 |
-| `--source=.` | 以当前目录内容初始化 |
-| `--push` | 自动 push |
-| `--remote origin` | remote 名 |
-| `--description "..."` | 仓库描述 |
+| `--private` / `--public` | repository visibility |
+| `--source=.` | initialize from the contents of the current directory |
+| `--push` | push automatically |
+| `--remote origin` | remote name |
+| `--description "..."` | repository description |
 
-### Step 2 — 已有仓库但无 remote
+### Step 2 — Repository exists but has no remote
 
 ```pwsh
 gh repo create <name> --private
@@ -47,11 +47,11 @@ git remote add origin https://github.com/<user>/<name>.git
 git push -u origin main
 ```
 
-### Step 3 — 可选：添加 CI
+### Step 3 — Optional: add CI
 
 ```pwsh
 mkdir -p .github/workflows
-# Node.js CI 示例
+# Node.js CI example
 @'
 name: CI
 on: [push, pull_request]
@@ -68,7 +68,7 @@ jobs:
 git add .github/ && git commit -m "chore: add CI" && git push
 ```
 
-### Step 4 — 可选：分支保护
+### Step 4 — Optional: branch protection
 
 ```pwsh
 gh api repos/:owner/:repo/branches/main/protection \
@@ -76,9 +76,9 @@ gh api repos/:owner/:repo/branches/main/protection \
   --input '{"required_status_checks": null, "enforce_admins": true, "required_pull_request_reviews": {"required_approving_review_count": 1}}'
 ```
 
-## 常见场景
+## Common scenarios
 
-### 已有项目推送到私有仓库
+### Push an existing project to a private repository
 
 ```pwsh
 cd my-project
@@ -86,11 +86,11 @@ git init && git add . && git commit -m "init"
 gh repo create my-project --private --source=. --push
 ```
 
-### 从零创建
+### Create from scratch
 
 ```pwsh
 gh repo create my-project --private --clone
 cd my-project
-# 开发...
+# development...
 git add . && git commit -m "init" && git push
 ```

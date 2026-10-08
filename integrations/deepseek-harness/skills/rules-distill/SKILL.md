@@ -1,11 +1,12 @@
 ---
 name: rules-distill
-description: "扫描技能提炼跨领域原则并蒸馏成 rules 文件（追加、修订或新建）。同一原则反复出现时触发。"
+description: "Scan skills to extract cross-cutting principles and distill them into rules — append, revise, or create new rule files. Use when the same principle keeps recurring across skills and belongs in a rule file instead. 扫描技能提炼跨领域原则并蒸馏成 rules 文件（追加、修订或新建）。同一原则反复出现时触发。"
 metadata:
   origin: ecc
   upstream: affaan-m/ECC
   snapshot: ef648e01899b
 ---
+
 # Rules Distill
 
 Scan installed skills, extract cross-cutting principles that appear in multiple skills, and distill them into rules — appending to existing rule files, revising outdated content, or creating new rule files.

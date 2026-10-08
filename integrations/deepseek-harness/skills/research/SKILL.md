@@ -1,11 +1,13 @@
 ---
 name: research
-description: "针对高可信一手来源做调研，并把结论落成仓库内的 Markdown 文件。用户要求调研主题或查文档时触发。"
+description: "Investigate a question against high-trust primary sources and capture the findings as a Markdown file in the repo. Use when the user wants a topic researched, docs or API facts gathered, or reading legwork delegated to a background agent. 针对高可信一手来源做调研，并把结论落成仓库内的 Markdown 文件。用户要求调研主题或查文档时触发。"
 metadata:
   origin: mp-skills
   upstream: mattpocock/skills
   snapshot: 24fe0ef7737e
 ---
+
+
 Spin up a **background agent** to do the research, so you keep working while it reads.
 
 Its job:

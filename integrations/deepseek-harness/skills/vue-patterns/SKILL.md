@@ -1,11 +1,12 @@
 ---
 name: vue-patterns
-description: "Vue 3 Composition API 模式：组件架构、响应式实践、Pinia、Vue Router 与 Nuxt SSR。"
+description: "Vue.js 3 Composition API patterns, component architecture, reactivity best practices, Pinia state management, Vue Router navigation, and Nuxt SSR patterns. Vue 3 Composition API 模式：组件架构、响应式实践、Pinia、Vue Router 与 Nuxt SSR。"
 metadata:
   origin: ecc
   upstream: affaan-m/ECC
   snapshot: ef648e01899b
 ---
+
 # Vue.js Patterns and Best Practices
 
 Comprehensive guide for Vue.js 3 development using Composition API (`<script setup>`), covering component design, reactivity, state management, routing, testing, and SSR patterns. Nuxt-specific guidance is included where it differs from vanilla Vue.

@@ -1,17 +1,20 @@
 ---
 name: eval-harness
-description: "评估驱动开发（EDD）框架：编码前先定义能力与回归评估，用代码、模型、规则或人工方式打分。"
+description: "Eval-driven development (EDD) framework for AI coding sessions — define capability and regression evals before coding, grade with code-based, model-based, rule, or human graders, and track pass@k… 评估驱动开发（EDD）框架：编码前先定义能力与回归评估，用代码、模型、规则或人工方式打分。"
 metadata:
   origin: ecc
   upstream: affaan-m/ECC
   snapshot: ef648e01899b
 ---
 
-> ⚠ **DSH 语境（dsh-kit 适配 · 2026-10-06）**：本技能正文来自上游（`affaan-m/ECC`），其中
-> `~/.claude/…` / `.claude/…` / `hooks/hooks.json`（Claude Code 形态）是**上游的落点与机制**，
-> DSH 侧**没有同名落点**（实测 `~/.dsh/settings.json` 不存在）。DSH 的两处真实等价物：技能目录
-> `~/.agents/skills`、钩子 `hooks.json`（由 profile 的 hook 桥接 bundle 读取，**仅 command 钩子生效**）。
-> ⇒ **本节示例请勿直接套用**；要落地请按上面两处改写，或改用 DSH 自身的插件配置。
+> [!NOTE]
+> **DSH context (dsh-kit adaptation)** — this body comes from upstream (`affaan-m/ECC`). The
+> `~/.claude/…` / `.claude/…` / `hooks/hooks.json` paths (Claude Code form) are **upstream landing points
+> and mechanisms**; DSH has no same-named equivalents (verified: `~/.dsh/settings.json` does not exist).
+> The two real DSH equivalents are the skill directory `~/.agents/skills`, and `hooks.json` (read by the
+> profile's hook-bridge bundle — **only `command` hooks take effect**).
+> ⇒ **Do not apply the examples below as-is**; rewrite them per the two equivalents above, or use DSH's own plugin config.
+
 # Eval Harness Skill
 
 A formal evaluation framework for Claude Code sessions, implementing eval-driven development (EDD) principles.

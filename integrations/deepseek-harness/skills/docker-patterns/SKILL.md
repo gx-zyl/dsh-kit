@@ -1,14 +1,17 @@
 ---
 name: docker-patterns
-description: "Docker 与 Compose 模式：本地开发、硬化安装器、容器安全、网络、卷与多服务编排。涉及容器化时触发。"
+description: "Docker and Docker Compose patterns for local development, hardened CLI installer harnesses, container security, networking, volumes, and multi-service orchestration. Docker 与 Compose 模式：本地开发、硬化安装器、容器安全、网络、卷与多服务编排。涉及容器化时触发。"
 metadata:
   origin: ecc
   upstream: affaan-m/ECC
   snapshot: ef648e01899b
 ---
-> ⚠ **DSH 语境（dsh-kit 适配 · 2026-10-07）**：本技能正文来自上游（`affaan-m/ECC`），其中
-> `/workspace/project/.claude`（Claude Code 工程目录）与 ECC 自研安装器的 `claude-project` 判定是
-> **上游的落点与机制**，DSH 侧没有同名落点。⇒ 本节示例请勿直接套用，落地请按 DSH 自身配置改写。
+
+> [!NOTE]
+> **DSH context (dsh-kit adaptation)** — this body comes from upstream (`affaan-m/ECC`). The
+> `/workspace/project/.claude` path (Claude Code project directory) and ECC's own installer
+> `claude-project` check are **upstream landing points and mechanisms**; DSH has no same-named
+> equivalents. ⇒ **Do not apply the examples below as-is**; adapt them to DSH's own configuration.
 
 # Docker Patterns
 

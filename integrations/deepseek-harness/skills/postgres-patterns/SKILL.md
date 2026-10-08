@@ -1,11 +1,12 @@
 ---
 name: postgres-patterns
-description: "PostgreSQL 模式：查询优化、schema 设计、索引与安全（参考 Supabase 实践）。"
+description: "PostgreSQL database patterns for query optimization, schema design, indexing, and security. Use when designing PostgreSQL schemas, indexes, or RLS policies, or when a query is too slow. PostgreSQL 模式：查询优化、schema 设计、索引与安全（参考 Supabase 实践）。"
 metadata:
   origin: ecc
   upstream: affaan-m/ECC
   snapshot: ef648e01899b
 ---
+
 # PostgreSQL Patterns
 
 Quick reference for PostgreSQL best practices. For detailed guidance, use the `database-reviewer` agent.

@@ -1,22 +1,22 @@
-# grow-dream 候选类型定义
+# grow-dream candidate type definitions
 
-grow-dream 步骤④（提炼分类）和步骤⑧（追问验收）共享的类型体系。
+The type system shared by grow-dream step 4 (distill and classify) and step 8 (interrogation validation).
 
-## 类型总表
+## Type table
 
-| 类型 | 本质 | 判定条件 | DSH 产出路径 |
-|------|------|---------|-------------|
-| **skill** | 场景化的解题套路 | 有判断分支、需上下文理解、特定场景复用 | 项目级 `<项目>/.dsh/skills/<name>/`；用户级 `$DSH_HOME/skills/<name>/`（含 `SKILL.md`） |
-| **command** | 确定性操作序列 | 步骤固定 ≤7 步、重复 ≥2 次、无分支判断 | 同 skill（DSH 无独立 command 机制，确定性流程也做成 skill） |
-| **rule** | 跨项目通用行为约束 | 不引用具体路径/命令、描述通用约束 | 跨项目 → `$DSH_HOME/AGENTS.md`；项目内 → `<项目>/AGENTS.md` |
-| **agent** | 持续运行的有限角色 | 有独立决策自主权、角色边界明确 | `$DSH_HOME/.agent-presets/<name>/`（`preset.yml` + `agent.cordis.yml`） |
-| **hook** | 事件驱动的自动化 | 纯后台、≤3s 执行、失败不影响主流程 | `hooks.json`（由 profile 中的 hook 桥接 bundle 读取；仅 command 钩子生效） |
-| **memory** | 跨会话持久化记忆 | 频次 ≥2、跨会话通用、不重复已有 | `memory/<name>.md` + `MEMORY.md` 索引 |
-| **doc** | 仅当前项目有效的文档 | 非通用性、仅 `docs/` 相关 | 按需 |
+| Type | Essence | Decision criteria | DSH output path |
+|------|---------|-------------------|-----------------|
+| **skill** | A scenario-specific solution recipe | Has branch judgment, needs context understanding, reusable in a specific scenario | Project-level `<project>/.dsh/skills/<name>/`; user-level `$DSH_HOME/skills/<name>/` (with `SKILL.md`) |
+| **command** | A deterministic operation sequence | Fixed steps ≤7, repeated ≥2 times, no branch judgment | Same as skill (DSH has no separate command mechanism; deterministic flows are also produced as skills) |
+| **rule** | A cross-project generic behavioral constraint | Does not reference concrete paths/commands, describes a generic constraint | Cross-project → `$DSH_HOME/AGENTS.md`; in-project → `<project>/AGENTS.md` |
+| **agent** | A limited role that runs continuously | Has independent decision autonomy, clear role boundary | `$DSH_HOME/.agent-presets/<name>/` (`preset.yml` + `agent.cordis.yml`) |
+| **hook** | Event-driven automation | Pure background, executes in ≤3s, failure does not affect the main flow | `hooks.json` (read by the profile's hook-bridging bundle; only command hooks take effect) |
+| **memory** | Cross-session persistent memory | Frequency ≥2, cross-session generic, does not duplicate an existing entry | `memory/<name>.md` + the `MEMORY.md` index |
+| **doc** | Documentation valid only for the current project | Non-generic, `docs/`-related only | As needed |
 
-## 用法
+## Usage
 
-- **步骤④（提炼分类）**：根据对话模式判定归属哪一类型，按分类规则执行
-- **步骤⑧（追问验收）**：按类型对应的验收维度和判定标准逐一追问
+- **Step 4 (distill and classify)**: decide which type a pattern belongs to based on the conversation, then apply that type's classification rules
+- **Step 8 (interrogation validation)**: interrogate one by one using the validation dimensions and decision criteria of the corresponding type
 
-> 新增类型时在此文件添加一行，无需修改 grow-dream 主流程。
+> To add a new type, add one row here; the grow-dream main flow does not need to change.

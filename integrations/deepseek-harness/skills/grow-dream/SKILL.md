@@ -1,257 +1,267 @@
 ---
 name: grow-dream
-description: 回顾本次对话，提炼可沉淀为 skill / rule / agent / memory 的改进，用结构化追问验收候选，并把采纳项写入知识图谱 (w-ocean)。用户说"改进"、"沉淀"、"提炼规则"、"造梦"、"总结对话"、"固化模式"时触发。
+description: Review the current conversation, distill improvements that can be sedimented as a skill / rule / agent / memory, validate candidates through structured interrogation, and write the accepted ones into the knowledge graph (w-ocean). Triggers when the user says "improve", "sediment", "distill rules", "dream", "summarize the conversation", or "solidify the pattern". 回顾本次对话，提炼可沉淀为 skill / rule / agent / memory 的改进，用结构化追问验收候选，并把采纳项写入知识图谱 (w-ocean)。用户说"改进"、"沉淀"、"提炼规则"、"造梦"、"总结对话"、"固化模式"时触发。
 ---
 
-# grow-dream — 对话回顾与能力成长
+# grow-dream — conversation review and capability growth
 
-回顾当前对话，识别可沉淀的模式，输出改进建议。
+Review the current conversation, identify patterns worth sedimenting, and output improvement suggestions.
 
 ```ascii
 
-                                    grow-dream 管道 (Pipeline)
-                                         ──── 9 步流程 ────
+                                    grow-dream Pipeline
+                                         ──── 9-step flow ────
 
   ┌────────────┐   ┌────────────┐   ┌────────────┐   ┌────────────┐   ┌────────────┐   ┌────────────┐   ┌────────────┐   ┌──────────────┐   ┌──────────────┐
-  │  ① 确定    │   │  ② 浏览    │   │  ③ 项目    │   │  ④ 交叉    │   │  ⑤ 分类    │   │  ⑥ 结构化   │   │  ⑦ 可选    │   │  ⑧ 追问    │   │  ⑨ 图谱    │
-  │  输入源    │──→│  识别模式   │──→│  文件对照   │──→│  检查矛盾   │──→│  提炼归类   │──→│  输出建议   │──→│  执行产出   │──→│  追问验收     │──→│  沉淀入库     │
+  │    ①      │   │    ②      │   │    ③      │   │    ④      │   │    ⑤      │   │    ⑥      │   │    ⑦      │   │     ⑧       │   │     ⑨       │
+  │  Pick      │──→│  Scan      │──→│  Check     │──→│  Cross-    │──→│  Classify  │──→│  Structured│──→│  Optional  │──→│  Interrogate │──→│  Sediment    │
+  │  inputs    │   │  patterns  │   │  project   │   │  check     │   │  & distill │   │  output    │   │  execution │   │  validation  │   │  into graph  │
   └────────────┘   └────────────┘   └────────────┘   └────────────┘   └────────────┘   └────────────┘   └────────────┘   └──────────────┘   └──────────────┘
        │                 │                │                 │                │                 │               │               │               │
-       │ 对话记录        │ 重复操作       │ AGENTS.md       │ 术语一致性     │ skill (场景)    │ 分级建议      │ 按模板写入    │ 频次够不够?   │ 节点格式化    │
-       │ 对话日志        │ 显式纠正       │ AGENTS.md       │ 用户纠正跟踪   │ command(确定)   │ 可选方案      │ 格式校验      │ 已有覆盖?     │ 边关联识别    │
-       │ git log         │ 隐性模式       │ rules/          │ AI反馈一致性   │ rule (通用)     │               │ 写入 memory   │ 触发明确?     │ Workflow 调用 │
-       │ memory/         │ 频次反馈       │ agents/         │ user 纠正回顾  │ agent/hook/doc  │               │               │ 维护成本?     │ 图谱更新确认  │
-       └─ 修改历史       └─ 频次统计      └─                └─              └─ memory (规律)  └─              └─              └─              └─
+       │ dialogue log    │ repeated ops   │ AGENTS.md       │ terminology    │ skill (scenario)│ graded advice │ write by tpl  │ frequency?    │ format nodes  │
+       │ session log     │ explicit fixes │ AGENTS.md       │ user fixes     │ command (fixed) │ options       │ format check  │ covered?      │ find edges    │
+       │ git log         │ implicit       │ rules/          │ AI feedback    │ rule (generic)  │               │ write memory  │ trigger clear?│ call workflow │
+       │ memory/         │ frequency      │ agents/         │ user fixes     │ agent/hook/doc  │               │               │ upkeep cost?  │ confirm graph │
+       └─ edit history   └─ frequency     └─                └─ review       └─ memory (rule) └─              └─              └─              └─
 ```
 
 ```ascii
 
-                                grow-dream 关联链路 (Link Diagram)
-                                    输入源 ←→ 分析器 ←→ 产出目标
+                                grow-dream Link Diagram
+                                    inputs ←→ analyzer ←→ outputs
 
               ┌─────────────────────────────────────────────────────────────────────────────────────┐
-              │                             项目知识体系 (被分析/被产出)                               │
+              │                        Project knowledge system (analyzed / produced)               │
               │                                                                                     │
               │  ┌─────────────────┐  ┌─────────────────┐  ┌──────────────────────────┐             │
-              │  │  skill 定义      │  │  rule 约束       │  │  memory 持久化记忆        │             │
-              │  │ .dsh/skills/      │  │ AGENTS.md       │  │  projects/*/memory/      │             │
+              │  │  skill defs      │  │  rule constraints│  │  memory persistence      │             │
+              │  │ .dsh/skills/     │  │ AGENTS.md       │  │  projects/*/memory/      │             │
               │  └────────┬────────┘  └────────┬────────┘  └───────────┬──────────────┘             │
               │           │                    │                      │                            │
               │           └──────┬─────────────┴───────────┬──────────┘                            │
               │                  │                         │                                       │
               │          ┌───────▼───────────┐    ┌────────▼──────────┐     ┌─────────────────┐    │
-              │          │  hook 自动化      │    │  AGENTS.md        │     │  知识图谱        │    │
-              │          │  hooks.json       │    │  (项目/全局)      │     │  有向图谱        │    │
+              │          │  hook automation  │    │  AGENTS.md        │     │  knowledge graph │    │
+              │          │  hooks.json       │    │  (project/global) │     │  directed graph  │    │
               │          └───────────────────┘    └───────────────────┘     │  w-ocean/        │    │
               └─────────────────────────────────────────────────────────────└───────────────────┘──┘
                                                                                        ▲
-                                                                                       │ ⑨ 追加
+                                                                                       │ ⑨ append
                                                                                        │
   ┌────────────┐    ┌──────────────┐    ┌──────────────┬──────────────────────┐        │
-  │  输入源     │    │   分析引擎    │    │               │                       │        │
-  │            │    │              │    │        ┌──────▼──────┐               │        │
-  │ 对话记录 ───┼───→│  grow-dream  │────┼───────→│   改进建议    │               │        │
-  │ 对话日志    │    │  回顾 + 提炼  │    │        │              │               │        │
-  │ git log    │    │  ②查w-ocean  │    │        │ ① skill 补充   │──────────────┼────────┘
-  │ 修改历史    │    │  已有节点     │    │        │ ② command 新增 │──────────────┼────────┐
-  │ memory/   │    │              │    │        │ ③ rule 增强    │──────────────┼────────┤
-  │ w-ocean/ ──┼───→│  (反馈回路)  │    │        │ ④ agent 创建   │──────────────┼────────┤
-  │            │    │              │    │        │ ⑤ hook 自动化  │──────────────┼────────┤
-  │            │    │              │    │        │ ⑥ memory 沉淀   │──────────────┼────────┤
-  │            │    │              │    │        │ ⑦ 项目文档修正  │──────────────┼────────┤
-  └────────────┘    └──────┬───────┘    │        └──────┬──────┘               │        │
-                           │            │               │                      │        │
+  │  Inputs     │    │  Analysis    │    │               │                       │        │
+  │            │    │  engine      │    │        ┌──────▼──────┐               │        │
+  │ dialogue ──┼───→│  grow-dream  │────┼───────→│  Improvement │               │        │
+  │ log        │    │  review +    │    │        │  suggestions │               │        │
+  │ git log    │    │  distill     │    │        │ ① skill add  │──────────────┼────────┘
+  │ edit hist. │    │ ② check      │    │        │ ② command add│──────────────┼────────┐
+  │ memory/    │    │  w-ocean     │    │        │ ③ rule boost │──────────────┼────────┤
+  │ w-ocean/ ──┼───→│  existing    │    │        │ ④ agent new  │──────────────┼────────┤
+  │            │    │  nodes       │    │        │ ⑤ hook auto  │──────────────┼────────┤
+  │            │    │              │    │        │ ⑥ memory     │──────────────┼────────┤
+  │            │    │  (feedback   │    │        │ ⑦ doc fix    │──────────────┼────────┤
+  └────────────┘    │   loop)      │    │        └──────┬──────┘               │        │
+                    └──────┬───────┘    │               │                      │        │
                            │            │        ┌──────▼──────────┐           │        │
-                           │ ⑧ 内部     │        │  追问验收判定    │          │        │
-                           │ 追问验收    │───────→│ 采纳/放弃/补充   │          │        │
+                           │ ⑧ internal │        │  Interrogation   │          │        │
+                           │ validation │───────→│  accept/drop/add │          │        │
                            └────────────┘        └─────────────────┘          │        │
                                         └──────────────────────────────────────        │
                                                                                        │
-                                                       ⑨ 图谱沉淀 ────────────────────┘
-                                                         每次总结追加为节点
-                                                         ─────── 反馈回路 ───────
-                                                        下次 grow-dream 步骤②
-                                                        先查 w-ocean 已有节点
-                                                        避免重复 + 感知图谱
-                                                         ────────────────────────
+                                                       ⑨ graph sedimentation ──────────┘
+                                                          each summary appended as a node
+                                                          ─────── feedback loop ───────
+                                                          next grow-dream step ②
+                                                          checks w-ocean existing nodes first
+                                                          avoids duplicates + senses the graph
+                                                          ─────────────────────────────
                                                                     │
-                                                                    │ 反馈
+                                                                    │ feedback
                                                                     ▼
                                                           ┌─────────────────┐
-                                                          │   输入源（下次）  │
-                                                          │  w-ocean/ 加入   │
+                                                          │  Inputs (next)   │
+                                                          │  w-ocean/ added  │
                                                           └─────────────────┘
 ```
 
 ```ascii
 
-                        grow-dream 矩阵式流程图 (Matrix Flow)
-               识别 → 判断 → 产出 三阶段 × 七维度，附每个节点的约束条件
+                        grow-dream Matrix Flow
+                identify → judge → produce, 3 stages × 7 dimensions, with per-node constraints
 
                 ┌────────────────────────────────────────────────────────────────────────────────────────────────────┐
-                │                        ① 识别模式（是否出现改进信号）                                            │
+                │                        ① Identify the pattern (does an improvement signal appear?)              │
                 ├──────────┬──────────┬──────────┬──────────┬──────────┬──────────┬──────────┬──────────┤
-                │  维度    │  skill   │  cmd     │  rule    │  agent   │  hook    │  doc     │  memory  │
+                │  Dim.    │  skill   │  cmd     │  rule    │  agent   │  hook    │  doc     │  memory  │
                 ├──────────┼──────────┼──────────┼──────────┼──────────┼──────────┼──────────┼──────────┤
-                │  信号    │ 对话暴露 │ 重复 ≥2  │ 用户显式 │ 独立决策 │ git/     │ 路径/    │ 频次 ≥2  │
-                │  识别    │ 技能缺失 │ 固定操作 │ 纠正的行为│ 场景重复  │ DSH      │ 命令与   │ 规律提醒  │
-                │          │          │          │          │          │ 事件触发  │ 实际不符 │ 偏好模式  │
+                │  Signal  │ dialogue │ repeat   │ user     │ indep.   │ git/     │ path/    │ freq ≥2  │
+                │  detect  │ shows a  │ ≥2 fixed │ explicit │ decisions│ DSH      │ command  │ pattern  │
+                │          │ gap      │ ops      │ fixes    │ scenario │ event    │ ≠ actual │ reminder │
+                │          │          │          │          │ repeats  │ trigger  │          │ pref.    │
                 ├──────────┼──────────┼──────────┼──────────┼──────────┼──────────┼──────────┼──────────┤
-                │                        ② 对照判断（查已存在文件是否覆盖）                                        │
+                │                        ② Compare and judge (is it already covered by an existing file?)         │
                 ├──────────┬──────────┬──────────┬──────────┬──────────┬──────────┬──────────┬──────────┤
-                │  对照    │ .dsh/    │ .dsh/    │ AGENTS   │ .agent-  │ hooks.   │ 项目根   │ 项目    │
-                │  对象    │ skills/  │ skills/  │ .md      │ presets/ │ json     │ 目录文件  │ memory/  │
-                │          │ <name>   │ <name>   │ <name>   │ <name>   │ <name>   │          │ MEMORY.md│
+                │  Compare │ .dsh/    │ .dsh/    │ AGENTS   │ .agent-  │ hooks.   │ project  │ project  │
+                │  target  │ skills/  │ skills/  │ .md      │ presets/ │ json     │ root     │ memory/  │
+                │          │ <name>   │ <name>   │ <name>   │ <name>   │ <name>   │ files    │ MEMORY.md│
                 ├──────────┼──────────┼──────────┼──────────┼──────────┼──────────┼──────────┼──────────┤
-                │                        ③ 分类产出（判定条件 → 目标路径）                                        │
+                │                        ③ Classify and produce (condition → target path)                        │
                 ├──────────┬──────────┬──────────┬──────────┬──────────┬──────────┬──────────┬──────────┤
-                │  产出    │ 场景化   │ 确定性    │ 跨项目    │ 有限角色  │ 自动化    │ 补充/   │ 持久化  │
-                │  类型    │ 解题套路  │ 操作序列   │ 行为约束   │ 持续运行  │ 脚本     │ 修正    │ 记忆条目  │
-                │  判定    │ 有分支    │ 步骤固定   │ 通用不涉  │ 需独立    │ 无需交互  │ 仅当前  │ 跨会话  │
-                │          │ 需判断    │ ≤7 步     │ 具体路径   │ 判断力    │ 纯后台   │ 项目有效 │ 适用     │
+                │  Output  │ scenario │ determi- │ cross-   │ limited  │ automa-  │ supplement│ persis- │
+                │  type    │ recipe   │ nistic   │ project  │ role     │ tion     │ / fix    │ tent     │
+                │  judge   │ has      │ fixed    │ generic, │ needs    │ no inter-│ current  │ memory   │
+                │          │ branches │ ≤7 steps │ no path  │ judgment │ action   │ project  │ entry    │
+                │          │          │          │          │          │ backend  │ only     │ cross-   │
+                │          │          │          │          │          │          │          │ session  │
                 └──────────┴──────────┴──────────┴──────────┴──────────┴──────────┴──────────┴──────────┘
 
-                约束条件备注：
+                Constraint notes:
                 ┌──────────┬────────────────────────────────────────────────────────────────┐
-                │  skill   │ 触发关键词必须明确；入口图必须含管道图+链路图+矩阵图           │
-                │  command │ 不含分支判断；步骤固定可重复；产出后需注册到 command 列表       │
-                │  rule    │ 不引用具体项目路径/命令；描述通用行为约束                       │
-                │  agent   │ 产出后需定义调用方式（skill引用 / workflow编排 / 手动调用）      │
-                │  hook    │ 需评估执行耗时 ≤3s 和失败不影响主流程                           │
-                │  doc     │ 仅当对话涉及 docs/ 维护问题时才产出                             │
-                │  memory  │ 频次 ≥2 的规律提醒写入；跨会话可复用的模式优先；先检查已有       │
-                │          │ memory 是否覆盖；产出后更新 MEMORY.md 索引                       │
+                │  skill   │ trigger keywords must be explicit; the entry must carry the     │
+                │          │ pipeline + link + matrix diagrams                              │
+                │  command │ no branch judgment; fixed repeatable steps; must be registered  │
+                │          │ in the command list after production                           │
+                │  rule    │ must not reference concrete project paths/commands; describes   │
+                │          │ a generic behavioral constraint                                │
+                │  agent   │ after production, define how it is invoked (skill reference /   │
+                │          │ workflow orchestration / manual invocation)                    │
+                │  hook    │ must be assessed for execution cost ≤3s and for failures not    │
+                │          │ affecting the main flow                                        │
+                │  doc     │ produced only when the conversation touches docs/ maintenance   │
+                │  memory  │ pattern reminders with freq ≥2 are written; cross-session       │
+                │          │ reusable patterns first; check whether existing memory already  │
+                │          │ covers it; update the MEMORY.md index after production          │
                 └──────────┴────────────────────────────────────────────────────────────────┘
 ```
 
-> 管道图 ⑨ 阶段 ↔ 执行步骤映射：①=0 ②=1 ③=2 ④=3 ⑤=4 ⑥=5-6 ⑦=7-8 ⑧=9 ⑨=10
+> Pipeline stage ⑨ ↔ execution step mapping: ①=0 ②=1 ③=2 ④=3 ⑤=4 ⑥=5-6 ⑦=7-8 ⑧=9 ⑨=10
 
-## 回顾维度
+## Review dimensions
 
-| 维度 | 检查内容 |
+| Dimension | What to check |
 |------|---------|
-| **skill** | 对话中暴露了哪些 skill 的缺失、错误或不足？触发关键词是否需要更新？ |
-| **command** | 是否有重复 ≥2 次的确定性操作序列？能否用一条命令替代手工步骤？触发关键词是否需要更新？ |
-| **rule** | 对话中暴露出哪些新的规则需要？现有规则是否有错误或需要增强？ |
-| **agent** | 是否有适合做成专用 agent 的重复操作模式？注：指 DSH agent preset，格式为 `$DSH_HOME/.agent-presets/<name>/`（`preset.yml` + `agent.cordis.yml`）。产出后需考虑如何调用编排（skill 中引用、workflow 中编排、手动调用）。 |
-| **hook** | 是否有适合做成 hook 的自动化行为？需评估：**判定条件**（何时触发、什么状态变化触发）、**时机**（git 事件 / DSH 事件 / 定时）、**效率**（执行耗时、是否阻塞主流程、失败影响）。 |
-| **AGENTS.md** | 是否存在？内容与项目实际架构是否一致？是否有过期路径/命令/约定？与 `rules/` 文件有无重复或冲突？是否需要补充环境、命令、目录约定？ |
-| **AGENTS.md / agents/** | 是否存在？定义的 agent 角色是否匹配项目需求？有定义无对应文件？是否记录了使用场景与边界？ |
-| **memory** | 对话中是否有频次 ≥2 的规律提醒或跨会话可复用的用户偏好？现有 memory 文件是否已覆盖？是否需要新建或更新条目？MEMORY.md 是否同步更新？ |
-| **[交叉检查] 冲突与矛盾** | AGENTS.md / skill 定义 / rule 条目 / agent preset / hook 脚本 / memory 条目之间是否存在相互矛盾的描述？同一概念在不同文件中的用语是否统一？AI 的反馈是否与项目文件记录的一致？用户纠正过的行为是否在对应文件中已更新？ |
+| **skill** | Which skills turned out to be missing, wrong, or insufficient in the conversation? Do the trigger keywords need updating? |
+| **command** | Is there a deterministic operation sequence repeated ≥2 times? Can one command replace the manual steps? Do the trigger keywords need updating? |
+| **rule** | Which new rules does the conversation reveal as needed? Are existing rules wrong or in need of strengthening? |
+| **agent** | Is there a repeated operation pattern that would suit a dedicated agent? Note: this means a DSH agent preset, in the form `$DSH_HOME/.agent-presets/<name>/` (`preset.yml` + `agent.cordis.yml`). After production, consider how it is invoked/orchestrated (referenced from a skill, orchestrated in a workflow, invoked manually). |
+| **hook** | Is there an automated behavior that would suit a hook? Assess: **judgment conditions** (when it triggers, what state change triggers it), **timing** (git event / DSH event / scheduled), **efficiency** (execution cost, whether it blocks the main flow, impact of failure). |
+| **AGENTS.md** | Does it exist? Is the content consistent with the project's actual architecture? Are there stale paths/commands/conventions? Does it duplicate or conflict with `rules/` files? Does it need environment, command, or directory conventions added? |
+| **AGENTS.md / agents/** | Does it exist? Do the defined agent roles match the project's needs? Are there definitions without corresponding files? Are usage scenarios and boundaries recorded? |
+| **memory** | Does the conversation contain pattern reminders with freq ≥2 or cross-session reusable user preferences? Do existing memory files already cover them? Do entries need to be created or updated? Is MEMORY.md updated in sync? |
+| **[cross-check] conflicts and contradictions** | Do AGENTS.md / skill definitions / rule entries / agent presets / hook scripts / memory entries contradict each other? Is the same concept named consistently across files? Does the AI's feedback agree with what the project files record? Have behaviors the user corrected been updated in the corresponding files? |
 
-## 执行步骤
+## Execution steps
 
-0. **确定输入源** — 选择分析范围：
-   - 本次对话（默认）
-   - 指定对话日志（路径）
-   - git log / commit message
-   - 特定文件或目录的修改历史
-   - **memory/** — 查阅已有 memory 文件
-   - **w-ocean/** — 查阅已有图谱节点，避免重复沉淀（如已有相似节点，优先扩展而非新建）
+0. **Determine the input source** — choose the analysis scope:
+   - This conversation (default)
+   - A specified conversation log (path)
+   - git log / commit messages
+   - The modification history of a specific file or directory
+   - **memory/** — consult existing memory files
+   - **w-ocean/** — consult existing graph nodes to avoid duplicate sedimentation (if a similar node exists, prefer extending it over creating a new one)
 
-1. 浏览对话/输入源，识别重复发生的模式、错误、或显式纠正。同时对照 w-ocean 已有节点，确认是**新模式**还是**已有模式的变体**：
-   - 已有相似节点 → 扩展该节点（更新 tags/refs/edges）而非新建
-   - 全新模式 → 正常新增节点
+1. Browse the conversation/input source, identifying recurring patterns, errors, or explicit corrections. At the same time compare against existing w-ocean nodes to confirm whether this is a **new pattern** or a **variant of an existing pattern**:
+   - Similar node exists → extend that node (update tags/refs/edges) rather than creating a new one
+   - Entirely new pattern → add the node normally
 
-2. 扫描项目 AGENTS.md、`.dsh/skills/`、`$DSH_HOME/.agent-presets/`、memory/ **及 w-ocean/** 文件，与发现的实际行为对照：
-   - **AGENTS.md**：记录的路径/命令/约定是否与实际使用一致？是否有遗漏的关键约定？
-   - **AGENTS.md/agents/**：定义的 agent 是否被实际使用？实际使用的 agent 是否被记录？
-   - **memory/**：已有 memory 条目是否覆盖了对话中发现的规律提醒？是否有条目需要更新或废弃？
-   - **w-ocean/graph.json**：图谱中已有节点是否覆盖了本次识别的模式？已有边关系是否能复用到新候选？
-   - **项目文档（按需）**：仅当对话中涉及 docs/ 维护问题时，才检查 STATE/DONE/WARN/HISTORY 的状态
+2. Scan the project's AGENTS.md, `.dsh/skills/`, `$DSH_HOME/.agent-presets/`, memory/ **and w-ocean/** files, and compare them against the actual behavior observed:
+   - **AGENTS.md**: do the recorded paths/commands/conventions match actual usage? Are key conventions missing?
+   - **AGENTS.md/agents/**: are the defined agents actually used? Are the agents actually used recorded?
+   - **memory/**: do existing memory entries cover the pattern reminders found in the conversation? Do any entries need updating or retiring?
+   - **w-ocean/graph.json**: do the existing nodes in the graph cover the patterns identified this time? Can existing edges be reused for new candidates?
+   - **Project docs (as needed)**: check the STATE/DONE/WARN/HISTORY status only when the conversation touches docs/ maintenance
 
-3. **交叉检查**：逐对比对各文件对同一概念的描述是否一致；检查用户曾纠正过的行为是否已在对应文件中更新；确认 AI 的反馈与项目文件无矛盾
+3. **Cross-check**: compare file pairs to see whether they describe the same concept consistently; check whether behaviors the user once corrected have been updated in the corresponding files; confirm the AI's feedback does not contradict the project files
 
-4. **提炼分类** — 按频次和性质归类。类型定义见 `../../references/grow-dream-types.md`。
-   - 重复 ≥2 次的确定性操作 → command
-   - 特定场景的解题套路（需判断分支）→ skill（产出前按 `write-a-skill` 技能的结构要求执行）
-   - 跨项目的通用行为约束 → rule
-   - 需独立判断、持续运行的有限角色 → agent（格式：`agents/<name>.md`，YAML frontmatter + Markdown 体）
-   - 特定 git/DSH 事件触发的自动化 → hook
-   - 项目根文档缺失或不一致 → AGENTS.md
-   - **频次 ≥2 的规律提醒、反复纠正、跨会话偏好的持续化** → **memory**
+4. **Distill and classify** — categorize by frequency and nature. Type definitions are in `../../references/grow-dream-types.md`.
+   - A deterministic operation repeated ≥2 times → command
+   - A solution recipe for a specific scenario (needs branch judgment) → skill (before producing it, follow the structural requirements of the `write-a-skill` skill)
+   - A cross-project generic behavioral constraint → rule
+   - A limited role needing independent judgment and continuous running → agent (form: `agents/<name>.md`, YAML frontmatter + Markdown body)
+   - Automation triggered by a specific git/DSH event → hook
+   - Project root docs missing or inconsistent → AGENTS.md
+   - **Pattern reminders with freq ≥2, repeated corrections, cross-session preference persistence** → **memory**
 
-   图谱感知：按步骤①的 w-ocean 对照结果执行——已有变体则扩展，全新模式则新建。
-5. 对每个维度逐一判断：是否有改进空间？
-6. 输出结构化建议：改进什么文件、怎么改、为什么
-7. 对于需要用户决策的改进，提供选项
-8. **可选执行**：询问用户是否直接产出改进文件。若确认，按执行模式生成对应文件，并应用输出检查
+   Graph awareness: follow the w-ocean comparison result from step ① — extend if a variant exists, create a new node if the pattern is entirely new.
+5. Judge each dimension one by one: is there room for improvement?
+6. Output structured suggestions: which file to improve, how to change it, and why
+7. For improvements that need a user decision, offer options
+8. **Optional execution**: ask the user whether to produce the improvement files directly. If confirmed, generate the corresponding files in execution mode and apply the output checks
 
-9. **⑧ 追问验收** — 对第 5 步提炼的每个改进候选，逐一追问验收。这是 grow-dream 的内置子流程，无需外部 skill：
+9. **⑧ Interrogation validation** — for each improvement candidate distilled in step 5, run one interrogation validation at a time. This is a built-in sub-flow of grow-dream and needs no external skill:
 
-   继承三条追问哲学——每条都是从 grill-me 继承的核心准则，确保追问有依据、不空洞、不压迫：
+   It inherits three interrogation principles — each is a core rule inherited from grill-me, ensuring the interrogation is grounded, non-empty, and non-coercive:
 
-   > **① 一次只验收一个候选，等判定输出后再继续下一个。**
-   > 不连珠炮式提问。每个候选完成验收（采纳/放弃/需补充）后，再进入下一个候选。
+   > **① Validate one candidate at a time; wait for the verdict before moving to the next.**
+   > No machine-gun questioning. Only after a candidate finishes validation (accepted/dropped/needs more information) do you move to the next candidate.
    >
-   > **② 每个问题先给出你自己的推荐判定。**
-   > 不是"你觉得呢"，而是"我的判断是建议采纳/建议放弃，理由是……"。展示你做了功课，降低用户决策成本。
+   > **② Give your own recommended verdict first for every question.**
+   > Not "what do you think?", but "my judgment is that we should accept / drop it, because…". Show that you did the work and lower the user's decision cost.
    >
-   > **③ 如果可以通过检查项目文件回答，就先查文件再问。**
-   > 不问"这个 skill 是否已有文件覆盖"这种可以自己查 `.dsh/skills/` 目录的问题。查完文件，带着证据去问。
+   > **③ If a project file can answer it, check the file before asking.**
+   > Don't ask things you can look up yourself such as "does a file already cover this skill in `.dsh/skills/`". Check the files, then ask with the evidence in hand.
 
-   验收时查阅 w-ocean 图谱中与候选相关的已有节点和边，带着图谱证据提问（如"w-ocean 中已有同类节点 skill-xxx，本次候选与它是否有扩展/依赖关系？"）。
+   During validation, consult the existing nodes and edges related to the candidate in the w-ocean graph, and ask with graph evidence (e.g. "w-ocean already has a node of the same kind, skill-xxx; does this candidate extend it or depend on it?").
 
-   验收维度：
+   Validation dimensions:
 
-   类型定义见 `../../references/grow-dream-types.md`。验收维度如下：
+   Type definitions are in `../../references/grow-dream-types.md`. The validation dimensions are as follows:
 
-   | 候选类型 | 验收维度 | 判定标准 |
+   | Candidate type | Validation dimension | Decision criteria |
    |---------|---------|---------|
-   | **skill** | 触发条件明确？已有 skill 覆盖？维护成本？ | 触发关键词明确、不与现有 skill 重叠、场景化有分支 |
-   | **command** | 步骤固定 ≤7 步？重复 ≥2 次？ | 确定性操作、无分支判断 |
-   | **rule** | 跨项目通用？不引用具体路径？ | 通用行为约束、不与现有 rule 冲突 |
-   | **agent** | 独立判断能力？使用场景清晰？ | 有决策自主权、角色边界明确 |
-   | **hook** | 事件驱动？执行耗时 ≤3s？失败不影响主流程？ | 纯后台、触发条件明确 |
-   | **memory** | 频次 ≥2？跨会话通用？已有条目覆盖？ | 满足双门槛、不重复 |
-   | **doc** | 仅当前项目有效？ | 非通用性、仅 docs/ 相关 |
+   | **skill** | Are trigger conditions explicit? Already covered by an existing skill? Maintenance cost? | Trigger keywords explicit, no overlap with existing skills, scenario-based with branches |
+   | **command** | Fixed steps ≤7? Repeated ≥2 times? | Deterministic operation, no branch judgment |
+   | **rule** | Cross-project generic? No concrete paths referenced? | Generic behavioral constraint, no conflict with existing rules |
+   | **agent** | Independent judgment capability? Clear usage scenario? | Has decision autonomy, clear role boundary |
+   | **hook** | Event-driven? Execution cost ≤3s? Failure does not affect the main flow? | Pure background, explicit trigger conditions |
+   | **memory** | Freq ≥2? Cross-session generic? Covered by an existing entry? | Meets both thresholds, no duplication |
+   | **doc** | Valid only for the current project? | Non-generic, docs/-related only |
 
-   对每个候选输出判定：**建议采纳** / **建议放弃** / **需补充信息**。
+   Output a verdict for each candidate: **recommend accept** / **recommend drop** / **needs more information**.
 
-   验收结论以表格追加到输出末尾（见输出格式 `## 追问验收`）。
+   Append the validation conclusions as a table at the end of the output (see the output format `## Interrogation validation`).
 
-10. **⑨ 图谱沉淀入库** — 将本次总结的结构化输出沉淀到当前项目的 `w-ocean/` 知识图谱：
+10. **⑨ Graph sedimentation** — sediment this summary's structured output into the current project's `w-ocean/` knowledge graph:
 
-    a. **检测与初始化** — 检查当前项目根目录是否存在 `w-ocean/graph.json`：
-       - **存在** → 跳过（后续步骤会读取）
-       - **不存在** → 从 dsh-kit 技能包模板复制初始图谱：
+    a. **Detect and initialize** — check whether `w-ocean/graph.json` exists in the current project root:
+       - **Exists** → skip (later steps will read it)
+       - **Does not exist** → copy the initial graph from the dsh-kit skill package template:
          ```
-         # 定位 .dsh/skills/ 目录
+         # locate the .dsh/skills/ directory
          DSHKIT_PATH=".dsh/skills"
          if [ ! -d "$DSHKIT_PATH/grow-dream/templates/w-ocean" ]; then
-           echo "错误：找不到 grow-dream 模板，请确认 .dsh/skills/ 存在"
+           echo "error: grow-dream template not found; confirm that .dsh/skills/ exists"
            exit 1
          fi
          WOCEAN_TPL="$DSHKIT_PATH/grow-dream/templates/w-ocean"
          ```
-         复制 `.dsh/skills/grow-dream/templates/w-ocean/` 下所有内容到项目根目录的 `w-ocean/`：
-         - `graph.json`（图谱数据，替换 `__TEMPLATE_DATE__` 为当前日期）
-         - `config.yaml`（配置）
-         - `README.md`（文档）
-         - `commands/w-ocean.md`（本地 /w-ocean 命令，模板为规范源）
-         - `skills/w-ocean-agent/SKILL.md`（本地维护 skill，模板为规范源）
-       - 输出初始化确认 → "w-ocean 图谱已初始化：0 节点，0 边，含本地命令和 skill"
+         Copy everything under `.dsh/skills/grow-dream/templates/w-ocean/` into the project root's `w-ocean/`:
+         - `graph.json` (graph data; replace `__TEMPLATE_DATE__` with the current date)
+         - `config.yaml` (configuration)
+         - `README.md` (documentation)
+         - `commands/w-ocean.md` (local /w-ocean command; the template is the canonical source)
+         - `skills/w-ocean-agent/SKILL.md` (local maintenance skill; the template is the canonical source)
+       - Output an initialization confirmation → "w-ocean graph initialized: 0 nodes, 0 edges, with local command and skill"
 
-    b. **节点格式化** — 将改进建议中每个采纳的候选（skill/command/rule/agent/hook/memory/doc）格式化为 w-ocean 节点：
-       - `id`: `{type}-{kebab-case-title}`（如 `skill-grill-dream`）
-       - `type`: 候选类型
-       - `title`: 简短名称
-       - `summary`: 一句话总结
-       - `content`: 文件路径或功能描述
+    b. **Format nodes** — format each accepted candidate from the improvement suggestions (skill/command/rule/agent/hook/memory/doc) as a w-ocean node:
+       - `id`: `{type}-{kebab-case-title}` (e.g. `skill-grill-dream`)
+       - `type`: the candidate type
+       - `title`: a short name
+       - `summary`: a one-sentence summary
+       - `content`: the file path or feature description
        - `source`: `grow-dream-{YYYY-MM-DD}`
-       - `tags`: 从对话中提取的关键词标签
-       - `refs`: 引用的已有节点 ID（如该 skill 扩展了哪个已有 skill）
+       - `tags`: keyword tags extracted from the conversation
+       - `refs`: IDs of referenced existing nodes (e.g. which existing skill this skill extends)
 
-    c. **边关联识别** — 识别新节点之间、新节点与已有节点之间的关系：
-       - 扩展关系（extends）：新 skill 扩展了已有 skill
-       - 依赖关系（depends-on）：新 rule 实现某个 skill 的约束
-       - 时序关系（precedes）：按创建顺序链接
-       - 通用关系（generalizes/relates-to）：同主题关联
+    c. **Identify edge relations** — identify relations among new nodes and between new and existing nodes:
+       - extends: the new skill extends an existing skill
+       - depends-on: the new rule implements a constraint of some skill
+       - precedes: link by creation order
+       - generalizes/relates-to: same-topic association
 
-    d. **内联入库** — 直接读写 `w-ocean/graph.json`：
+    d. **Inline ingestion** — read and write `w-ocean/graph.json` directly:
 
-       graph.json 结构：
+       graph.json structure:
        ```json
        { "meta": { "name": "w-ocean", "nodeCount": 0, "edgeCount": 0, "updated": "" },
          "nodes": [{"id": "{type}-{kebab}", "type": "skill|rule|command|agent|hook|memory|doc|concept|decision",
@@ -259,115 +269,115 @@ description: 回顾本次对话，提炼可沉淀为 skill / rule / agent / memo
          "edges": [{"from": "node-id", "to": "node-id", "type": "extends|depends-on|conflicts-with|generalizes|relates-to|precedes|triggers|refines|alternative"}] }
        ```
 
-       - 读取 `w-ocean/graph.json` 当前内容
-       - 新节点按 id 去重：同 id 更新 content/tags/refs，保留原始 created
-       - 新边按 (from, to, type) 三元组去重
-       - 自动建边：新节点 refs 引用的其他节点，自动创建 relates-to 边
-       - 更新 meta.nodeCount、meta.edgeCount、meta.updated
-       - 写回 `w-ocean/graph.json`
+       - Read the current contents of `w-ocean/graph.json`
+       - Deduplicate new nodes by id: on the same id update content/tags/refs and keep the original created
+       - Deduplicate new edges by the (from, to, type) triple
+       - Auto-create edges: for other nodes referenced by a new node's refs, automatically create relates-to edges
+       - Update meta.nodeCount, meta.edgeCount, meta.updated
+       - Write back `w-ocean/graph.json`
 
-    e. **图谱更新确认** — 确认追加结果，输出本次新增节点数、边数、图谱总览。
+    e. **Graph update confirmation** — confirm the append result and output the number of nodes added, edges added, and a graph overview.
 
-    f. 产出追加到输出格式的 `## 图谱沉淀` 章节。
+    f. Append the artifacts to the `## Graph sedimentation` section of the output format.
 
-## 输出格式
+## Output format
 
 ```
-## 改进建议
+## Improvement suggestions
 
 ### skill
-- [skill-name]: 建议 + 原因
+- [skill-name]: suggestion + reason
 
 ### command
-- [command-name]: 建议 + 原因
+- [command-name]: suggestion + reason
 
 ### rule
-- [rule-file]: 建议 + 原因
+- [rule-file]: suggestion + reason
 
 ### agent
-- [agent-name]: 建议 + 原因
+- [agent-name]: suggestion + reason
 
 ### hook
-- [hook-description]: 建议 + 原因
+- [hook-description]: suggestion + reason
 
 ### AGENTS.md
-- [AGENTS.md / 缺失 / agent preset]: 建议 + 原因
+- [AGENTS.md / missing / agent preset]: suggestion + reason
 
 ### memory
-- [memory/<file>.md]: 规律提醒 + 建议写入内容 + 是否更新 MEMORY.md
-- [新 memory 条目]: 模式描述 + 建议文件名 + 关联的记忆条目
+- [memory/<file>.md]: pattern reminder + suggested content + whether to update MEMORY.md
+- [new memory entry]: pattern description + suggested filename + related memory entries
 
-### 交叉检查：冲突与矛盾
-- [文件 A vs 文件 B / AI 反馈 vs 文件 / memory vs 实际行为]: 矛盾点 + 建议统一方向
+### Cross-check: conflicts and contradictions
+- [file A vs file B / AI feedback vs file / memory vs actual behavior]: the contradiction + the suggested direction for unifying it
 
-### 项目文档（按需）
-- 仅当对话涉及 docs/ 维护时出现
-- [docs/STATE.md / DONE.md / WARN.md / HISTORY.md]: 建议 + 原因
+### Project docs (as needed)
+- appears only when the conversation touches docs/ maintenance
+- [docs/STATE.md / DONE.md / WARN.md / HISTORY.md]: suggestion + reason
 
-## 追问验收
+## Interrogation validation
 
-| 候选 | 判定 | 理由 |
+| Candidate | Verdict | Reason |
 |------|------|------|
-| [名称] | 采纳 / 放弃 / 需补充 | [简短理由] |
+| [name] | accept / drop / needs more | [short reason] |
 
-## 图谱沉淀
+## Graph sedimentation
 
-| 指标 | 值 |
+| Metric | Value |
 |------|----|
-| 来源 | grow-dream-{YYYY-MM-DD} |
-| 初始化 | 新建 / 已有 / 跳过 |
-| 新增节点 | [数量] |
-| 更新节点 | [数量] |
-| 新增边 | [数量] |
-| 自动建边(refs) | [数量] |
-| 图谱总计 | [总节点] 节点 / [总边] 条边 |
+| Source | grow-dream-{YYYY-MM-DD} |
+| Initialization | created / existing / skipped |
+| Nodes added | [count] |
+| Nodes updated | [count] |
+| Edges added | [count] |
+| Auto edges (refs) | [count] |
+| Graph total | [total nodes] nodes / [total edges] edges |
 
-### 新增节点
+### Nodes added
 
 - `{node-id}` ({type}): {summary}
 
-### 新增关联边
+### Edges added
 
 - `{from}` ─{type}→ `{to}`
 ```
 
-## 执行模式（可选）
+## Execution mode (optional)
 
-用户确认后，直接产出改进文件。每种改进类型对应固定路径和判定条件：
+After the user confirms, produce the improvement files directly. Each improvement type has a fixed path and judgment conditions:
 
-| 产出类型 | 目标路径 | 适用条件 |
+| Output type | Target path | Applicable condition |
 |---------|---------|---------|
-| **skill** | 项目级 `<项目>/.dsh/skills/<name>/`、用户级 `$DSH_HOME/skills/<name>/`（含 `SKILL.md` + `references/` + `scripts/`） | 有判断分支、需要上下文理解的场景化能力。结构参见 `write-a-skill` 技能 |
-| **command** | `<项目>/.dsh/skills/<name>/SKILL.md` | 步骤固定、无需 AI 判断的确定性操作 |
-| **rule** | 项目级 `<项目>/AGENTS.md`；跨项目 `$DSH_HOME/AGENTS.md` | 跨项目的通用行为约束 |
-| **agent** | `$DSH_HOME/.agent-presets/<name>/`（`preset.yml` + `agent.cordis.yml`） | 持续运行、有决策自主权、面向特定领域；DSH agent preset 格式 |
-| **hook** | `hooks.json`（由 profile 的 hook 桥接 bundle 读取；仅 command 钩子生效） | 特定 git/DSH 事件触发、无交互的自动化 |
-| **memory** | `memory/<name>.md` + 更新 `MEMORY.md` 索引 | 频次 ≥2 的规律提醒、反复纠正、跨会话偏好的持久化 |
-| **图谱节点** | `w-ocean/graph.json`（内联入库） | 每轮 grow-dream 总结完成后自动调用 |
+| **skill** | project level `<project>/.dsh/skills/<name>/`, user level `$DSH_HOME/skills/<name>/` (with `SKILL.md` + `references/` + `scripts/`) | scenario capabilities with judgment branches and a need for contextual understanding. For the structure see the `write-a-skill` skill |
+| **command** | `<project>/.dsh/skills/<name>/SKILL.md` | deterministic operations with fixed steps that need no AI judgment |
+| **rule** | project level `<project>/AGENTS.md`; cross-project `$DSH_HOME/AGENTS.md` | cross-project generic behavioral constraints |
+| **agent** | `$DSH_HOME/.agent-presets/<name>/` (`preset.yml` + `agent.cordis.yml`) | long-running, with decision autonomy, domain-specific; DSH agent preset format |
+| **hook** | `hooks.json` (read by the profile's hook bridge bundle; only command hooks take effect) | automation triggered by specific git/DSH events, with no interaction |
+| **memory** | `memory/<name>.md` + update the `MEMORY.md` index | persistence of pattern reminders with freq ≥2, repeated corrections, and cross-session preferences |
+| **graph node** | `w-ocean/graph.json` (inline ingestion) | invoked automatically after each grow-dream summary completes |
 
-## 入口图要求
+## Entry diagram requirement
 
-所有 skill / 脚本 / 类 / 文档 / 其他 md 文件的入口必须在标题后紧接 **三个 ASCII 图**：
+The entry of every skill / script / class / document / other md file must carry **three ASCII diagrams** immediately after the title:
 
-| 图类型 | 内容 | 目的 |
+| Diagram type | Content | Purpose |
 |--------|------|------|
-| **管道图 (Pipeline)** | 水平分阶段的处理流程，箭头连接各环节，每阶段下方标注输入/输出明细 | 一目了然整体流程的阶段划分 |
-| **链路图 (Link Diagram)** | 输入源 → 分析引擎 → 产出目标的三层关联，展示文件在系统中的位置和上下游关系 | 快速定位文件在整体架构中的角色 |
-| **矩阵图 (Matrix Flow)** | 识别→判断→产出三阶段×七维度的矩阵式流程图，含约束条件备注 | 展示各维度在各阶段的判定逻辑和质量门禁，指导分析和产出决策 |
+| **Pipeline** | a horizontally staged processing flow, with arrows connecting the stages and the input/output details annotated under each stage | see the stage breakdown of the whole flow at a glance |
+| **Link Diagram** | the three-layer association of input source → analysis engine → output target, showing where the file sits in the system and its upstream/downstream relations | quickly locate the file's role in the overall architecture |
+| **Matrix Flow** | a matrix-style flow of the identify→judge→produce stages × seven dimensions, with constraint notes | show the judgment logic and quality gates of each dimension at each stage, guiding analysis and production decisions |
 
-违反此要求视为输出不完整，需补图后才算完成。
+Violating this requirement counts as an incomplete output; the diagrams must be added before it is considered done.
 
-## 输出检查
+## Output checks
 
-产出文件前逐项验证：
+Verify each item before producing files:
 
-- [ ] 入口图：入口处包含 ASCII 管道图 + 链路图 + 矩阵图
-- [ ] 产出物可直接使用（路径、格式正确）
-- [ ] 去除了对话中的试错痕迹，只保留最终方案
-- [ ] 描述触发条件明确（何时 AI 应激活）
-- [ ] 不包含时间敏感信息
-- [ ] 术语与项目现有保持统一
-- [ ] **memory 完整性**：频次 ≥2 的规律提醒已写入 memory？已有 memory 条目是否因本次发现需要补充或废弃？MEMORY.md 索引是否同步更新？
-- [ ] **追问验收**：每个改进候选已过追问验收，输出明确判定（采纳/放弃/需补充）
-- [ ] **skill 结构合规**（有 skill 产出时）：按 `write-a-skill` 技能核验，确认 SKILL.md 职责清晰、references/ 和 scripts/ 已分离、description 为触发场景而非宣传语
-- [ ] **图谱沉淀完整性**：已将所有采纳候选格式化为节点并追加到图谱？节点 ID 格式正确？边关联已识别？入库操作已执行并确认？
+- [ ] Entry diagrams: the entry carries the ASCII pipeline + link + matrix diagrams
+- [ ] The artifact is directly usable (paths and formats correct)
+- [ ] Trial-and-error traces from the conversation are removed, leaving only the final solution
+- [ ] The described trigger conditions are explicit (when the AI should activate)
+- [ ] No time-sensitive information is included
+- [ ] Terminology is consistent with the project's existing usage
+- [ ] **memory completeness**: have pattern reminders with freq ≥2 been written to memory? Do existing memory entries need supplementing or retiring because of this round's findings? Is the MEMORY.md index updated in sync?
+- [ ] **Interrogation validation**: every improvement candidate has passed interrogation validation with an explicit verdict (accept/drop/needs more)
+- [ ] **skill structural compliance** (when a skill is produced): verify against the `write-a-skill` skill, confirming SKILL.md has clear responsibilities, references/ and scripts/ are separated, and the description describes trigger scenarios rather than being promotional copy
+- [ ] **Graph sedimentation completeness**: have all accepted candidates been formatted as nodes and appended to the graph? Is the node ID format correct? Have edge relations been identified? Has the ingestion been executed and confirmed?

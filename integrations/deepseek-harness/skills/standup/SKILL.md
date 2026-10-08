@@ -1,15 +1,18 @@
 ---
 name: standup
-description: "跨 git worktree、分支或 PR 的只读站会：对比改动并产出一份整合计划。"
+description: "Facilitate a read-only standup across git worktrees, branches, or PRs to compare changes and produce one consolidation plan. 跨 git worktree、分支或 PR 的只读站会：对比改动并产出一份整合计划。"
 metadata:
   origin: claude-mem
   upstream: thedotmack/claude-mem
   snapshot: 3b3baaa55ebb
 ---
-> ⚠ **DSH 语境（dsh-kit 适配 · 2026-10-07）**：本技能正文来自上游（`thedotmack/claude-mem`）。下列机制名
-> 在 DSH 下须替换：`${CLAUDE_SKILL_DIR}` → 写技能目录的真实路径；`AskUserQuestion` → `ask_user_question`；
-> `Task` 并行派发 → `subagent` / `spawn_teammate`；`/do` → 上游命令，本包无此技能，需人工执行或改用本包技能。
-> 共享文件默认落点 `~/.claude-mem/STANDUP.md` 是上游路径，DSH 侧请用 `--file` 自定。
+
+> [!NOTE]
+> **DSH context (dsh-kit adaptation)** — this body comes from upstream (`thedotmack/claude-mem`).
+> Replace these mechanism names under DSH: `${CLAUDE_SKILL_DIR}` → the skill directory's real path;
+> `AskUserQuestion` → `ask_user_question`; `Task` fan-out → `subagent` / `spawn_teammate`; `/do` → an
+> upstream command this package does not ship (run it manually, or use a bundled skill instead). The
+> default room file `~/.claude-mem/STANDUP.md` is an upstream path — pass your own `--file`.
 
 # standup — facilitate a group chat between branch-agents
 

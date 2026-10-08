@@ -1,11 +1,12 @@
 ---
 name: iterative-retrieval
-description: "渐进式细化上下文检索，解决子智能体拿不到所需上下文的问题。"
+description: "Pattern for progressively refining context retrieval to solve the subagent context problem. Use when a subagent lacks the context it needs and retrieval must be refined across passes. 渐进式细化上下文检索，解决子智能体拿不到所需上下文的问题。"
 metadata:
   origin: ecc
   upstream: affaan-m/ECC
   snapshot: ef648e01899b
 ---
+
 # Iterative Retrieval Pattern
 
 Solves the "context problem" in multi-agent workflows where subagents don't know what context they need until they start working.

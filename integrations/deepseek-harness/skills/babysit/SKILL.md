@@ -1,11 +1,12 @@
 ---
 name: babysit
-description: "盯住一个 PR 或评审周期直到可合并：持续检查评论、评审与 CI，直到无可执行项。"
+description: "Watch a pull request or review cycle until it is ready to merge. Use when asked to babysit, monitor, or keep checking PR comments, reviews, and CI until all actionable issues are resolved. 盯住一个 PR 或评审周期直到可合并：持续检查评论、评审与 CI，直到无可执行项。"
 metadata:
   origin: claude-mem
   upstream: thedotmack/claude-mem
   snapshot: 3b3baaa55ebb
 ---
+
 # Babysit PR
 
 Stay with the PR until it is actually clean. Do not stop after one check pass if comments or review threads are still unresolved.

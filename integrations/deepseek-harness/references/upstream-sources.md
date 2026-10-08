@@ -26,7 +26,9 @@
 |---|---|
 | 选中技能 | 目录拍平为 `skills/<name>/SKILL.md`（DSH 只发现这一层） |
 | frontmatter | 只保留 DSH 认可键：`name`、`description`（+ 可选 `metadata`、`disable-model-invocation`、`user-invocable`）；上游杂键在此登记，不再随技能保留 |
-| `description` | 中文触发语（召回用）；正文保持上游原文 |
+| `description` | **英中双语**：英文一句 + 中文触发语（原样保留，召回用）。**正文英文**——上游逐字，仅叠加下面的「最小适配」；上游自带中文的正文例外见 `../../CONTEXT.md` 的「正文语言」 |
+| 最小适配 | 入库只做 6 件必要事（目录拍平 / frontmatter 只留认可键 / `description` 英中双语 / CC 专有路径与工具名→DSH 等价物 / 死链中性化 / **英文** CC 语境横幅）——逐条判据与实测计数见 `../../CONTEXT.md` 的「最小适配（A）」 |
+| 逐技能偏离 | 每个技能相对上游的**实际偏离**（改了哪几行、为什么）另有一份逐技能清单（本轮 A 面产出）：本表只登记**来源与批量口径**，逐文件处置以那份清单为准 |
 | 署名 | **84 个上游技能**的 `metadata.origin` / `metadata.upstream` / `metadata.snapshot` 指向本表条目（8 个包内自有技能无上游来源：`karpathy-guidelines` 只有 `origin: dsh-kit`，其余 7 个不设 `metadata`） |
 | 许可正文 | 随包分发于 `../LICENSES/`（MIT×2、Apache-2.0、claude-mem 的 `NOTICE`）；**变更声明**见 `../THIRD-PARTY-NOTICES.md` |
 | 未选中技能 | 不复制进包；原因见各分册「未取用说明」 |

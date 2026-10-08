@@ -1,95 +1,95 @@
-# w-ocean 配置
-# 每次 grow-dream 执行后在此目录生成知识图谱
-# 修改此文件可自定义节点/边类型和行为
+# w-ocean configuration
+# The knowledge graph is generated in this directory after each grow-dream run
+# Edit this file to customize node/edge types and behavior
 
-# ─── 节点类型 ───
+# ─── Node types ───
 nodeTypes:
   - id: skill
     label: Skill
-    description: 场景化的解题套路，有判断分支
+    description: A scenario-based solution recipe with judgment branches
     icon: 🎯
   - id: rule
     label: Rule
-    description: 跨项目的通用行为约束
+    description: A cross-project generic behavioral constraint
     icon: 📏
   - id: command
     label: Command
-    description: 确定性操作序列
+    description: A deterministic operation sequence
     icon: ⚡
   - id: agent
     label: Agent
-    description: 持续运行的有限角色
+    description: A limited role that runs continuously
     icon: 🤖
   - id: hook
     label: Hook
-    description: git/DSH 事件触发的自动化
+    description: Automation triggered by git/DSH events
     icon: 🔗
   - id: memory
     label: Memory
-    description: 跨会话持久化记忆
+    description: Cross-session persistent memory
     icon: 🧠
   - id: doc
     label: Doc
-    description: 项目文档
+    description: Project documentation
     icon: 📄
   - id: concept
     label: Concept
-    description: 领域概念或术语
+    description: A domain concept or term
     icon: 💡
   - id: decision
     label: Decision
-    description: 架构决策记录
+    description: An architecture decision record
     icon: 🏛️
 
-# ─── 边类型 ───
+# ─── Edge types ───
 edgeTypes:
   - id: extends
-    label: 扩展
-    description: A 扩展/增强 B
+    label: extends
+    description: A extends/enhances B
     arrow: "─extends→"
   - id: depends-on
-    label: 依赖
-    description: A 依赖 B
+    label: depends-on
+    description: A depends on B
     arrow: "─depends→"
   - id: conflicts-with
-    label: 冲突
-    description: A 与 B 冲突/替代
+    label: conflicts-with
+    description: A conflicts with / replaces B
     arrow: "─conflicts→"
   - id: generalizes
-    label: 泛化
-    description: A 是 B 的通用化版本
+    label: generalizes
+    description: A is the generalized version of B
     arrow: "─generalizes→"
   - id: relates-to
-    label: 关联
-    description: A 与 B 有通用关联
+    label: relates-to
+    description: A has a generic association with B
     arrow: "─relates→"
   - id: precedes
-    label: 前置
-    description: A 在 B 之前
+    label: precedes
+    description: A comes before B
     arrow: "─precedes→"
   - id: triggers
-    label: 触发
-    description: A 的执行会触发 B
+    label: triggers
+    description: Executing A triggers B
     arrow: "─triggers→"
   - id: refines
-    label: 细化
-    description: A 细化了 B 的规则
+    label: refines
+    description: A refines the rules of B
     arrow: "─refines→"
   - id: alternative
-    label: 替代方案
-    description: A 是 B 的替代方案
+    label: alternative
+    description: A is an alternative to B
     arrow: "─alternative→"
 
-# ─── 自动去重 ───
+# ─── Automatic deduplication ───
 dedup:
-  # 节点: 按 id 去重，同 id 更新内容保留创建时间
+  # nodes: deduplicate by id; on the same id update the content and keep the creation time
   nodeById: true
-  # 边: 按 (from, to, type) 去重
+  # edges: deduplicate by (from, to, type)
   edgeByTriple: true
-  # 自动从节点的 refs 字段创建 relates-to 边
+  # automatically create relates-to edges from a node's refs field
   autoEdgesFromRefs: true
 
-# ─── 排除模式（不纳入图谱的文件/目录） ───
+# ─── Exclusion patterns (files/directories not included in the graph) ───
 exclude:
   - node_modules/
   - .git/

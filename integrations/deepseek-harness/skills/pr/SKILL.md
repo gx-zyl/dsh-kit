@@ -1,11 +1,13 @@
 ---
 name: pr
-description: "撰写 PR 描述正文，把改动讲清楚。用户要求写 PR、整理变更说明时触发。"
+description: "Use when writing a PR body. 撰写 PR 描述正文，把改动讲清楚。用户要求写 PR、整理变更说明时触发。"
 metadata:
   origin: mp-skills
   upstream: mattpocock/skills
   snapshot: 24fe0ef7737e
 ---
+
+
 Use this template for writing the PR body:
 
 ```markdown

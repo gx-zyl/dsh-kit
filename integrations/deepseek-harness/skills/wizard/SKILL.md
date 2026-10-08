@@ -1,11 +1,13 @@
 ---
 name: wizard
-description: "生成交互式 bash 向导，引导人完成只有人才能做的步骤（开通基础设施、配置凭据或 CI 密钥）。"
+description: "Generate an interactive bash wizard that walks a human through steps only they can perform. 生成交互式 bash 向导，引导人完成只有人才能做的步骤（开通基础设施、配置凭据或 CI 密钥）。"
 metadata:
   origin: mp-skills
   upstream: mattpocock/skills
   snapshot: 24fe0ef7737e
 ---
+
+
 # Wizard
 
 A **wizard** is a bash script that walks a human, step by step, through a manual procedure that's tedious to do by hand and tedious to re-explain to an AI every time. It opens each URL, says exactly what to click and copy, captures the values, writes them where they belong (`.env`, GitHub secrets), confirms at every stage, and shows how many stages are left. It might configure third-party services, run a one-off migration, or move the project from one state to another.

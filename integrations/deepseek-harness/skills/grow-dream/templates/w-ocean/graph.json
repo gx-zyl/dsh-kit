@@ -1,7 +1,7 @@
 {
   "meta": {
     "name": "w-ocean",
-    "description": "持续积累的有向图知识图谱 — 每次 grow-dream 总结后新增节点与边",
+    "description": "Continuously accumulated directed knowledge graph — nodes and edges are added after each grow-dream summary",
     "version": "1.0.0",
     "created": "__TEMPLATE_DATE__",
     "updated": "__TEMPLATE_DATE__",

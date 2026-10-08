@@ -1,97 +1,97 @@
 ---
 name: diagnose
-description: 系统性调试法，用于复现→假设→验证→修复→回归的 bug 排查流程。用户说"诊断一下"、"查 bug"、"调试"、"崩了"、"性能下降"时触发。
+description: A systematic debugging method for the reproduce → hypothesize → verify → fix → regress bug-hunting workflow. Triggers when the user says "diagnose this", "find the bug", "debug", "it crashed", or "performance dropped". 系统性调试法，用于复现→假设→验证→修复→回归的 bug 排查流程。用户说"诊断一下"、"查 bug"、"调试"、"崩了"、"性能下降"时触发。
 ---
 
-# Diagnose — 调试六步法
+# Diagnose — the six-step debugging method
 
-排查代码时要读项目的领域术语表，理解相关模块。
+When investigating code, read the project's domain glossary and understand the relevant modules.
 
-## 阶段 1 — 建立反馈回路
+## Phase 1 — Build a feedback loop
 
-**这是核心技能。** 有一个快速、确定、AI 可自动运行的通过/失败信号，你就能找到原因。没有这个信号，盯代码没用。
+**This is the core skill.** If you have a fast, deterministic, AI-runnable pass/fail signal, you will find the cause. Without that signal, staring at the code is useless.
 
-花最多精力在这里。**不达目的不罢休。**
+Spend the most effort here. **Do not give up until it works.**
 
-### 构造回路的 10 种方式（按优先级）
+### 10 ways to construct a loop (in priority order)
 
-1. **失败测试** — 单元/集成/e2e
-2. **HTTP 脚本** — curl 调 dev 服务
-3. **CLI 调用** — 给输入、diff 输出
-4. **无头浏览器** — Playwright/Puppeteer
-5. **回放抓包** — 存真实请求/日志，隔离回放
-6. **一次性 harness** — 最小系统 + mock 依赖
-7. **Fuzz 循环** — 1000 次随机输入
-8. **二分 harness** — `git bisect run`
-9. **差分循环** — 旧版 vs 新版同输入对比
-10. **人肉脚本** — 最后手段，用脚本指引人操作
+1. **Failing test** — unit/integration/e2e
+2. **HTTP script** — curl against the dev service
+3. **CLI invocation** — feed input, diff output
+4. **Headless browser** — Playwright/Puppeteer
+5. **Replay captured traffic** — save the real requests/logs, replay in isolation
+6. **One-off harness** — minimal system + mocked dependencies
+7. **Fuzz loop** — 1000 random inputs
+8. **Bisect harness** — `git bisect run`
+9. **Differential loop** — old version vs new version on the same input
+10. **Human script** — last resort: use a script to guide a person through the steps
 
-有了对的反馈回路，bug 就解决了 90%。
+With the right feedback loop, the bug is 90% solved.
 
-### 优化回路
+### Optimizing the loop
 
-有了回路后问自己：
-- 能更快吗？（缓存、缩小范围）
-- 信号更清晰吗？（断言精确症状）
-- 更确定吗？（固定时间、随机数种子）
+Once you have a loop, ask yourself:
+- Can it be faster? (caching, narrower scope)
+- Is the signal clearer? (assert the precise symptom)
+- Is it more deterministic? (freeze time, seed the RNG)
 
-30 秒的 flaky 回路没用。2 秒的确定回路是调试超能力。
+A flaky 30-second loop is useless. A deterministic 2-second loop is a debugging superpower.
 
-### 非确定性 bug
+### Non-deterministic bugs
 
-目标是**更高的复现率**而不是干净复现。跑 100 次、并行化、加压、缩小时间窗口。
+The goal is a **higher reproduction rate**, not a clean reproduction. Run it 100 times, parallelize, add load, narrow the time window.
 
-### 真造不出回路时
+### When you truly cannot build a loop
 
-停。列出你试过的。向用户要：运行环境、抓包产物（HAR/日志/dump）、或者临时线上埋点权限。**没有回路不要进入假设阶段。**
+Stop. List what you tried. Ask the user for: the runtime environment, captured artifacts (HAR/logs/dumps), or permission to add temporary production instrumentation. **Do not enter the hypothesis phase without a loop.**
 
-## 阶段 2 — 复现
+## Phase 2 — Reproduce
 
-确认：
+Confirm:
 
-- [ ] 回路复现的 bug 是**用户描述的那个**，不是碰巧附近的另一个
-- [ ] 多次运行可复现（或非确定性 bug 有足够高的复现率）
-- [ ] 已抓到精确症状
+- [ ] The bug the loop reproduces is **the one the user described**, not another one that happens to be nearby
+- [ ] It reproduces across multiple runs (or a non-deterministic bug has a high enough reproduction rate)
+- [ ] The precise symptom has been captured
 
-## 阶段 3 — 假设
+## Phase 3 — Hypothesize
 
-先列 **3-5 条有排名的假设**，不要只试第一个想法。
+First list **3-5 ranked hypotheses**; don't just test the first idea.
 
-每条假设必须**可证伪**：说清楚预测。
+Each hypothesis must be **falsifiable**: state the prediction clearly.
 
-> 格式："如果 <X> 是原因，那么 <改 Y> 会让 bug 消失 / <改 Z> 会让它更糟。"
+> Format: "If <X> is the cause, then <changing Y> will make the bug disappear / <changing Z> will make it worse."
 
-**给用户看排名列表再开始测**。他们经常有领域知识能秒调优先级。
+**Show the user the ranked list before you start testing.** They often have domain knowledge that instantly reorders the priorities.
 
-## 阶段 4 — 探针
+## Phase 4 — Probe
 
-每个探针对应阶段 3 的一个预测。**一次只改一个变量。**
+Each probe corresponds to one prediction from phase 3. **Change only one variable at a time.**
 
-工具偏好：
-1. **调试器/REPL** — 一个断点胜过十条日志
-2. **定向日志** — 在能区分假设的边界打
-3. 禁止"全打日志再 grep"
+Tooling preference:
+1. **Debugger/REPL** — one breakpoint beats ten logs
+2. **Targeted logging** — log at the boundary that distinguishes the hypotheses
+3. Forbidden: "log everything then grep"
 
-**给每条调试日志加唯一前缀**，如 `[DEBUG-a4f2]`，末尾一键清理。
+**Give every debug log line a unique prefix**, e.g. `[DEBUG-a4f2]`, with one-command cleanup at the end.
 
-**性能问题**：日志通常没用。先建基线测量，再二分。
+**Performance problems**: logs are usually useless. Build a baseline measurement first, then bisect.
 
-## 阶段 5 — 修复 + 回归测试
+## Phase 5 — Fix + regression test
 
-**在修复前写回归测试** — 但前提是有**正确的 seam**。
+**Write the regression test before the fix** — but only if there is a **correct seam**.
 
-正确 seam：测试能真实模拟调用方触发的 bug 模式。
+A correct seam: the test can faithfully simulate the bug pattern triggered by the caller.
 
-如果没有正确 seam，这本身就是一个发现。
+If there is no correct seam, that is itself a finding.
 
-## 阶段 6 — 清理 + 复盘
+## Phase 6 — Clean up + retrospective
 
-交付前确认：
+Before delivering, confirm:
 
-- [ ] 原始场景不再复现
-- [ ] 回归测试通过（或标明没有正确 seam）
-- [ ] 所有调试标记已删除
-- [ ] 一次性原型已清理
-- [ ] commit message 里写明正确的假设
+- [ ] The original scenario no longer reproduces
+- [ ] The regression test passes (or note that there is no correct seam)
+- [ ] All debug markers have been removed
+- [ ] One-off prototypes have been cleaned up
+- [ ] The commit message states the correct hypothesis
 
-**然后问：什么能预防这个 bug？** 如果是架构问题，告诉用户。
+**Then ask: what would have prevented this bug?** If it is an architectural issue, tell the user.

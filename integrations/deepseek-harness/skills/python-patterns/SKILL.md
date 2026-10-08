@@ -1,11 +1,12 @@
 ---
 name: python-patterns
-description: "Pythonic 惯用法、PEP 8、类型标注与工程最佳实践。写或评审 Python 代码时触发。"
+description: "Pythonic idioms, PEP 8 standards, type hints, and best practices for building robust, efficient, and maintainable Python applications. Use when writing or reviewing Python code and idiomatic structure, typing, or PEP 8 is in question. Pythonic 惯用法、PEP 8、类型标注与工程最佳实践。写或评审 Python 代码时触发。"
 metadata:
   origin: ecc
   upstream: affaan-m/ECC
   snapshot: ef648e01899b
 ---
+
 # Python Development Patterns
 
 Idiomatic Python patterns and best practices for building robust, efficient, and maintainable applications.

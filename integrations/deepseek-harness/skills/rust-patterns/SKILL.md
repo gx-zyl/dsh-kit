@@ -1,11 +1,12 @@
 ---
 name: rust-patterns
-description: "Rust 惯用法：所有权、错误处理、trait、并发与性能实践。写或评审 Rust 代码时触发。"
+description: "Idiomatic Rust patterns, ownership, error handling, traits, concurrency, and best practices for building safe, performant applications. Use when writing or reviewing Rust code and ownership, error handling, traits, or concurrency is in question. Rust 惯用法：所有权、错误处理、trait、并发与性能实践。写或评审 Rust 代码时触发。"
 metadata:
   origin: ecc
   upstream: affaan-m/ECC
   snapshot: ef648e01899b
 ---
+
 # Rust Development Patterns
 
 Idiomatic Rust patterns and best practices for building safe, performant, and maintainable applications.

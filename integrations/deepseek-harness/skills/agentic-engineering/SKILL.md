@@ -1,11 +1,12 @@
 ---
 name: agentic-engineering
-description: "以评估优先、任务分解、成本感知模型路由的方式开展 agent 时代的工程工作。"
+description: "Operate as an agentic engineer using eval-first execution, decomposition, and cost-aware model routing. Use when planning or executing engineering work that agents will carry out end to end. 以评估优先、任务分解、成本感知模型路由的方式开展 agent 时代的工程工作。"
 metadata:
   origin: ecc
   upstream: affaan-m/ECC
   snapshot: ef648e01899b
 ---
+
 # Agentic Engineering
 
 Use this skill for engineering workflows where AI agents perform most implementation work and humans enforce quality and risk controls.

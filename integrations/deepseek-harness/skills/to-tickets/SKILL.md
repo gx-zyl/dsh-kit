@@ -1,12 +1,14 @@
 ---
 name: to-tickets
-description: "把计划、规格或对话拆成 tracer-bullet 票据，标明阻塞边并发布到 tracker。用户调用型技能：仅经 /to-tickets 触发，不进模型可见目录。"
+description: "Break a plan, spec, or the current conversation into a set of tracer-bullet tickets, each declaring its blocking edges, published to the configured tracker (edges as text in one file per ticket… 把计划、规格或对话拆成 tracer-bullet 票据，标明阻塞边并发布到 tracker。用户调用型技能：仅经 /to-tickets 触发，不进模型可见目录。"
 metadata:
   origin: mp-skills
   upstream: mattpocock/skills
   snapshot: 24fe0ef7737e
 disable-model-invocation: true
 ---
+
+
 # To Tickets
 
 Break a plan, spec, or conversation into a set of **tickets**: tracer-bullet vertical slices, each declaring the tickets that **block** it.

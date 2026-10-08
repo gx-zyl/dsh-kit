@@ -1,11 +1,12 @@
 ---
 name: database-migrations
-description: "安全可回滚的数据库迁移：expand-contract 零停机改名、并发索引、分批回填与多工具对比。"
+description: "Safe, reversible database migration patterns: forward-only production changes, expand-contract zero-downtime renames, concurrent indexes, batched backfills, and per-tool workflows for PostgreSQL,… 安全可回滚的数据库迁移：expand-contract 零停机改名、并发索引、分批回填与多工具对比。"
 metadata:
   origin: ecc
   upstream: affaan-m/ECC
   snapshot: ef648e01899b
 ---
+
 # Database Migration Patterns
 
 Safe, reversible database schema changes for production systems.

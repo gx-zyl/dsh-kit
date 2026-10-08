@@ -1,69 +1,69 @@
 ---
 name: wsl-network
-description: WSL 网络工具集 — 获取 Windows 主机 IP、配置 HTTP/SOCKS5 代理、Git 全局代理。用户说 WSL 网络、代理、proxy、VPN、网络配置时触发。
+description: WSL networking toolkit — get the Windows host IP and configure HTTP/SOCKS5 and Git global proxies. Triggers when the user mentions WSL network, proxy, VPN, or network configuration. WSL 网络工具集 — 获取 Windows 主机 IP、配置 HTTP/SOCKS5 代理、Git 全局代理。用户说 WSL 网络、代理、proxy、VPN、网络配置时触发。
 ---
 
 # WSL Network
 
-WSL 网络工具集：获取 Windows 主机 IP + 代理配置。
+WSL networking toolkit: get the Windows host IP + configure proxies.
 
-## 触发条件
+## Trigger conditions
 
-- WSL、wsl2、网络
-- 代理、proxy、代理端口
-- VPN、翻墙、fq
-- 主机 IP、host ip
+- WSL, wsl2, network
+- proxy, proxy port
+- VPN, circumvention, fq
+- host IP, host ip
 
-## 获取 Windows 主机 IP
+## Get the Windows host IP
 
 ```bash
 cat /etc/resolv.conf | grep nameserver | awk '{print $2}'
 ```
 
-或通过网关：
+Or via the gateway:
 
 ```bash
 ip route show | grep default | awk '{print $3}'
 ```
 
-返回值通常是 `172.x.x.x`，下面记为 `WIN_IP`。
+The returned value is usually `172.x.x.x`; it is referred to below as `WIN_IP`.
 
-## 代理配置
+## Proxy configuration
 
-| 配置项 | 值 |
+| Setting | Value |
 |--------|-----|
-| Windows 主机 IP | `$(ip route show default | awk '{print $3}')`（动态获取） |
-| SOCKS5 端口 | `9909` |
-| HTTP 代理端口 | `9910` |
+| Windows host IP | `$(ip route show default | awk '{print $3}')` (resolved dynamically) |
+| SOCKS5 port | `9909` |
+| HTTP proxy port | `9910` |
 
-### 单次使用
+### One-off use
 
 ```bash
-# Git 通过 HTTP 代理
+# Git through the HTTP proxy
 HTTPS_PROXY=http://WIN_IP:9910 git clone https://github.com/user/repo.git
 
-# curl 测试
+# curl test
 curl -I --proxy http://WIN_IP:9910 https://www.google.com
 curl -I --proxy socks5://WIN_IP:9909 https://www.google.com
 ```
 
-### 持久化配置
+### Persistent configuration
 
-添加到 `~/.bashrc` 或 `~/.zshrc`:
+Add to `~/.bashrc` or `~/.zshrc`:
 
 ```bash
 export HTTPS_PROXY=http://WIN_IP:9910
 export ALL_PROXY=socks5://WIN_IP:9909
 ```
 
-### Git 全局代理
+### Git global proxy
 
 ```bash
 git config --global http.proxy http://WIN_IP:9910
 git config --global https.proxy http://WIN_IP:9910
 ```
 
-### 验证
+### Verify
 
 ```bash
 curl -I --proxy http://WIN_IP:9910 https://www.google.com

@@ -1,11 +1,12 @@
 ---
 name: context-budget
-description: "审计上下文窗口消耗（agents、技能、MCP server、rules），定位膨胀与冗余并给出省 token 的优先级方案。"
+description: "Audits Claude Code context window consumption across agents, skills, MCP servers, and rules. Use when the context window is filling up too fast and the agents, skills, MCP servers, or rules consuming it need to be identified. 审计上下文窗口消耗（agents、技能、MCP server、rules），定位膨胀与冗余并给出省 token 的优先级方案。"
 metadata:
   origin: ecc
   upstream: affaan-m/ECC
   snapshot: ef648e01899b
 ---
+
 # Context Budget
 
 Analyze token overhead across every loaded component in a Claude Code session and surface actionable optimizations to reclaim context space.

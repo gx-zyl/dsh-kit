@@ -1,11 +1,13 @@
 ---
 name: code-review
-description: "自某个基点（提交/分支/标签/merge-base）起，按「规范」与「规格」两轴评审改动。用户要求评审代码或 PR 时触发。"
+description: "Review the changes since a fixed point (commit, branch, tag, or merge-base) along two axes: Standards (does the code follow this repo's documented coding standards?) and Spec (does the code match… 自某个基点（提交/分支/标签/merge-base）起，按「规范」与「规格」两轴评审改动。用户要求评审代码或 PR 时触发。"
 metadata:
   origin: mp-skills
   upstream: mattpocock/skills
   snapshot: 24fe0ef7737e
 ---
+
+
 Two-axis review of the diff between `HEAD` and a fixed point the user supplies:
 
 - **Standards**: does the code conform to this repo's documented coding standards?

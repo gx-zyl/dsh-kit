@@ -1,11 +1,12 @@
 ---
 name: parallel-execution-optimizer
-description: "把任务改写成依赖图与并行泳道：泳道矩阵、批量读取，并按文件/worktree/分支隔离写面。"
+description: "Speed up a task by turning it into a dependency graph of parallel lanes with a lane matrix, batched reads and checks, write surfaces isolated by file, worktree, branch, or service, and a final… 把任务改写成依赖图与并行泳道：泳道矩阵、批量读取，并按文件/worktree/分支隔离写面。"
 metadata:
   origin: ecc
   upstream: affaan-m/ECC
   snapshot: ef648e01899b
 ---
+
 # Parallel Execution Optimizer
 
 Use this skill when speed comes from doing independent work at the same time:

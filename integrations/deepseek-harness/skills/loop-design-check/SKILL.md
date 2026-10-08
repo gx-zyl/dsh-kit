@@ -1,11 +1,12 @@
 ---
 name: loop-design-check
-description: "设计或复核目标导向的 agent 循环，检查空转、欺骗验证器、错误答案跑到底等失效模式。"
+description: "Design a goal-oriented agent loop or review one for failure modes: spinning, Goodhart-gaming the verifier, or running a wrong answer to completion. 设计或复核目标导向的 agent 循环，检查空转、欺骗验证器、错误答案跑到底等失效模式。"
 metadata:
   origin: ecc
   upstream: affaan-m/ECC
   snapshot: ef648e01899b
 ---
+
 # Loop Design + Review
 
 > **Premise.** An LLM is a feed-forward system: prompt in → tokens out, with no built-in "steer toward the goal" across turns. To make it *behave* like a goal-oriented system, you wrap a feedback loop around it. This skill helps you **write** that loop correctly and **review** it so it won't run away.

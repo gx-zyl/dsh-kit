@@ -5,7 +5,7 @@ DeepSeek Harness **bundle 形式**的技能包：**92 个技能**（8 个包内�
 | 项 | 值 |
 |---|---|
 | 包位置 | `integrations/deepseek-harness/`（包名 **`dsh-kit`**） |
-| 版本 | **6.0.5** |
+| 版本 | **6.0.6** |
 | 技能 | **92** = 8 个包内自有 + 84 个上游合并（`affaan-m/ECC` 59 / `mattpocock/skills` 19 / `thedotmack/claude-mem` 6 / `alibaba/open-code-review` 0） |
 | 随包参考 | `rules/`（WSL CLI 工具链、代理管理）、`references/`（grow-dream 类型定义 + 上游来源登记） |
 | 上游来源登记 | `references/upstream-sources.md` 与四份分册（论文引用格式：作者/载体/快照 SHA/许可/URL/取用范围/**引用键**） |
@@ -121,7 +121,7 @@ dsh-kit/
 |---|---|
 | 目录 | 技能必须是 `skills/<name>/SKILL.md` **一层**（DSH 不发现嵌套的深层 `SKILL.md`） |
 | frontmatter | 只用 DSH 认可键：`name`、`description`（必填）+ `metadata`、`disable-model-invocation`、`user-invocable`；未认可的上游杂键被静默忽略，legacy 键会让该技能**被整体丢弃**（详见 CONTEXT「DSH 认可键」） |
-| 语言 | `description` 写中文触发语（召回用）；**正文保持上游原文**；无法改写且无 DSH 等价物的 Claude Code / 其他 runner 语境，按 CONTEXT「最小适配」加**显式横幅标注**（当前 11 个文件带横幅） |
+| 语言 | **正文英文**（= 上游逐字为底，仅叠加 CONTEXT「最小适配（A）」的 6 项）；**`description` 英中双语**（英文一句 + 中文触发语，召回用）；无 DSH 等价物的 Claude Code / 其他 runner 语境加**英文横幅标注**（不再改写正文） |
 | 署名 | 上游正文/参考文件/脚本版权归上游作者：`metadata`（84 个上游技能）与 `references/upstream-*.md` 双重登记；第三方许可正文与**变更声明**见 `integrations/deepseek-harness/THIRD-PARTY-NOTICES.md` |
 | 附带载荷 | `skills/<name>/` 下除 `SKILL.md` 外还有 56 个附带文件（`agents/openai.yaml`×19、`.py`×3、`.sh`×4、`.vbs`×1、`justfile`、`pyproject.toml`、`standup.ts`、其余为模板与参考 `.md`）。其中 `skills/standup/standup.ts` 是**可执行载荷**，用 `node` 直接跑，需 Node ≥22.18（原生 type-stripping） |
 | `rules/` | 随包分发但**不经任何注册**：没有任何插件加载它，靠模型按相对路径自取（`skills/dsh-kit/SKILL.md` 与 `skills/chrome-devtools-wsl/SKILL.md` 各有一处指引） |
@@ -134,9 +134,9 @@ dsh-kit/
 node tools/validate-package.ts
 ```
 
-它检查：技能数 = 92、只有 `skills/<name>/SKILL.md` 一层、无 legacy 键、`name`/`description` 必填且 `name` 与目录名一致、`description` 含中文、D8 的 8 个用户调用型名单完全一致（多一个少一个都算失败）、84 个上游技能的 `metadata` 三元组与引用总表一致、正文内包内相对路径**无死链**；嵌套载荷必须恰为 grow-dream 那 1 个。退出码非 0 即有问题（未认可的上游杂键只报告、不计入失败，因为 DSH 会静默忽略它们）。
+它检查：技能数 = 92、只有 `skills/<name>/SKILL.md` 一层、无 legacy 键、`name`/`description` 必填且 `name` 与目录名一致、**`description` 英中双语**（须同时含拉丁字母与 CJK）、**SKILL.md 正文不含 CJK**（上游正文自带中文的只有 `LANGUAGE_ALLOWED` 里**带理由**的显式豁免，逐条打印，含"白名单已腐化"提示）、D8 的 8 个用户调用型名单完全一致（多一个少一个都算失败）、84 个上游技能的 `metadata` 三元组与引用总表一致、正文内包内相对路径**无死链**；嵌套载荷必须恰为 grow-dream 那 1 个。退出码非 0 即有问题（未认可的上游杂键只报告、不计入失败，因为 DSH 会静默忽略它们）。
 
-**不覆盖**：上游正文的字节级保真（需要上游快照，本仓不含）、`description` 的措辞质量、技能行为正确性。
+**不覆盖**：上游正文的字节级保真（需要上游快照，本仓不含）、`description` 的措辞质量（含"**是否真有一句英文**"——判据 ⑤ 只证明出现了拉丁字母，中文描述里提到一个拉丁术语同样会过）、技能行为正确性。
 
 > 历史说明：v6.0.1–v6.0.4 的 commit message 里引用的 `merge-manifest.ts`、`import-upstream-skills.ts`、`.docs/fix/2026-10-05/review-audit.ts` **从未进入本仓历史**（`git log --all --name-only` 可复现），故那些 commit 声称的"保真 44/44、正文 66 原样"等结论无法在本仓重跑。可复现的验证边界以上面的脚本为准。
 

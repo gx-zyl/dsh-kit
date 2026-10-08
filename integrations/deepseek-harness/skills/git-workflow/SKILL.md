@@ -1,11 +1,12 @@
 ---
 name: git-workflow
-description: "Git 工作流模式：分支策略、提交约定、历史整理、merge 与 rebase 取舍、冲突解决。涉及版本控制流程时触发。"
+description: "Git workflow patterns including branching strategies, commit conventions, keeping history clean and readable, tidying local commits before merging, merge vs rebase, conflict resolution, and… Git 工作流模式：分支策略、提交约定、历史整理、merge 与 rebase 取舍、冲突解决。涉及版本控制流程时触发。"
 metadata:
   origin: ecc
   upstream: affaan-m/ECC
   snapshot: ef648e01899b
 ---
+
 # Git Workflow Patterns
 
 Best practices for Git version control, branching strategies, and collaborative development.

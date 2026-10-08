@@ -1,11 +1,12 @@
 ---
 name: deployment-patterns
-description: "部署与 CI/CD 流水线模式：Docker 容器化、健康检查、回滚策略与上线就绪清单。"
+description: "Deployment workflows, CI/CD pipeline patterns, Docker containerization, health checks, rollback strategies, and production readiness checklists for web applications. 部署与 CI/CD 流水线模式：Docker 容器化、健康检查、回滚策略与上线就绪清单。"
 metadata:
   origin: ecc
   upstream: affaan-m/ECC
   snapshot: ef648e01899b
 ---
+
 # Deployment Patterns
 
 Production deployment workflows and CI/CD best practices.

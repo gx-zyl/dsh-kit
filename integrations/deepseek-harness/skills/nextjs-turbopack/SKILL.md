@@ -1,11 +1,12 @@
 ---
 name: nextjs-turbopack
-description: "Next.js 16+ 与 Turbopack 指南：增量打包、文件系统缓存、启动与 HMR 提速、与 webpack 的取舍。"
+description: "Next.js 16+ and Turbopack guidance — incremental Rust bundling, file-system caching, faster dev startup and HMR, Turbopack vs webpack tradeoffs, and the middleware.ts to proxy.ts filename change. Next.js 16+ 与 Turbopack 指南：增量打包、文件系统缓存、启动与 HMR 提速、与 webpack 的取舍。"
 metadata:
   origin: ecc
   upstream: affaan-m/ECC
   snapshot: ef648e01899b
 ---
+
 # Next.js and Turbopack
 
 Next.js 16+ uses Turbopack by default for local development: an incremental bundler written in Rust that significantly speeds up dev startup and hot updates.

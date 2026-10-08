@@ -1,11 +1,12 @@
 ---
 name: production-audit
-description: "基于本地证据的生产就绪审计：上线前检查、合并后复核与\"线上会怎么挂\"的排查，不外发仓库数据。"
+description: "Local-evidence production readiness audit for shipped apps, pre-launch reviews, post-merge checks, and \"what breaks in prod?\" questions without sending repo data to an external audit service. 基于本地证据的生产就绪审计：上线前检查、合并后复核与\"线上会怎么挂\"的排查，不外发仓库数据。"
 metadata:
   origin: ecc
   upstream: affaan-m/ECC
   snapshot: ef648e01899b
 ---
+
 # Production Audit
 
 Use this skill when the user asks whether an application is ready to ship, what

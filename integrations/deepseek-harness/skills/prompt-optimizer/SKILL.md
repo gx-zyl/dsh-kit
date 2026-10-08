@@ -1,11 +1,12 @@
 ---
 name: prompt-optimizer
-description: "分析草稿提示词，识别意图与缺失上下文，匹配可用命令/技能/agent，输出可直接粘贴的优化提示词。"
+description: "Analyze draft prompts, detect intent and missing context, match ECC commands, skills, and agents, and output a ready-to-paste optimized prompt with diagnosis and rationale — advisory only, never… 分析草稿提示词，识别意图与缺失上下文，匹配可用命令/技能/agent，输出可直接粘贴的优化提示词。"
 metadata:
   origin: ecc
   upstream: affaan-m/ECC
   snapshot: ef648e01899b
 ---
+
 # Prompt Optimizer
 
 Analyze a draft prompt, critique it, match it to ECC ecosystem components,

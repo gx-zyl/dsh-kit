@@ -1,11 +1,12 @@
 ---
 name: python-testing
-description: "pytest 测试策略：fixture、mock、参数化与覆盖率要求，遵循 TDD。写 Python 测试时触发。"
+description: "Python testing strategies using pytest, TDD methodology, fixtures, mocking, parametrization, and coverage requirements. Use when writing pytest tests — fixtures, mocks, parametrization, or coverage. pytest 测试策略：fixture、mock、参数化与覆盖率要求，遵循 TDD。写 Python 测试时触发。"
 metadata:
   origin: ecc
   upstream: affaan-m/ECC
   snapshot: ef648e01899b
 ---
+
 # Python Testing Patterns
 
 Comprehensive testing strategies for Python applications using pytest, TDD methodology, and best practices.

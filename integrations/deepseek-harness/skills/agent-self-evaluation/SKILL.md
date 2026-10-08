@@ -1,11 +1,12 @@
 ---
 name: agent-self-evaluation
-description: "完成非平凡任务后自查：准确、完整、清晰、可执行、简洁五轴打分并给出证据。"
+description: "Use after completing any non-trivial task. 完成非平凡任务后自查：准确、完整、清晰、可执行、简洁五轴打分并给出证据。"
 metadata:
   origin: ecc
   upstream: affaan-m/ECC
   snapshot: ef648e01899b
 ---
+
 # Agent Self-Evaluation
 
 After completing a complex task, the agent pauses to rate its own output against a structured 5-axis rubric. This is NOT a pass/fail gate — it's a deliberate reflection step that catches omissions, flags overconfidence, and surface areas for improvement before the user has to.

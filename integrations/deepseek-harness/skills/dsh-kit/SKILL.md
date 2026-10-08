@@ -1,58 +1,58 @@
 ---
 name: dsh-kit
-description: dsh-kit 技能包元技能。说明本包 92 个技能的能力边界与来源（8 个包内自有 + 84 个上游合并：ECC 59 / mattpocock 19 / claude-mem 6），并指引 rules/ 与 references/。用户问"dsh-kit 有什么""插件能力""包里有哪些技能"时触发。
+description: "dsh-kit bundle meta-skill: explains the capability boundaries and origins of this bundle's 92 skills (8 bundled in-house + 84 merged from upstream: ECC 59 / mattpocock 19 / claude-mem 6) and points to rules/ and references/. 说明本包 92 个技能的能力边界与来源（8 个包内自有 + 84 个上游合并：ECC 59 / mattpocock 19 / claude-mem 6），并指引 rules/ 与 references/。用户问\"dsh-kit 有什么\"\"插件能力\"\"包里有哪些技能\"时触发。"
 ---
 
-# dsh-kit 技能包
+# dsh-kit bundle
 
-dsh-kit 是一个 **DeepSeek Harness bundle 形式**的技能包，提供 **92 个技能**。技能随包隔离加载（provider `dsh-kit`，`includeDefaultRoots: false`），不写入 `~/.agents/skills` 等 canonical 技能目录。
+dsh-kit is a **DeepSeek Harness bundle-shaped** skill bundle shipping **92 skills**. Skills are loaded in isolation from the bundle (provider `dsh-kit`, `includeDefaultRoots: false`) and are never written into canonical skill directories such as `~/.agents/skills`.
 
-## 技能来源
+## Where the skills come from
 
-| 来源 | 数量 | 许可 | 说明 |
-|------|------|------|------|
-| 包内自有 | **8** | MIT | `chrome-devtools-wsl`、`diagnose`、`dsh-kit`、`github-repo`、`grow-dream`、`karpathy-guidelines`、`write-a-skill`、`wsl-network` |
-| `affaan-m/ECC` | **59** | MIT | 通用工程流程 + 语言生态（Python/Go/Rust/Java/Kotlin/JS/Django/Laravel/Rails）+ agent 元技能 |
-| `mattpocock/skills` | **19** | MIT | 评审、规格、拆票、分诊、TDD、拷问式设计 |
-| `thedotmack/claude-mem` | **6** | Apache-2.0 | 交接文档、站会、PR 盯守、代码库认知、设计审计 |
-| `alibaba/open-code-review` | **0** | Apache-2.0 | 其 2 个技能是 `ocr` CLI 的调用封装，按"工具本体不进技能面"仅登记为参考资料 |
+| Origin | Count | License | Notes |
+|--------|-------|---------|-------|
+| Bundled in-house | **8** | MIT | `chrome-devtools-wsl`, `diagnose`, `dsh-kit`, `github-repo`, `grow-dream`, `karpathy-guidelines`, `write-a-skill`, `wsl-network` |
+| `affaan-m/ECC` | **59** | MIT | General engineering workflow + language ecosystems (Python/Go/Rust/Java/Kotlin/JS/Django/Laravel/Rails) + agent meta-skills |
+| `mattpocock/skills` | **19** | MIT | Review, specs, ticket splitting, triage, TDD, grilling-style design |
+| `thedotmack/claude-mem` | **6** | Apache-2.0 | Handoff docs, standup, PR babysitting, codebase onboarding, design audit |
+| `alibaba/open-code-review` | **0** | Apache-2.0 | Its 2 skills are wrappers around the `ocr` CLI; per "tool runtimes stay out of the skill surface" they are registered as reference material only |
 
-逐条清单、快照 SHA 与取用范围见 `../../references/upstream-sources.md` 与四份分册。
+The per-skill list, snapshot SHAs and usage scope are in `../../references/upstream-sources.md` and its four fascicles.
 
-## 按用途找技能（节选）
+## Find a skill by purpose (excerpt)
 
-| 用途 | 技能 |
-|------|------|
-| 验证与评审 | `code-review`、`verification-loop`、`santa-method`、`production-audit`、`security-review` |
-| 设计与架构 | `codebase-design`、`architecture-decision-records`、`hexagonal-architecture`、`contract-first`、`api-design`、`domain-modeling` |
-| 需求与分诊 | `to-spec`、`to-tickets`、`triage`、`intent-driven-development`、`grill-with-docs`、`grilling` |
-| 实现与测试 | `tdd`、`e2e-testing`，以及 `python-testing`、`golang-testing`、`rust-testing`、`kotlin-testing`、`django-tdd`、`react-testing` |
-| 上下文与 agent | `strategic-compact`、`context-budget`、`eval-harness`、`prompt-optimizer`、`skill-scout`、`rules-distill` |
-| 交付与仓库 | `git-workflow`、`pr`、`deployment-patterns`、`database-migrations`、`setup-pre-commit` |
-| 环境与工具 | `chrome-devtools-wsl`、`wsl-network`、`docker-patterns`、`mcp-server-patterns`、`kubernetes-patterns` |
+| Purpose | Skills |
+|---------|--------|
+| Verification and review | `code-review`, `verification-loop`, `santa-method`, `production-audit`, `security-review` |
+| Design and architecture | `codebase-design`, `architecture-decision-records`, `hexagonal-architecture`, `contract-first`, `api-design`, `domain-modeling` |
+| Requirements and triage | `to-spec`, `to-tickets`, `triage`, `intent-driven-development`, `grill-with-docs`, `grilling` |
+| Implementation and testing | `tdd`, `e2e-testing`, plus `python-testing`, `golang-testing`, `rust-testing`, `kotlin-testing`, `django-tdd`, `react-testing` |
+| Context and agents | `strategic-compact`, `context-budget`, `eval-harness`, `prompt-optimizer`, `skill-scout`, `rules-distill` |
+| Delivery and repos | `git-workflow`, `pr`, `deployment-patterns`, `database-migrations`, `setup-pre-commit` |
+| Environment and tooling | `chrome-devtools-wsl`, `wsl-network`, `docker-patterns`, `mcp-server-patterns`, `kubernetes-patterns` |
 
-完整 92 个以包内 `skills/` 目录为准；调用时以每个技能的 `description` 触发。
+The authoritative list of all 92 is the bundle's own `skills/` directory; each skill is triggered by its own `description`.
 
-## 全局规则
+## Global rules
 
-- 项目使用 PowerShell（`pwsh`），非 bash
-- 技能描述（`description`）决定 DSH 何时加载该技能；正文多为上游原文
-- 84 个上游技能的正文保持上游原样，可能残留 **Claude Code 语境的路径或机制说明**（如 `~/.claude/...`、hooks 配置、`allowed-tools`）：有 DSH 等价物的已改写（如 `~/.claude/skills` → `~/.agents/skills`），无等价物的加**横幅标注**（当前 11 个文件带横幅）；指向包外的死链一律改为纯文本并注「上游参考，未随包分发」，不再留下点不开的链接。逐条处置见 `../../references/upstream-*.md` 与 `../../THIRD-PARTY-NOTICES.md`
-- `grill-with-docs` 是**委托式技能**（正文 1 行、全文 10 行），会串联 `grilling` 与 `domain-modeling`
-- 有 8 个技能是上游定义的**用户调用型**（`disable-model-invocation: true`）：`grill-me`、`grill-with-docs`、`handoff`、`improve-codebase-architecture`、`retro`、`triage`、`to-spec`、`to-tickets`。它们**只能由用户经 `/` 调用**，不进模型可见目录；其 `description` 写成「**给人看的一行摘要 + 一句机制尾注**」（尾注只给人看，不是给模型的触发语）
-- 该调用性是上游成文策略（上游仓库的 `.agents/invocation.md`，**未随本包分发**；取用判据与 8 条名单见 `../../references/upstream-mp-skills.md`）：判据是"模型能否自主、有益地调用它"，而非包内历史有无该技能
+- The project uses PowerShell (`pwsh`), not bash.
+- A skill's `description` decides when DSH loads it. **Bodies are English**: the upstream text verbatim as the base, with only the "minimal adaptation" set applied (`CONTEXT.md` -> "Minimal adaptation (A)"). The one exception is upstream bodies whose Chinese content *is* the skill's function (currently `prompt-optimizer`); those are kept and registered as explicit whitelist entries.
+- The 84 upstream skill bodies may still describe **Claude Code context mechanics** (e.g. `~/.claude/...`, hooks configuration, `allowed-tools`). Where DSH has an equivalent, the text was rewritten (e.g. `~/.claude/skills` -> `~/.agents/skills`); where there is no equivalent, an **English banner** marks it. Links pointing outside the bundle were neutralized into plain text labelled "upstream reference, not distributed with this bundle" so no unclickable link remains. Per-file disposition is in `../../references/upstream-*.md` and `../../THIRD-PARTY-NOTICES.md`.
+- `grill-with-docs` is a **delegating skill** (1-line body, 10 lines total) that chains `grilling` and `domain-modeling`.
+- 8 skills are upstream-defined **user-invoked** skills (`disable-model-invocation: true`): `grill-me`, `grill-with-docs`, `handoff`, `improve-codebase-architecture`, `retro`, `triage`, `to-spec`, `to-tickets`. They can **only** be invoked by the user via `/` and do not appear in the model-visible directory; their `description` is written as "a one-line human-readable summary + a mechanics footnote" (the footnote is for humans, not a model trigger phrase).
+- That invocation split is upstream's written policy (the upstream repo's `.agents/invocation.md`, **not distributed with this bundle**; the criterion and the list of 8 are in `../../references/upstream-mp-skills.md`). The criterion is "can the model invoke it autonomously and beneficially", not whether the skill historically existed in this bundle.
 
-## 参考文档
+## Reference documents
 
-随包分发的规则/参考文件，位于包根目录 `rules/` 与 `references/`：
+Rules and reference files distributed with the bundle live in `rules/` and `references/` at the bundle root:
 
-| 路径 | 文件 | 用途 |
-|------|------|------|
-| `../../rules/` | `wsl-cli-tools.md` | WSL 现代 CLI 工具链映射表 |
-| `../../rules/` | `proxy-management.md` | 代理管理与 DSH 插件包操作指南 |
-| `../../references/` | `grow-dream-types.md` | grow-dream 候选类型定义 |
-| `../../references/` | `upstream-sources.md` | 上游来源登记索引（引用键/快照/许可/取用范围） |
-| `../../references/` | `upstream-ecc.md` | ECC 来源分册（59 个技能） |
-| `../../references/` | `upstream-mp-skills.md` | mattpocock/skills 来源分册（19 个技能） |
-| `../../references/` | `upstream-claude-mem.md` | claude-mem 来源分册（6 个技能） |
-| `../../references/` | `upstream-ocr.md` | open-code-review 分册（0 技能，说明为何只登记参考资料） |
+| Path | File | Purpose |
+|------|------|---------|
+| `../../rules/` | `wsl-cli-tools.md` | WSL modern CLI toolchain mapping table |
+| `../../rules/` | `proxy-management.md` | Proxy management and DSH plugin-bundle operations guide |
+| `../../references/` | `grow-dream-types.md` | grow-dream candidate type definitions |
+| `../../references/` | `upstream-sources.md` | Upstream source registry index (citation keys / snapshots / licenses / usage scope) |
+| `../../references/` | `upstream-ecc.md` | ECC source fascicle (59 skills) |
+| `../../references/` | `upstream-mp-skills.md` | mattpocock/skills source fascicle (19 skills) |
+| `../../references/` | `upstream-claude-mem.md` | claude-mem source fascicle (6 skills) |
+| `../../references/` | `upstream-ocr.md` | open-code-review fascicle (0 skills; explains why it is reference material only) |

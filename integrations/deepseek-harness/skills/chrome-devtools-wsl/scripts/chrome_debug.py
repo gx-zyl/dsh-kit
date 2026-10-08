@@ -1,25 +1,25 @@
 """
 Chrome DevTools for WSL
 
-Windows 侧 Python 通过 CDP 操控 Chrome，WSL 通过 PowerShell 触发。
-无需 TCP 中继，所有操作在 Windows 本地执行。
+The Windows-side Python drives Chrome through CDP; WSL triggers it through PowerShell.
+No TCP relay is needed — every operation runs locally on Windows.
 
-用法: python chrome_debug.py <命令> [参数]
-  命令: start|stop|status|screenshot|navigate <url>|eval <js>|cdp <json>
+Usage: python chrome_debug.py <command> [args]
+  commands: start|stop|status|screenshot|navigate <url>|eval <js>|cdp <json>
 """
 import subprocess, socket, sys, os, shutil, signal, time, json, urllib.request, base64, asyncio
 import websockets
 
-# ─── 配置 ─────────────────────────────────────────────
+# ─── Configuration ────────────────────────────────────
 PORT = int(os.environ.get("CDP_PORT", "9222"))
 IS_WSL = "microsoft" in os.uname().release.lower() if hasattr(os, "uname") else False
 
-# 工作目录：$env:CCW_DIR > 默认 D:\chrome-devtools-wsl
+# Working directory: $env:CCW_DIR > default D:\chrome-devtools-wsl
 _default_work = "/mnt/d/chrome-devtools-wsl" if IS_WSL else r"D:\chrome-devtools-wsl"
 WORK_DIR = os.environ.get("CCW_DIR", _default_work)
 
 def _find_chrome():
-    """查找 Chrome：PATH > 默认安装路径"""
+    """Locate Chrome: PATH > default install paths"""
     for name in ("chrome", "chrome.exe", "google-chrome"):
         p = shutil.which(name)
         if p: return p
@@ -35,17 +35,17 @@ USER_DIR = os.path.join(WORK_DIR, "profile")
 sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 
-# ─── CDP 工具 ─────────────────────────────────────────
+# ─── CDP helpers ──────────────────────────────────────
 
 def cdp_http(method, path, data=None):
-    """发 HTTP 请求到 CDP"""
+    """Send an HTTP request to CDP"""
     url = f"http://127.0.0.1:{PORT}{path}"
     req = urllib.request.Request(url, data=data, method=method)
     return json.loads(urllib.request.urlopen(req, timeout=10).read())
 
 
 def cdp_ws(ws_url, cmd, params=None):
-    """发 WebSocket 命令到 CDP（进程内 asyncio，无临时文件无子进程）"""
+    """Send a WebSocket command to CDP (in-process asyncio, no temp files, no subprocess)"""
     async def _send():
         async with websockets.connect(ws_url, max_size=2**20, open_timeout=10) as ws:
             await ws.send(json.dumps({"id": 1, "method": cmd, "params": params or {}}))
@@ -54,11 +54,11 @@ def cdp_ws(ws_url, cmd, params=None):
     try:
         return asyncio.run(_send())
     except Exception as e:
-        raise RuntimeError(f"CDP WS 错误: {e}")
+        raise RuntimeError(f"CDP WS error: {e}")
 
 
 def find_tab(url_pattern=None):
-    """找标签页，未指定则找第一个非空白页"""
+    """Find a tab; when no pattern is given, find the first non-blank page"""
     targets = cdp_http("GET", "/json")
     for t in targets:
         if url_pattern and url_pattern in t.get("url", ""):
@@ -70,7 +70,7 @@ def find_tab(url_pattern=None):
     return targets[0] if targets else None
 
 
-# ─── 辅助函数 ─────────────────────────────────────────
+# ─── Helper functions ─────────────────────────────────
 
 def log(msg):
     print(f"[chrome-debug] {msg}")
@@ -122,22 +122,22 @@ def self_copy():
                 v = f.read()
             with open(os.path.join(WORK_DIR, "firewall-off.vbs"), "w", encoding="utf-8") as f:
                 f.write(v)
-        log(f"同步 -> {dst}")
+        log(f"synced -> {dst}")
         return dst
     except Exception:
         return None
 
 
-# ─── 动作 ─────────────────────────────────────────────
+# ─── Actions ──────────────────────────────────────────
 
 def action_start():
     ws = get_ws_url()
     if ws:
-        log("Chrome DevTools 已在运行")
+        log("Chrome DevTools is already running")
         return
 
     self_copy()
-    log("启动 Chrome...")
+    log("Starting Chrome...")
     subprocess.Popen(
         [CHROME, f"--remote-debugging-port={PORT}", f"--user-data-dir={USER_DIR}",
          "--no-first-run", "--no-default-browser-check"],
@@ -146,11 +146,11 @@ def action_start():
     for i in range(15):
         time.sleep(1)
         if get_ws_url():
-            log("Chrome DevTools 就绪")
-            log("管理: just stop | just status | just nav <url> | just shot")
+            log("Chrome DevTools is ready")
+            log("Manage: just stop | just status | just nav <url> | just shot")
             return
-        log(f"  等待... ({i+1}/15)")
-    log("启动超时")
+        log(f"  waiting... ({i+1}/15)")
+    log("startup timed out")
 
 
 def action_stop():
@@ -166,7 +166,7 @@ def action_stop():
             os.remove(lock)
         except Exception:
             pass
-    log("Chrome 已关闭")
+    log("Chrome stopped")
 
 
 def action_status():
@@ -174,7 +174,7 @@ def action_status():
     if ws:
         log(f"DevTools [OK]  127.0.0.1:{PORT}")
     else:
-        log("未运行")
+        log("not running")
     if IS_WSL:
         try:
             with open("/etc/resolv.conf") as f:
@@ -183,9 +183,9 @@ def action_status():
                         win_ip = line.split()[1]
                         break
             if port_open(win_ip, PORT):
-                log(f"WSL -> Windows: 通 ({win_ip}:{PORT})")
+                log(f"WSL -> Windows: reachable ({win_ip}:{PORT})")
             else:
-                log(f"WSL -> Windows: 不通 (防火墙拦截)")
+                log(f"WSL -> Windows: unreachable (blocked by firewall)")
         except Exception:
             pass
 
@@ -193,7 +193,7 @@ def action_status():
 def action_screenshot(name="screenshot"):
     tab = find_tab()
     if not tab:
-        log("没有可截图的标签页")
+        log("no tab available for a screenshot")
         return
     ws_url = tab["webSocketDebuggerUrl"]
     result = cdp_ws(ws_url, "Page.captureScreenshot", {"format": "png"})
@@ -201,40 +201,40 @@ def action_screenshot(name="screenshot"):
     path = f"/tmp/{name}.png" if IS_WSL else os.path.join(WORK_DIR, f"{name}.png")
     with open(path, "wb") as f:
         f.write(img)
-    log(f"截图 -> {path} ({len(img)/1024:.0f} KB)")
+    log(f"screenshot -> {path} ({len(img)/1024:.0f} KB)")
 
 
 def action_navigate(url):
-    """打开 URL（新建标签页）"""
+    """Open a URL (new tab)"""
     if not url.startswith("http"):
         url = "https://" + url
     cdp_http("PUT", f"/json/new?{url}")
-    log(f"已打开: {url[:60]}")
+    log(f"opened: {url[:60]}")
 
 
 def action_eval(js):
-    """在页面执行 JS"""
+    """Run JS in the page"""
     tab = find_tab()
     if not tab:
-        log("没有可用标签页")
+        log("no tab available")
         return
     result = cdp_ws(tab["webSocketDebuggerUrl"], "Runtime.evaluate", {"expression": js})
     r = result.get("result", {}).get("result", {})
     value = r.get("value", r.get("description", "?"))
-    log(f"结果: {json.dumps(value, ensure_ascii=False)[:200]}")
+    log(f"result: {json.dumps(value, ensure_ascii=False)[:200]}")
     return value
 
 
 def action_cdp(raw_json):
-    """发送原始 CDP 命令"""
+    """Send a raw CDP command"""
     try:
         cmd = json.loads(raw_json)
     except json.JSONDecodeError:
-        log("JSON 格式错误")
+        log("invalid JSON")
         return
     tab = find_tab()
     if not tab:
-        log("没有可用标签页")
+        log("no tab available")
         return
     result = cdp_ws(tab["webSocketDebuggerUrl"], cmd["method"], cmd.get("params"))
     out = json.dumps(result.get("result", result), ensure_ascii=False, indent=2)
@@ -242,15 +242,15 @@ def action_cdp(raw_json):
 
 
 def action_ask(question):
-    """ChatGPT 提问：打开页面 → 输入问题 → 提交 → 等回复 → 输出答案"""
+    """Ask ChatGPT: open the page → type the question → submit → wait for the reply → print the answer"""
     import urllib.request as ureq
 
-    # 1. 打开 ChatGPT
-    log("打开 ChatGPT...")
+    # 1. open ChatGPT
+    log("Opening ChatGPT...")
     cdp_http("PUT", f"/json/new?https://chatgpt.com")
     time.sleep(3)
 
-    # 找到 ChatGPT 标签页
+    # find the ChatGPT tab
     tab = None
     for _ in range(10):
         tabs = cdp_http("GET", "/json")
@@ -262,20 +262,20 @@ def action_ask(question):
             break
         time.sleep(1)
     if not tab:
-        log("无法打开 ChatGPT")
+        log("could not open ChatGPT")
         return
     ws_url = tab["webSocketDebuggerUrl"]
 
-    # 2. 等页面加载完成
-    log("等待页面加载...")
+    # 2. wait for the page to finish loading
+    log("Waiting for the page to load...")
     for _ in range(15):
         r = cdp_ws(ws_url, "Runtime.evaluate", {"expression": "document.readyState"})
         if r.get("result", {}).get("result", {}).get("value") == "complete":
             break
         time.sleep(1)
 
-    # 3. 找到输入框并输入
-    log("输入问题...")
+    # 3. find the input box and type into it
+    log("Typing the question...")
     safe_q = question.replace("\\", "\\\\").replace('"', '\\"').replace("'", "\\'").replace("\n", "\\n")
     cdp_ws(ws_url, "Runtime.evaluate", {"expression": f"""
         (() => {{
@@ -287,9 +287,9 @@ def action_ask(question):
         }})()
     """})
 
-    # 4. 点击发送按钮
+    # 4. click the send button
     time.sleep(0.5)
-    log("提交...")
+    log("Submitting...")
     r = cdp_ws(ws_url, "Runtime.evaluate", {"expression": """
         (() => {
             const btn = document.querySelector('button[data-testid=\"send-button\"]');
@@ -299,11 +299,11 @@ def action_ask(question):
         })()
     """})
     if r.get("result", {}).get("result", {}).get("value") != "sent":
-        log("发送按钮未找到，尝试回车提交")
+        log("send button not found; trying Enter to submit")
         cdp_ws(ws_url, "Input.insertText", {"text": "\n"})
 
-    # 5. 等回复（最长等 90 秒，每 3 秒检查一次）
-    log("等待回复...")
+    # 5. wait for the reply (up to 90 seconds, checking every 3 seconds)
+    log("Waiting for the reply...")
     answer = ""
     stable_count = 0
     for i in range(30):
@@ -316,17 +316,17 @@ def action_ask(question):
         if text and len(text) > len(answer):
             answer = text
             stable_count = 0
-            log(f"  已收到 {len(answer)} 字符...")
+            log(f"  received {len(answer)} characters...")
         elif text == answer and answer:
             stable_count += 1
-            if stable_count >= 3:  # 连续 9 秒没变化，认为完成
+            if stable_count >= 3:  # unchanged for 9 seconds in a row => consider it done
                 break
         if text and not text.endswith("..."):
             stable_count += 1
             if stable_count >= 3:
                 break
 
-    # 6. 截图保存
+    # 6. save a screenshot
     try:
         r2 = cdp_ws(ws_url, "Page.captureScreenshot", {"format": "png"})
         img = base64.b64decode(r2["result"]["data"])
@@ -337,15 +337,15 @@ def action_ask(question):
         pass
 
     if answer:
-        log(f"回答 ({len(answer)} 字符):")
+        log(f"answer ({len(answer)} characters):")
         print()
         print(answer[:5000])
         print()
     else:
-        log("未获取到回答")
+        log("no answer received")
 
 
-# ─── 入口 ─────────────────────────────────────────────
+# ─── Entry point ──────────────────────────────────────
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
@@ -369,7 +369,7 @@ if __name__ == "__main__":
     elif action == "cdp":
         action_cdp(sys.argv[2] if len(sys.argv) > 2 else '{}')
     elif action == "ask":
-        q = sys.argv[2] if len(sys.argv) > 2 else "今天有什么新闻?"
+        q = sys.argv[2] if len(sys.argv) > 2 else "What's the news today?"
         action_ask(q)
     elif action == "json":
         ws = get_ws_url()
@@ -377,8 +377,8 @@ if __name__ == "__main__":
     elif action == "copy":
         self_copy()
     elif action == "firewall":
-        print("以管理员运行: netsh advfirewall set allprofiles state off")
-        print(f"或双击 {WORK_DIR}\\firewall-off.vbs")
+        print("Run as administrator: netsh advfirewall set allprofiles state off")
+        print(f"or double-click {WORK_DIR}\\firewall-off.vbs")
     else:
-        print(f"未知: {action}")
-        print("命令: start|stop|status|nav <url>|shot|eval <js>|cdp <json>")
+        print(f"unknown: {action}")
+        print("commands: start|stop|status|nav <url>|shot|eval <js>|cdp <json>")

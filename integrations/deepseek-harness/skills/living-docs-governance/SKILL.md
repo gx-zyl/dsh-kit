@@ -1,11 +1,12 @@
 ---
 name: living-docs-governance
-description: "防止长期项目文档腐化：给既有文档分配 constitution/map/status/history 角色并接入 agent 流程。"
+description: "Keep a long-lived project's documentation from rotting by assigning existing project docs clear constitution, map, status, and history roles, then wiring the active agent harness to those canonical… 防止长期项目文档腐化：给既有文档分配 constitution/map/status/history 角色并接入 agent 流程。"
 metadata:
   origin: ecc
   upstream: affaan-m/ECC
   snapshot: ef648e01899b
 ---
+
 # Living Docs Governance
 
 Long-lived projects often rot at the documentation layer first: the README describes an old pipeline, architecture notes describe a refactor that never shipped, and every new session re-derives context that should already be available.
@@ -32,7 +33,7 @@ Do **not** use this for a throwaway script or create a parallel documentation sy
 
 Inspect the repository's current instruction and documentation surfaces first:
 
-- harness instructions such as `AGENTS.md`, `AGENTS.md`, `.cursor/rules`, or their equivalent;
+- harness instructions such as `AGENTS.md`, `.cursor/rules`, or their equivalent;
 - `README`, architecture docs, ADRs, runbooks, roadmaps, changelogs, status pages, and docs indexes;
 - generated docs and external systems that may already be canonical.
 

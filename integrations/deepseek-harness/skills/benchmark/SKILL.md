@@ -1,11 +1,12 @@
 ---
 name: benchmark
-description: "建立性能基线并检测回归：浏览器 Core Web Vitals、API 延迟分位与构建/测试耗时。"
+description: "Measure performance baselines and detect regressions across browser Core Web Vitals (LCP, INP, CLS, page weight), API endpoint latency percentiles, and build/test feedback times, with before/after… 建立性能基线并检测回归：浏览器 Core Web Vitals、API 延迟分位与构建/测试耗时。"
 metadata:
   origin: ecc
   upstream: affaan-m/ECC
   snapshot: ef648e01899b
 ---
+
 # Benchmark — Performance Baseline & Regression Detection
 
 ## When to Use

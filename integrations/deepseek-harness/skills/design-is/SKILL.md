@@ -1,15 +1,17 @@
 ---
 name: design-is
-description: "用 Dieter Rams 的\"好设计十原则\"审计设计，并给出新做、改良或重做三种结论的后续计划。"
+description: "Audit a design against Dieter Rams' ten \"Good design is…\" principles, then hand off a /make-plan prompt for one of three outcomes — new design, refine design, or redesign. 用 Dieter Rams 的\"好设计十原则\"审计设计，并给出新做、改良或重做三种结论的后续计划。"
 metadata:
   origin: claude-mem
   upstream: thedotmack/claude-mem
   snapshot: 3b3baaa55ebb
 ---
-> ⚠ **DSH 语境（dsh-kit 适配 · 2026-10-07）**：本技能正文来自上游（`thedotmack/claude-mem`）。其中
-> `/make-plan`、`/do`、`/review` 都是**上游 Claude Code / claude-mem 的 slash command**，DSH 与本包
-> **都没有这些命令**。本技能产出的 `04-handoff-prompt.md` 请直接交回用户（或经 `ask_user_question`
-> 确认后进入 plan 模式），**不要假定 `/make-plan` 存在**。
+
+> [!NOTE]
+> **DSH context (dsh-kit adaptation)** — this body comes from upstream (`thedotmack/claude-mem`).
+> `/make-plan`, `/do`, and `/review` are **upstream Claude Code / claude-mem slash commands**; neither
+> DSH nor this package ships them. Hand the `04-handoff-prompt.md` this skill produces back to the user
+> (or confirm through `ask_user_question` and enter plan mode) — **do not assume `/make-plan` exists**.
 
 # Design Is
 

@@ -1,11 +1,17 @@
 ---
 name: intent-driven-development
-description: "实现之前把模糊或高影响的需求转成有范围、可验证的验收标准。需求不清时触发。"
+description: "Turn ambiguous or high-impact product and engineering changes into scoped, verifiable acceptance criteria before or alongside implementation. 实现之前把模糊或高影响的需求转成有范围、可验证的验收标准。需求不清时触发。"
 metadata:
   origin: ecc
   upstream: affaan-m/ECC
   snapshot: ef648e01899b
 ---
+
+> [!NOTE]
+> **DSH context (dsh-kit adaptation)** — this body comes from upstream (`affaan-m/ECC`). The
+> `/review` slash command it refers to is an **upstream Claude Code / ECC command**; neither DSH nor
+> this package ships it. Use the bundled `code-review` skill instead — it performs the same
+> standards-and-spec review of the change since a fixed point.
 # Intent-Driven Development
 
 Produce useful acceptance criteria without turning specification into ceremony. Inspect

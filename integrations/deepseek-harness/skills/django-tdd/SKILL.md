@@ -1,11 +1,12 @@
 ---
 name: django-tdd
-description: "Django 测试策略：pytest-django、TDD、factory_boy、mock、覆盖率与 DRF API 测试。"
+description: "Django testing strategies with pytest-django, TDD methodology, factory_boy, mocking, coverage, and testing Django REST Framework APIs. Use when writing Django or DRF tests with pytest-django, or driving a Django feature test-first. Django 测试策略：pytest-django、TDD、factory_boy、mock、覆盖率与 DRF API 测试。"
 metadata:
   origin: ecc
   upstream: affaan-m/ECC
   snapshot: ef648e01899b
 ---
+
 # Django Testing with TDD
 
 Test-driven development for Django applications using pytest, factory_boy, and Django REST Framework.

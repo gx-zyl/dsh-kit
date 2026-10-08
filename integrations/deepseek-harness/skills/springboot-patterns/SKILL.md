@@ -1,11 +1,12 @@
 ---
 name: springboot-patterns
-description: "Spring Boot 架构模式：REST API 设计、分层服务、数据访问、缓存、异步处理与日志。"
+description: "Spring Boot architecture patterns, REST API design, layered services, data access, caching, async processing, and logging. Use when building or reviewing a Spring Boot backend — REST layer, services, data access, caching, or async work. Spring Boot 架构模式：REST API 设计、分层服务、数据访问、缓存、异步处理与日志。"
 metadata:
   origin: ecc
   upstream: affaan-m/ECC
   snapshot: ef648e01899b
 ---
+
 # Spring Boot Development Patterns
 
 Spring Boot architecture and API patterns for scalable, production-grade services.

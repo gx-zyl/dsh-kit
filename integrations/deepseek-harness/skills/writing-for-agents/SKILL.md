@@ -1,11 +1,13 @@
 ---
 name: writing-for-agents
-description: "面向 agent 的写作规范：编写技能、修改 AGENTS.md 或 CLAUDE.md 时的文体与结构。涉及 agent 文档时触发。"
+description: "Writing documents for agents. Use when creating or editing skills, or modifying AGENTS.md or CLAUDE.md. 面向 agent 的写作规范：编写技能、修改 AGENTS.md 或 CLAUDE.md 时的文体与结构。涉及 agent 文档时触发。"
 metadata:
   origin: mp-skills
   upstream: mattpocock/skills
   snapshot: 24fe0ef7737e
 ---
+
+
 Reference for writing any document an agent consumes: a skill, an `AGENTS.md` / `AGENTS.md`, a doc reached by a pointer. The packaging differs; the writing does not: the same levers make each one predictable, since the agent takes the same _process_ every run rather than producing the same output.
 
 When the document you're writing is a skill, read [`SKILL-MECHANICS.md`](SKILL-MECHANICS.md) for frontmatter, invocation choice, and router skills.

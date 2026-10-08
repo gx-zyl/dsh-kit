@@ -1,11 +1,12 @@
 ---
 name: session-handoff
-description: "生成 HANDOFF.md：目标、当前状态、触及文件、失败尝试与下一步，供新会话无缝接手。"
+description: "Generate a HANDOFF.md that captures goal, current state, files touched, failed attempts, and next steps — so a fresh Claude session can continue exactly where this one left off. 生成 HANDOFF.md：目标、当前状态、触及文件、失败尝试与下一步，供新会话无缝接手。"
 metadata:
   origin: claude-mem
   upstream: thedotmack/claude-mem
   snapshot: 3b3baaa55ebb
 ---
+
 # Handoff
 
 Generate a structured `HANDOFF.md` file that gives a fresh Claude session everything it needs to continue this work without dragging the current degraded context forward.

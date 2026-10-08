@@ -1,11 +1,13 @@
 ---
 name: codebase-design
-description: "设计深模块的共享词汇：接口该多深、接缝放哪里、何时该拆。讨论模块接口或重构方向时触发。"
+description: "Shared vocabulary for designing deep modules. 设计深模块的共享词汇：接口该多深、接缝放哪里、何时该拆。讨论模块接口或重构方向时触发。"
 metadata:
   origin: mp-skills
   upstream: mattpocock/skills
   snapshot: 24fe0ef7737e
 ---
+
+
 # Codebase Design
 
 Design **deep modules**: a lot of behaviour behind a small interface, placed at a clean seam, testable through that interface. Use this language and these principles wherever code is being designed or restructured. The aim is leverage for callers, locality for maintainers, and testability for everyone.

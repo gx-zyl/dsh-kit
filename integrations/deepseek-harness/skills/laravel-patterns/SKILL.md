@@ -1,11 +1,12 @@
 ---
 name: laravel-patterns
-description: "Laravel 架构模式：路由与控制器、Eloquent ORM、服务层、队列、事件、缓存与 API Resource。"
+description: "Laravel architecture patterns, routing/controllers, Eloquent ORM, service layers, queues, events, caching, and API resources for production apps. Laravel 架构模式：路由与控制器、Eloquent ORM、服务层、队列、事件、缓存与 API Resource。"
 metadata:
   origin: ecc
   upstream: affaan-m/ECC
   snapshot: ef648e01899b
 ---
+
 # Laravel Development Patterns
 
 Production-grade Laravel architecture patterns for scalable, maintainable applications.

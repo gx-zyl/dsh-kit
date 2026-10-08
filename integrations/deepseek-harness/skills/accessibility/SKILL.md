@@ -1,11 +1,12 @@
 ---
 name: accessibility
-description: "设计、实现与审计无障碍 UI 至 WCAG 2.2 AA：语义化 ARIA、焦点管理与 Web/iOS/Android 多端适配。"
+description: "Design, implement, and audit accessible UI to WCAG 2.2 Level AA across Web, iOS, and Android — semantic ARIA roles and labels, accessibility traits and hints, focus management, contrast, target… 设计、实现与审计无障碍 UI 至 WCAG 2.2 AA：语义化 ARIA、焦点管理与 Web/iOS/Android 多端适配。"
 metadata:
   origin: ecc
   upstream: affaan-m/ECC
   snapshot: ef648e01899b
 ---
+
 # Accessibility (WCAG 2.2)
 
 This skill ensures that digital interfaces are Perceivable, Operable, Understandable, and Robust (POUR) for all users, including those using screen readers, switch controls, or keyboard navigation. It focuses on the technical implementation of WCAG 2.2 success criteria.

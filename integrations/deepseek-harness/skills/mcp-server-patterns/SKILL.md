@@ -1,11 +1,12 @@
 ---
 name: mcp-server-patterns
-description: "用 Node/TypeScript SDK 构建 MCP server：tools、resources、prompts、Zod 校验与 stdio / Streamable HTTP。"
+description: "Build MCP servers with Node/TypeScript SDK — tools, resources, prompts, Zod validation, stdio vs Streamable HTTP. Use when building or debugging an MCP server — tools, resources, prompts, validation, or transport choice. 用 Node/TypeScript SDK 构建 MCP server：tools、resources、prompts、Zod 校验与 stdio / Streamable HTTP。"
 metadata:
   origin: ecc
   upstream: affaan-m/ECC
   snapshot: ef648e01899b
 ---
+
 # MCP Server Patterns
 
 The Model Context Protocol (MCP) lets AI assistants call tools, read resources, and use prompts from your server. Use this skill when building or maintaining MCP servers. The SDK API evolves; check Context7 (query-docs for "MCP") or the official MCP documentation for current method names and signatures.

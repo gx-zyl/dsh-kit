@@ -1,12 +1,14 @@
 ---
 name: improve-codebase-architecture
-description: "扫描代码库找出加深模块的机会并输出可视化 HTML 报告，再就选中的一项逐层拷问。用户调用型技能：仅经 /improve-codebase-architecture 触发。"
+description: "Scan a codebase for deepening opportunities, present them as a visual HTML report, then grill through whichever one you pick. 扫描代码库找出加深模块的机会并输出可视化 HTML 报告，再就选中的一项逐层拷问。用户调用型技能：仅经 /improve-codebase-architecture 触发。"
 metadata:
   origin: mp-skills
   upstream: mattpocock/skills
   snapshot: 24fe0ef7737e
 disable-model-invocation: true
 ---
+
+
 # Improve Codebase Architecture
 
 Surface architectural friction and propose **deepening opportunities**: refactors that turn shallow modules into deep ones. The aim is testability and AI-navigability.

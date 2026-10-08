@@ -1,11 +1,12 @@
 ---
 name: golang-patterns
-description: "Go 惯用法与工程约定，写或评审 Go 代码时触发。"
+description: "Idiomatic Go patterns, best practices, and conventions for building robust, efficient, and maintainable Go applications. Use when writing or reviewing Go code and idiomatic structure or conventions are in question. Go 惯用法与工程约定，写或评审 Go 代码时触发。"
 metadata:
   origin: ecc
   upstream: affaan-m/ECC
   snapshot: ef648e01899b
 ---
+
 # Go Development Patterns
 
 Idiomatic Go patterns and best practices for building robust, efficient, and maintainable applications.

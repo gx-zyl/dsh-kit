@@ -1,11 +1,13 @@
 ---
 name: prototype
-description: "为回答某个设计问题而写一次性原型，验证状态模型或交互是否合理。用户说\"先做个原型试试\"时触发。"
+description: "Build a throwaway prototype to answer a design question. Use when the user wants to sanity-check whether a state model or logic feels right, or explore what a UI should look like. 为回答某个设计问题而写一次性原型，验证状态模型或交互是否合理。用户说\"先做个原型试试\"时触发。"
 metadata:
   origin: mp-skills
   upstream: mattpocock/skills
   snapshot: 24fe0ef7737e
 ---
+
+
 # Prototype
 
 A prototype is **throwaway code that answers a question**. The question decides the shape.

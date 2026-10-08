@@ -1,11 +1,12 @@
 ---
 name: dotnet-patterns
-description: "C#/.NET 惯用法：约定、依赖注入、async/await 与可维护性实践。写或评审 .NET 代码时触发。"
+description: "Idiomatic C# and .NET patterns, conventions, dependency injection, async/await, and best practices for building robust, maintainable .NET applications. Use when writing or reviewing C# / .NET code — DI, async, or general conventions. C#/.NET 惯用法：约定、依赖注入、async/await 与可维护性实践。写或评审 .NET 代码时触发。"
 metadata:
   origin: ecc
   upstream: affaan-m/ECC
   snapshot: ef648e01899b
 ---
+
 # .NET Development Patterns
 
 Idiomatic C# and .NET patterns for building robust, performant, and maintainable applications.

@@ -16,14 +16,19 @@
 
 ## 变更声明
 
-本包对上游内容只做 CONTEXT.md「最小适配」约定的四件事，外加两类**有据可查**的补丁：
+本包对上游内容只做 CONTEXT.md「最小适配（A）」约定的 **6 条**（该词条是判据与实测计数的**唯一出处**；本节只回答「改了什么」，不复制它的判据）：
 
 1. **目录拍平**：`skills/<name>/SKILL.md` 一层（DSH 只发现这一层；上游 `mattpocock/skills` 为 `skills/<cat>/<name>/` 两层）。
 2. **frontmatter 收敛**：只保留 DSH 认可键 `name` / `description`（+ 可选 `metadata`、`disable-model-invocation`、`user-invocable`）；上游的 `license` / `tools` / `allowed-tools` / `argument-hint` 等杂键被删除。**注意**：被删的杂键原始值不随包保留，需要时应回上游快照取。
-3. **`description` 中文化**：改写为中文触发语（供召回）；**正文保持上游原文**。
-4. **正文内 Claude Code 语境路径**：有 DSH 等价物时改写（如 `~/.claude/skills` → `~/.agents/skills`），无等价物时加**横幅标注**说明「勿直接套用」。
-5. **同源同名技能取上游为准**（CONTEXT「融合」）：例如 `api-design`、`architecture-decision-records`、`docker-patterns` 的包内旧版被上游版覆盖。
-6. **改名**：`claude-mem` 源的 `handoff` 与本包 `mattpocock/skills` 源的 `handoff` 同名不同物，前者改名为 `session-handoff`。
+3. **语言处置**：`description` 改写为**英中双语**（英文一句触发语 + 中文触发语，供召回）；**正文英文** —— 以上游为底逐字保留，仅叠加本节其余各项。上游正文**自带中文且中文是其职能数据**时**保留**（当前 1 个：`prompt-optimizer` 的中文触发词表与中文 prompt 实例），并在 `tools/validate-package.ts` 的 `LANGUAGE_ALLOWED` 里**带理由**登记；该白名单命中不算违规，文件不再含中文时会提示撤销。
+4. **正文内 Claude Code 专有路径 / 文件名 / 工具名 → DSH 等价物**：有等价物时改写（如 `~/.claude/skills` → `~/.agents/skills`、`CLAUDE.md` → `AGENTS.md`、`Skill tool` → `skill tool`）。
+5. **包外死链中性化**：指向包内不存在的相对链接改为**纯文本**并注明「上游参考，未随包分发」（逐文件见下方「修复轮补充改写」表）。
+6. **CC 语境横幅**：无 DSH 等价物的 Claude Code / 其他 runner 机制，加**英文**横幅说明「勿直接套用」（清单见末节「正文内的行内标注」）。
+
+下列两类补丁**不属于**「最小适配」，单列以便复核：
+
+7. **同源同名技能取上游为准**（CONTEXT「融合」）：例如 `api-design`、`architecture-decision-records`、`docker-patterns` 的包内旧版被上游版覆盖。
+8. **改名**：`claude-mem` 源的 `handoff` 与本包 `mattpocock/skills` 源的 `handoff` 同名不同物，前者改名为 `session-handoff`。
 
 ### 被改写过正文或元数据的技能（git 历史可复现）
 
@@ -62,6 +67,6 @@ done
 
 ### 正文内的行内标注
 
-带横幅的文件共 **11** 个：`council`、`design-is`、`docker-patterns`、`eval-harness`、`safety-guard`、`search-first`、`skill-scout`、`standup`、`strategic-compact`、`verification-loop` 的 `SKILL.md`，以及 `agent-self-evaluation/references/hook-integration.md`。属 Apache-2.0（`claude-mem`）源的是 `standup` 与 `design-is` 两个 `SKILL.md`——对它们而言，横幅同时充当 §4(b) 要求的「被修改」显著标注。
+带横幅的文件**当时 11 个**（2026-10-08 读数；**以清单为准** —— 横幅仍可能随上游适配增删，故这个数不带门）：`council`、`design-is`、`docker-patterns`、`eval-harness`、`safety-guard`、`search-first`、`skill-scout`、`standup`、`strategic-compact`、`verification-loop` 的 `SKILL.md`，以及 `agent-self-evaluation/references/hook-integration.md`。属 Apache-2.0（`claude-mem`）源的是 `standup` 与 `design-is` 两个 `SKILL.md`——对它们而言，横幅同时充当 §4(b) 要求的「被修改」显著标注。
 
-**已知残留**：`claude-mem` 源另有 4 个技能（`session-handoff`、`what-the`、`learn-codebase`、`babysit`）在**入库时**即被改了 frontmatter（`description` 中文化、杂键删除），文件内没有逐文件标注，其改动只登记在本文件的表中。若需严格按 §4(b) 做到「每个被修改文件自身带标注」，需对这 4 个文件补行——**待裁决**，未擅自改动上游正文。
+**已知残留**：`claude-mem` 源另有 4 个技能（`session-handoff`、`what-the`、`learn-codebase`、`babysit`）在**入库时**即被改了 frontmatter（`description` 改写为英中双语、杂键删除），文件内没有逐文件标注，其改动只登记在本文件的表中。若需严格按 §4(b) 做到「每个被修改文件自身带标注」，需对这 4 个文件补行——**待裁决**，未擅自改动上游正文。

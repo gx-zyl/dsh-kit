@@ -1,41 +1,41 @@
 ---
 name: chrome-devtools-wsl
-description: 操控 Windows Chrome — 导航/截图/JS/CDP/API 桥接，替代 web-access CDP Proxy。用户说操控 Chrome、浏览器自动化、CDP、devtools 时触发。
+description: Drive Windows Chrome — navigation/screenshots/JS/CDP/API bridging, replacing the web-access CDP Proxy. Triggers when the user mentions driving Chrome, browser automation, CDP, or devtools. 操控 Windows Chrome — 导航/截图/JS/CDP/API 桥接，替代 web-access CDP Proxy。用户说操控 Chrome、浏览器自动化、CDP、devtools 时触发。
 ---
 
 # Chrome DevTools for WSL
 
-PowerShell → Windows Python → CDP 操控 Chrome。无需中继，不依赖防火墙。
+PowerShell → Windows Python → CDP to drive Chrome. No relay needed, no firewall dependency.
 
-## 首次配置
+## First-time setup
 
-首次使用复制 `.env.example` 为 `.env` 并编辑（`just` 自动加载）：
+On first use, copy `.env.example` to `.env` and edit it (`just` loads it automatically):
 
-| 变量 | 默认值 | 说明 |
+| Variable | Default | Description |
 |------|--------|------|
-| `CCW_DIR` | `D:\chrome-devtools-wsl` | Windows 工作目录（脚本部署 + Chrome profile） |
-| `PYWIN` | 自动查找 | Windows Python（留空则 PowerShell 自动获取 `(Get-Command python.exe).Source`） |
-| `CDP_PORT` | `9222` | Chrome DevTools 端口 |
+| `CCW_DIR` | `D:\chrome-devtools-wsl` | Windows working directory (script deployment + Chrome profile) |
+| `PYWIN` | auto-detected | Windows Python (leave empty and PowerShell resolves `(Get-Command python.exe).Source` automatically) |
+| `CDP_PORT` | `9222` | Chrome DevTools port |
 
-通常只需确认 `CCW_DIR` 指向有写入权限的路径即可，其余自动检测。
+Usually you only need to confirm that `CCW_DIR` points at a path you can write to; everything else is auto-detected.
 
-## 命令
+## Commands
 
 ```bash
-# 技能目录 = DSH 报告的 base directory（…/skills/chrome-devtools-wsl）
-cd <技能目录>
+# skill directory = the base directory reported by DSH (…/skills/chrome-devtools-wsl)
+cd <skill directory>
 
-just start          启动 Chrome（带 remote-debugging）
-just stop           关闭 Chrome
-just status         查看状态
-just nav <url>      打开 URL（默认 chatgpt.com）
-just shot [name]    截图
-just eval <js>      执行 JS
-just ask "问题"     向 ChatGPT 提问
-just serve          启动 web-access 兼容 API (localhost:3456)
+just start          start Chrome (with remote-debugging)
+just stop           stop Chrome
+just status         show status
+just nav <url>      open a URL (defaults to chatgpt.com)
+just shot [name]    screenshot
+just eval <js>      execute JS
+just ask "question" ask ChatGPT a question
+just serve          start the web-access compatible API (localhost:3456)
 ```
 
-## 架构
+## Architecture
 
 ```
 WSL                            Windows
@@ -47,20 +47,20 @@ cdp-bridge.py (3456)                ↑
 PowerShell ───────────────►     Windows Python → CDP
 ```
 
-## 参考文件
+## Reference files
 
-包根目录 `rules/` 随包分发以下规则文件，按相对路径直接查阅即可（DSH 无注册步骤）：
+The package root's `rules/` ships the following rule files with the package; consult them directly by relative path (DSH has no registration step):
 
-- `../../rules/wsl-cli-tools.md` — WSL 现代 CLI 工具链映射表
+- `../../rules/wsl-cli-tools.md` — WSL modern CLI toolchain mapping table
 
-本技能内联了关键规则内容，规则文件可作为进一步参考。
+This skill inlines the key rule content; the rule file can serve as further reference.
 
-## 与 web-access 的关系
+## Relationship to web-access
 
-| web-access 组件 | chrome-devtools-wsl 替代方案 |
+| web-access component | chrome-devtools-wsl replacement |
 |----------------|---------------------------|
-| CDP Proxy (cdp-proxy.mjs) | `just serve` → cdp-bridge.py（兼容相同 curl API） |
-| Chrome 生命周期 | `just start/stop` |
-| 浏览哲学 / 站点经验 | **未替代**，继续用 web-access |
+| CDP Proxy (cdp-proxy.mjs) | `just serve` → cdp-bridge.py (compatible with the same curl API) |
+| Chrome lifecycle | `just start/stop` |
+| Browsing philosophy / site experience | **Not replaced**; keep using web-access |
 
-启动 Chrome → `just start`，然后 `just serve` 启动 API 桥接，web-access 的 curl 脚本无需修改即可正常工作。
+Start Chrome → `just start`, then `just serve` to start the API bridge; web-access's curl scripts work unchanged.

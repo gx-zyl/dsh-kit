@@ -1,11 +1,12 @@
 ---
 name: react-patterns
-description: "React 18/19 模式：hooks 纪律、服务端与客户端组件边界、Suspense 与错误边界、表单 action、状态管理取舍。"
+description: "React 18/19 patterns including hooks discipline, server/client component boundaries, Suspense + error boundaries, form actions, data fetching, state management decision trees, and… Use when writing or reviewing React components. React 18/19 模式：hooks 纪律、服务端与客户端组件边界、Suspense 与错误边界、表单 action、状态管理取舍。"
 metadata:
   origin: ecc
   upstream: affaan-m/ECC
   snapshot: ef648e01899b
 ---
+
 # React Patterns
 
 Idiomatic React 18/19 patterns for building robust, accessible, performant component trees.

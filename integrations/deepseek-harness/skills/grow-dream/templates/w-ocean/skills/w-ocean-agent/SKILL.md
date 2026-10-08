@@ -1,98 +1,99 @@
 ---
 name: w-ocean-agent
-description: 维护项目 w-ocean 知识图谱的健康运行：去重合并、关联建议、边缘检测、健康报告。用户说"维护图谱"、"整理 w-ocean"、"图谱健康"、"去重"、"关联建议"时触发。
+description: Maintain the health of the project's w-ocean knowledge graph — dedup/merge, association suggestions, edge detection, health reports. Triggers when the user says "maintain the graph", "tidy up w-ocean", "graph health", "dedup", or "association suggestions". 维护项目 w-ocean 知识图谱的健康运行：去重合并、关联建议、边缘检测、健康报告。用户说"维护图谱"、"整理 w-ocean"、"图谱健康"、"去重"、"关联建议"时触发。
 ---
 
-# w-ocean-agent — 知识图谱维护
+# w-ocean-agent — knowledge graph maintenance
 
-> 定期维护当前项目的 `w-ocean/` 知识图谱，确保结构健康、节点无冗余、边关联合理。
+> Periodically maintain the current project's `w-ocean/` knowledge graph, ensuring a healthy structure, no redundant nodes, and sensible edge associations.
 
 :```ascii
 
-                               w-ocean-agent 管道 (Pipeline)
-                                    ──── 5 步维护流程 ────
+                               w-ocean-agent Pipeline
+                                    ──── 5-step maintenance flow ────
 
   ┌────────────┐   ┌────────────┐   ┌────────────┐   ┌────────────┐   ┌──────────────┐
-  │  ① 检测    │   │  ② 扫描    │   │  ③ 分析    │   │  ④ 操作    │   │  ⑤ 报告     │
-  │  项目状态  │──→│  图完整性   │──→│  冗余与机会 │──→│  执行维护  │──→│  输出结果   │
+  │ ① Detect   │   │ ② Scan     │   │ ③ Analyze  │   │ ④ Operate  │   │ ⑤ Report     │
+  │ project    │──→│ graph      │──→│ redundancy │──→│ run        │──→│ output the   │
+  │ state      │   │ integrity  │   │ & chances  │   │ maintenance│   │ results      │
   └────────────┘   └────────────┘   └────────────┘   └────────────┘   └──────────────┘
        │                │                │                │                │
-       │ w-ocean/ 存在? │ JSON 格式校验  │ 重复节点检测   │ 去重合并      │ 统计变更     │
-       │ graph.json    │ 节点/边数      │ 孤立节点       │ 建议边确认    │ 健康评分     │
-       │ config.yaml   │ refs 引用完整性│ 缺失关联       │ 孤立节点标记  │ 改进建议     │
-       └─ 文件权限     └─ 边完整性     └─ 类型异常     └─ 配置同步    └─
+       │ w-ocean/ there?│ JSON validation│ duplicate nodes│ dedup + merge  │ stats on changes
+       │ graph.json     │ node/edge count│ orphan nodes   │ confirm edges  │ health score
+       │ config.yaml    │ refs integrity │ missing links  │ mark orphans   │ improvements
+       └─ file perms.   └─ edge integrity└─ type anomaly  └─ config sync  └─
 :```
 
-## 操作模式
+## Operation modes
 
-| 模式 | 命令 | 说明 |
+| Mode | Command | Description |
 |------|------|------|
-| **health** | `/w-ocean-agent health` | 图谱健康检查 + 评分 |
-| **maintain** | `/w-ocean-agent maintain` | 全量维护（去重+合并+关联建议） |
-| **dedup** | `/w-ocean-agent dedup` | 仅去重 |
-| **suggest** | `/w-ocean-agent suggest` | 仅关联建议 |
-| **prune** | `/w-ocean-agent prune` | 清理孤立节点 |
+| **health** | `/w-ocean-agent health` | Graph health check + score |
+| **maintain** | `/w-ocean-agent maintain` | Full maintenance (dedup + merge + association suggestions) |
+| **dedup** | `/w-ocean-agent dedup` | Dedup only |
+| **suggest** | `/w-ocean-agent suggest` | Association suggestions only |
+| **prune** | `/w-ocean-agent prune` | Clean up orphan nodes |
 
-## 执行步骤
+## Execution steps
 
-### ① 检测项目状态
+### ① Detect project state
 
-- 检查当前项目根目录是否存在 `w-ocean/graph.json`
-- 不存在 → 提示"w-ocean 图谱不存在，请先运行 grow-dream 总结对话。"
-- 存在 → 读取并验证 JSON 格式
+- Check whether `w-ocean/graph.json` exists in the current project root
+- Does not exist → tell the user "the w-ocean graph does not exist; run grow-dream to summarize a conversation first."
+- Exists → read it and validate the JSON format
 
-### ② 扫描图完整性（字段校验规则见下方表格）
+### ② Scan graph integrity (field validation rules are in the table below)
 
-| 检查项 | 说明 |
+| Check | Description |
 |--------|------|
-| JSON 格式 | `graph.json` 是否合法 JSON |
-| 节点必填字段 | 每个节点是否有 id/type/title |
-| 边引用完整性 | 边的 from/to 是否指向存在的节点 ID |
-| refs 引用完整性 | refs 中的 ID 是否指向存在的节点 |
-| 类型合法性 | 节点 type 是否在配置声明的类型内 |
-| 边类型合法性 | 边 type 是否在配置声明的类型内 |
+| JSON format | Is `graph.json` valid JSON? |
+| Required node fields | Does every node have id/type/title? |
+| Edge reference integrity | Do the edges' from/to point at existing node IDs? |
+| refs reference integrity | Do the IDs in refs point at existing nodes? |
+| Type validity | Is the node type among the types declared in the config? |
+| Edge type validity | Is the edge type among the types declared in the config? |
 
-### ③ 分析冗余与机会
+### ③ Analyze redundancy and opportunities
 
-| 分析项 | 判定 | 处理 |
+| Analysis | Criterion | Handling |
 |--------|------|------|
-| 重复节点 | title 或 summary 相似度 >80% | 合并为 1 个节点，保留较早 created |
-| 孤立节点 | 入边 + 出边 = 0 | 标记为孤立，可选删除 |
-| 缺失反向边 | A→B 存在但 B→A 不存在且 type 对称 | 建议补充反向边 |
-| 同类聚集 | 同一 type 的节点数 >5 且无相互关联 | 建议添加 relates-to 边 |
-| 引用未建边 | refs 引用了节点但无边关联 | 建议自动创建 relates-to 边 |
+| Duplicate nodes | title or summary similarity >80% | Merge into 1 node, keeping the earlier created |
+| Orphan nodes | in-edges + out-edges = 0 | Mark as orphan; deletion optional |
+| Missing reverse edge | A→B exists but B→A does not, and the type is symmetric | Suggest adding the reverse edge |
+| Same-type clustering | More than 5 nodes of the same type with no association among them | Suggest adding relates-to edges |
+| Referenced but unlinked | refs references a node but there is no edge association | Suggest automatically creating a relates-to edge |
 
-### ④ 执行维护
+### ④ Run maintenance
 
-根据操作模式和分析结果：
+Depending on the operation mode and the analysis results:
 
-- **health**：只报告不修改
-- **maintain**：全量自动执行（去重+合并+建边+孤立标记）
-- **dedup**：仅执行去重和合并
-- **suggest**：列出建议的边，逐条询问是否确认添加
-- **prune**：列出孤立节点，询问是否删除
+- **health**: report only, no changes
+- **maintain**: run everything automatically (dedup + merge + build edges + mark orphans)
+- **dedup**: run dedup and merge only
+- **suggest**: list the suggested edges and ask one by one whether to add them
+- **prune**: list the orphan nodes and ask whether to delete them
 
-### ⑤ 输出结果
+### ⑤ Output the results
 
 ```yaml
-健康评分: 85/100
-问题数: 3
-变更:
-  - 合并 2 个重复节点 (skill-xxx, skill-yyy → skill-xxx)
-  - 新增 4 条关联边 (relates-to)
-  - 标记 1 个孤立节点 (memory-old-pattern)
-建议:
-  - 考虑删除孤立节点 memory-old-pattern
-  - concept-ddd 和 skill-domain-modeling 应建立关联
-配置:
-  - config.yaml 中存在 2 个未使用的节点类型 (concept, decision)
+health_score: 85/100
+problems: 3
+changes:
+  - merged 2 duplicate nodes (skill-xxx, skill-yyy → skill-xxx)
+  - added 4 association edges (relates-to)
+  - marked 1 orphan node (memory-old-pattern)
+suggestions:
+  - consider deleting the orphan node memory-old-pattern
+  - concept-ddd and skill-domain-modeling should be linked
+config:
+  - config.yaml declares 2 unused node types (concept, decision)
 ```
 
-## 输出检查
+## Output checks
 
-- [ ] 检测 w-ocean/ 存在性
-- [ ] JSON 格式校验通过
-- [ ] 节点/边完整性扫描完成
-- [ ] 去重合并已执行（maintain/dedup 模式）
-- [ ] 用户已确认建议的边（suggest 模式）
-- [ ] graph.json 已写入更新
+- [ ] Checked that w-ocean/ exists
+- [ ] JSON format validation passed
+- [ ] Node/edge integrity scan completed
+- [ ] Dedup and merge executed (maintain/dedup modes)
+- [ ] The user confirmed the suggested edges (suggest mode)
+- [ ] graph.json written with the updates

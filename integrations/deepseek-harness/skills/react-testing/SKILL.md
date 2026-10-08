@@ -1,11 +1,12 @@
 ---
 name: react-testing
-description: "React 组件测试：React Testing Library、Vitest/Jest、MSW 网络 mock、axe 无障碍断言与测试边界判断。"
+description: "React component testing with React Testing Library, Vitest/Jest, MSW for network mocking, accessibility assertions with axe, and the decision boundary between component tests and Playwright/Cypress… React 组件测试：React Testing Library、Vitest/Jest、MSW 网络 mock、axe 无障碍断言与测试边界判断。"
 metadata:
   origin: ecc
   upstream: affaan-m/ECC
   snapshot: ef648e01899b
 ---
+
 # React Testing
 
 Comprehensive React testing patterns for behavior-focused component tests, custom hook tests, accessibility assertions, and network-level mocking.

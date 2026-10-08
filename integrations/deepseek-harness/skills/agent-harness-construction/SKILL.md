@@ -1,11 +1,12 @@
 ---
 name: agent-harness-construction
-description: "设计并优化 agent 的动作空间、工具定义与观察格式，以提高任务完成率。"
+description: "Design and optimize AI agent action spaces, tool definitions, and observation formatting for higher completion rates. Use when defining or revising an agent's tool set, action space, or observation format. 设计并优化 agent 的动作空间、工具定义与观察格式，以提高任务完成率。"
 metadata:
   origin: ecc
   upstream: affaan-m/ECC
   snapshot: ef648e01899b
 ---
+
 # Agent Harness Construction
 
 Use this skill when you are improving how an agent plans, calls tools, recovers from errors, and converges on completion.

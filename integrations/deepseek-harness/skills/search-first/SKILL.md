@@ -1,17 +1,20 @@
 ---
 name: search-first
-description: "先搜后写：写自研代码前先搜 npm/PyPI、MCP server、技能与 GitHub，再决定采用、扩展还是自建。"
+description: "Research-before-coding workflow: search npm/PyPI, MCP servers, skills, and GitHub for existing tools before writing custom code, then adopt, extend, or build. 先搜后写：写自研代码前先搜 npm/PyPI、MCP server、技能与 GitHub，再决定采用、扩展还是自建。"
 metadata:
   origin: ecc
   upstream: affaan-m/ECC
   snapshot: ef648e01899b
 ---
 
-> ⚠ **DSH 语境（dsh-kit 适配 · 2026-10-06）**：本技能正文来自上游（`affaan-m/ECC`），其中
-> `~/.claude/…` / `.claude/…` / `hooks/hooks.json`（Claude Code 形态）是**上游的落点与机制**，
-> DSH 侧**没有同名落点**（实测 `~/.dsh/settings.json` 不存在）。DSH 的两处真实等价物：技能目录
-> `~/.agents/skills`、钩子 `hooks.json`（由 profile 的 hook 桥接 bundle 读取，**仅 command 钩子生效**）。
-> ⇒ **本节示例请勿直接套用**；要落地请按上面两处改写，或改用 DSH 自身的插件配置。
+> [!NOTE]
+> **DSH context (dsh-kit adaptation)** — this body comes from upstream (`affaan-m/ECC`). The
+> `~/.claude/…` / `.claude/…` / `hooks/hooks.json` paths (Claude Code form) are **upstream landing points
+> and mechanisms**; DSH has no same-named equivalents (verified: `~/.dsh/settings.json` does not exist).
+> The two real DSH equivalents are the skill directory `~/.agents/skills`, and `hooks.json` (read by the
+> profile's hook-bridge bundle — **only `command` hooks take effect**).
+> ⇒ **Do not apply the examples below as-is**; rewrite them per the two equivalents above, or use DSH's own plugin config.
+
 # /search-first — Research Before You Code
 
 Systematizes the "search for existing solutions before implementing" workflow.
@@ -80,7 +83,7 @@ that are relevant to the task and project in front of you.
 | Package registry | `npm --version`, `python -m pip --version`, or project package manager | Use web/docs search and avoid claiming registry coverage |
 | GitHub CLI | `gh auth status` | Use public web or local git history only |
 | MCP/docs tools | Available tool list or local MCP config | Fall back to official docs/web search |
-| Skills directory | `ls ~/.agents/skills` where applicable | Say no local skill catalog was available |
+| Skills directory | `ls ~/.agents/skills ~/.codex/skills` where applicable | Say no local skill catalog was available |
 
 ### Quick Mode (inline)
 

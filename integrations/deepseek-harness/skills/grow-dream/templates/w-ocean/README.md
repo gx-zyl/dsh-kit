@@ -1,55 +1,55 @@
-# w-ocean — 知识海洋
+# w-ocean — the knowledge ocean
 
-你的项目知识图谱。由 `grow-dream` 自动生成和维护。
+Your project's knowledge graph. Generated and maintained automatically by `grow-dream`.
 
-## 这是什么
+## What this is
 
-每次运行 `grow-dream` 总结对话后，发现的可复用模式（skill/rule/command/agent/hook/memory/doc）会被格式化为**节点**，节点间的关联被记录为**边**，构成一个有向图知识图谱。
+After each `grow-dream` run that summarizes a conversation, the reusable patterns discovered (skill/rule/command/agent/hook/memory/doc) are formatted as **nodes**, the associations between nodes are recorded as **edges**, and together they form a directed-graph knowledge graph.
 
-## 使用方式
+## How to use it
 
 ```bash
-# 浏览全图
+# browse the whole graph
 /w-ocean show
 
-# 按类型筛选
+# filter by type
 /w-ocean show type=skill
 
-# 搜索关键词
-/w-ocean query "数据库"
+# search keywords
+/w-ocean query "database"
 
-# 从某节点出发遍历（深度2层）
+# traverse from a node (2 levels deep)
 /w-ocean traverse from=skill-diagnose depth=2
 
-# 图谱健康检查
+# graph health check
 /w-ocean-agent health
 ```
 
-## 目录结构
+## Directory structure
 
 ```
 w-ocean/
-├── graph.json      # 图谱数据（节点 + 边）
-├── config.yaml     # 配置（节点/边类型、去重规则）
-└── README.md       # 本文件
+├── graph.json      # graph data (nodes + edges)
+├── config.yaml     # configuration (node/edge types, dedup rules)
+└── README.md       # this file
 ```
 
-## 节点 ID 规则
+## Node ID rules
 
 ```
 {type}-{kebab-case-title}
 ```
 
-例：`skill-grill-dream`, `skill-diagnose`, `memory-user-preference`
+Example: `skill-grill-dream`, `skill-diagnose`, `memory-user-preference`
 
-## 最佳实践
+## Best practices
 
-1. **定期 grow-dream** — 每次有重要对话后运行，沉淀新发现
-2. **维护图谱健康** — 每月运行 `w-ocean-agent maintain` 去重/合并
-3. **关联已有节点** — 在 grow-dream 总结时通过 `refs` 引用已有节点
-4. **扩展节点类型** — 编辑 `config.yaml` 添加新类型
+1. **Run grow-dream regularly** — run it after every important conversation to sediment new findings
+2. **Keep the graph healthy** — run `w-ocean-agent maintain` monthly to deduplicate/merge
+3. **Link existing nodes** — reference existing nodes through `refs` when summarizing with grow-dream
+4. **Extend node types** — edit `config.yaml` to add new types
 
-## 数据安全
+## Data safety
 
-`graph.json` 应提交到版本控制（团队共享知识）。
-`node_modules/`、`.git/` 等已默认排除。
+`graph.json` should be committed to version control (team-shared knowledge).
+`node_modules/`, `.git/` and the like are excluded by default.

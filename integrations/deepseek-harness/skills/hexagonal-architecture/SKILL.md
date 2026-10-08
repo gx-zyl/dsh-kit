@@ -1,11 +1,12 @@
 ---
 name: hexagonal-architecture
-description: "端口与适配器（六边形）架构的设计、实现与重构：领域边界、依赖反转与可测用例编排。"
+description: "Design, implement, and refactor Ports & Adapters systems with clear domain boundaries, dependency inversion, and testable use-case orchestration across TypeScript, Java, Kotlin, and Go services. 端口与适配器（六边形）架构的设计、实现与重构：领域边界、依赖反转与可测用例编排。"
 metadata:
   origin: ecc
   upstream: affaan-m/ECC
   snapshot: ef648e01899b
 ---
+
 # Hexagonal Architecture
 
 Hexagonal architecture (Ports and Adapters) keeps business logic independent from frameworks, transport, and persistence details. The core app depends on abstract ports, and adapters implement those ports at the edges.

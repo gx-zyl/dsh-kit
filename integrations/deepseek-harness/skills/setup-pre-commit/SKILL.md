@@ -1,11 +1,13 @@
 ---
 name: setup-pre-commit
-description: "在当前仓库配置 Husky + lint-staged（Prettier）、类型检查与测试的提交前钩子。用户要加 pre-commit 时触发。"
+description: "Set up Husky pre-commit hooks with lint-staged (Prettier), type checking, and tests in the current repo. Use when user wants to add pre-commit hooks, set up Husky, configure lint-staged, or add commit-time formatting/typechecking/testing. 在当前仓库配置 Husky + lint-staged（Prettier）、类型检查与测试的提交前钩子。用户要加 pre-commit 时触发。"
 metadata:
   origin: mp-skills
   upstream: mattpocock/skills
   snapshot: 24fe0ef7737e
 ---
+
+
 # Setup Pre-Commit Hooks
 
 ## What This Sets Up

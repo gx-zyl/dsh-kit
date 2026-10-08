@@ -1,11 +1,13 @@
 ---
 name: tdd
-description: "测试驱动开发：红-绿-重构，先写失败测试再实现。用户说 TDD、先写测试时触发。"
+description: "Test-driven development. Use when the user wants to build features or fix bugs test-first, mentions \"red-green-refactor\", or wants integration tests. 测试驱动开发：红-绿-重构，先写失败测试再实现。用户说 TDD、先写测试时触发。"
 metadata:
   origin: mp-skills
   upstream: mattpocock/skills
   snapshot: 24fe0ef7737e
 ---
+
+
 # Test-Driven Development
 
 TDD is the red → green loop. This skill is the reference that makes that loop produce tests worth keeping: what a good test is, where tests go, the anti-patterns, and the rules of the loop. Every section applies on every cycle: consult them before and during the loop, not after.

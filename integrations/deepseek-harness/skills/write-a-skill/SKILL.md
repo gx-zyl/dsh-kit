@@ -1,71 +1,71 @@
 ---
 name: write-a-skill
-description: 创建新的 AI skill，有标准结构和渐进式信息呈现。用户说"写个 skill"、"创建 skill"、"新建技能"时触发。
+description: Create a new AI skill with a standard structure and progressive disclosure of information. Triggers when the user says "write a skill", "create a skill", or "new skill". 创建新的 AI skill，有标准结构和渐进式信息呈现。用户说"写个 skill"、"创建 skill"、"新建技能"时触发。
 ---
 
-# 写 Skill
+# Write a Skill
 
-## 流程
+## Process
 
-1. **收集需求** — 问用户：
-   - 这个 skill 覆盖什么任务/领域？
-   - 处理哪些具体场景？
-   - 需要脚本还是只有指令？
-   - 需要引用什么资料？
+1. **Gather requirements** — ask the user:
+   - What task/domain does this skill cover?
+   - Which concrete scenarios does it handle?
+   - Does it need scripts, or only instructions?
+   - What reference material does it need?
 
-2. **起草 skill** — 创建：
-   - SKILL.md 精简指令
-   - 内容超 500 行则拆参考文件
-   - 确定性的操作写脚本
+2. **Draft the skill** — create:
+   - A concise SKILL.md with the instructions
+   - Split into reference files if the content exceeds 500 lines
+   - Scripts for deterministic operations
 
-3. **评审** — 给用户看：
-   - 覆盖使用场景了吗？
-   - 缺什么？
-   - 需要加例子吗？
+3. **Review** — show the user:
+   - Does it cover the usage scenarios?
+   - What is missing?
+   - Should examples be added?
 
-## Skill 结构
+## Skill structure
 
 ```
 skill-name/
-├── SKILL.md           # 主指令（必须）
-├── REFERENCE.md       # 详细文档（按需）
-├── EXAMPLES.md        # 使用示例（按需）
-└── scripts/           # 工具脚本（按需）
+├── SKILL.md           # main instructions (required)
+├── REFERENCE.md       # detailed documentation (optional)
+├── EXAMPLES.md        # usage examples (optional)
+└── scripts/           # tool scripts (optional)
     └── helper.js
 ```
 
-## Description 要求
+## Description requirements
 
-description 是 AI 决定加载哪个 skill 的唯一依据。
+The description is the only basis on which the AI decides which skill to load.
 
-**目标**：给 AI 足够信息判断：
-1. 这个 skill 提供什么能力
-2. 什么时候触发（关键词、上下文、文件类型）
+**Goal**: give the AI enough information to judge:
+1. What capability this skill provides
+2. When it triggers (keywords, context, file types)
 
-**格式**：
-- 最多 1024 字
-- 第一句：做什么
-- 第二句："用户说 XXX 时触发"
+**Format**:
+- At most 1024 characters
+- First sentence: what it does
+- Second sentence: "Triggers when the user says XXX"
 
-## 什么时候加脚本
+## When to add scripts
 
-- 操作确定性的（验证、格式化）
-- 相同代码反复生成
-- 错误需要显式处理
+- The operation is deterministic (validation, formatting)
+- The same code keeps being generated repeatedly
+- Errors need explicit handling
 
-脚本比生成的代码省 token、更可靠。
+Scripts cost fewer tokens and are more reliable than generated code.
 
-## 什么时候拆文件
+## When to split files
 
-- SKILL.md 超 100 行
-- 内容有清晰分领域
-- 高级功能很少用
+- SKILL.md exceeds 100 lines
+- The content has clear sub-domains
+- Advanced features are rarely used
 
-## 核查清单
+## Checklist
 
-- [ ] description 包含触发条件
-- [ ] SKILL.md 100 行以内
-- [ ] 没有时间敏感信息
-- [ ] 术语一致
-- [ ] 有具体例子
-- [ ] 引用不超过一层
+- [ ] description contains the trigger conditions
+- [ ] SKILL.md is within 100 lines
+- [ ] No time-sensitive information
+- [ ] Terminology is consistent
+- [ ] There are concrete examples
+- [ ] References are no more than one level deep

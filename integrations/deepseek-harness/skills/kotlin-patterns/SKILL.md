@@ -1,11 +1,12 @@
 ---
 name: kotlin-patterns
-description: "Kotlin 惯用法：协程、空安全、DSL 构建与工程实践。写或评审 Kotlin 代码时触发。"
+description: "Idiomatic Kotlin patterns, best practices, and conventions for building robust, efficient, and maintainable Kotlin applications with coroutines, null safety, and DSL builders. Kotlin 惯用法：协程、空安全、DSL 构建与工程实践。写或评审 Kotlin 代码时触发。"
 metadata:
   origin: ecc
   upstream: affaan-m/ECC
   snapshot: ef648e01899b
 ---
+
 # Kotlin Development Patterns
 
 Idiomatic Kotlin patterns and best practices for building robust, efficient, and maintainable applications.

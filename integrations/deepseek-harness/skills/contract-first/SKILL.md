@@ -1,11 +1,12 @@
 ---
 name: contract-first
-description: "以一份机器可校验的契约（OpenAPI、AsyncAPI、Protobuf、JSON Schema）协调前后端或服务间协作。"
+description: "Coordinate frontend/backend or service-to-service work through one authoritative machine-checkable contract (OpenAPI, AsyncAPI, Protocol Buffers, or JSON Schema), with generated consumer types and… 以一份机器可校验的契约（OpenAPI、AsyncAPI、Protobuf、JSON Schema）协调前后端或服务间协作。"
 metadata:
   origin: ecc
   upstream: affaan-m/ECC
   snapshot: ef648e01899b
 ---
+
 # Contract-First Collaboration
 
 Coordinate frontend/backend or service-to-service work through one authoritative,

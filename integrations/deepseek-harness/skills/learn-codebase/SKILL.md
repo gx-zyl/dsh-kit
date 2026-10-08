@@ -1,11 +1,12 @@
 ---
 name: learn-codebase
-description: "通读全部源码为代码库建立认知，用于接手陌生项目或用户要求\"先读一遍代码\"时。"
+description: "Prime a codebase by reading every source file in full. Use when starting work on a new or unfamiliar project, or when the user asks to \"learn the codebase\", \"read the codebase\", \"prime\", or \"get up to speed\". 通读全部源码为代码库建立认知，用于接手陌生项目或用户要求\"先读一遍代码\"时。"
 metadata:
   origin: claude-mem
   upstream: thedotmack/claude-mem
   snapshot: 3b3baaa55ebb
 ---
+
 # Learn Codebase
 
 Please learn about the codebase by systematically and thoroughly reading

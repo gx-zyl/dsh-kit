@@ -1,11 +1,12 @@
 ---
 name: santa-method
-description: "多智能体对抗式验证：两名独立评审按同一 rubric 都通过才放行，含修复-复审收敛环与人工升级。"
+description: "Multi-agent adversarial verification: two independent reviewers with the same rubric must both pass before output ships, with a fix-and-re-review convergence loop and human escalation cap. 多智能体对抗式验证：两名独立评审按同一 rubric 都通过才放行，含修复-复审收敛环与人工升级。"
 metadata:
   origin: ecc
   upstream: affaan-m/ECC
   snapshot: ef648e01899b
 ---
+
 # Santa Method
 
 Multi-agent adversarial verification framework. Make a list, check it twice. If it's naughty, fix it until it's nice.

@@ -1,11 +1,12 @@
 ---
 name: security-review
-description: "安全评审清单：鉴权、用户输入、密钥处理、API 端点与支付等敏感功能实现前的检查项。"
+description: "Use this skill when adding authentication, handling user input, working with secrets, creating API endpoints, or implementing payment/sensitive features. 安全评审清单：鉴权、用户输入、密钥处理、API 端点与支付等敏感功能实现前的检查项。"
 metadata:
   origin: ecc
   upstream: affaan-m/ECC
   snapshot: ef648e01899b
 ---
+
 # Security Review Skill
 
 This skill ensures all code follows security best practices and identifies potential vulnerabilities.

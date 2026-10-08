@@ -1,12 +1,14 @@
 ---
 name: triage
-description: "让 issue 与外部 PR 走分诊状态机：分类、验证、必要时拷问，并写出可供 agent 直接执行的 brief。用户调用型技能：仅经 /triage 触发，不进模型可见目录。"
+description: "Move issues and external PRs through a state machine of triage roles, categorise, verify, grill if needed, and write agent-ready briefs. 让 issue 与外部 PR 走分诊状态机：分类、验证、必要时拷问，并写出可供 agent 直接执行的 brief。用户调用型技能：仅经 /triage 触发，不进模型可见目录。"
 metadata:
   origin: mp-skills
   upstream: mattpocock/skills
   snapshot: 24fe0ef7737e
 disable-model-invocation: true
 ---
+
+
 # Triage
 
 Move issues on the project issue tracker through a small state machine of triage roles.
